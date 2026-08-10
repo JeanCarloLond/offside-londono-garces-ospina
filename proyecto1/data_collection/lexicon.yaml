@@ -1,0 +1,98 @@
+# Léxico/regex para el baseline de nivel 2 (ver Context.md, sección 5) y para
+# la supervisión débil del conjunto de entrenamiento grande.
+#
+# Se evalúan en el ORDEN en que aparecen: la primera categoría cuyo patrón
+# haga match sobre "titulo. resumen" gana. Si ninguna hace match, la
+# categoría es "irrelevante". Esto es deliberadamente crudo — es el punto:
+# medir qué tan lejos llega un baseline honesto antes de afinar el modelo.
+#
+# impact_default es una heurística (categoría -> impacto típico), NO sabe a
+# qué equipo afecta la noticia. Esa limitación queda documentada en
+# docs/dataset.md — es exactamente el tipo de cosa que un modelo afinado
+# debería mejorar y que el baseline no puede resolver.
+categories:
+  - name: baja_confirmada
+    impact_default: negativo_alto
+    patterns:
+      - "\\bbaja confirmada\\b"
+      - "\\bse pierde (el|todo el)\\b"
+      - "\\bno estar[aá] disponible\\b"
+      - "\\bdescartado para\\b"
+      - "\\bfuera de la convocatoria\\b"
+      - "\\bcausa baja\\b"
+      - "\\bse queda fuera (del|de la)\\b"
+
+  - name: sancion_suspension
+    impact_default: negativo_alto
+    patterns:
+      - "\\bsancionad[oa]s?\\b"
+      - "\\bsuspendid[oa]s?\\b"
+      - "\\bapercibid[oa]s?\\b"
+      - "\\btarjeta roja\\b"
+      - "\\bexpulsad[oa]s?\\b"
+      - "\\bcumple sanci[oó]n\\b"
+      - "\\bciclo de sanci[oó]n\\b"
+
+  - name: regreso_alta
+    impact_default: positivo_alto
+    patterns:
+      - "\\bvuelve a la convocatoria\\b"
+      - "\\brecibe el alta\\b"
+      - "\\bde vuelta al equipo\\b"
+      - "\\bregresa a (los entrenamientos|la convocatoria|el grupo)\\b"
+      - "\\bdisponible de nuevo\\b"
+      - "\\brecupera(do|da)? para\\b"
+
+  - name: duda_fisica
+    impact_default: negativo_bajo
+    patterns:
+      - "\\bduda para\\b"
+      - "\\bmolestias?\\b"
+      - "\\bdolencia\\b"
+      - "\\bsobrecarga\\b"
+      - "\\bpendiente de pruebas\\b"
+      - "\\bal l[ií]mite\\b"
+      - "\\ben el dique seco\\b"
+
+  - name: cambio_tactico
+    impact_default: neutro
+    patterns:
+      - "\\bcambio de sistema\\b"
+      - "\\bnuevo dibujo\\b"
+      - "\\balineaci[oó]n probable\\b"
+      - "\\bonce inicial\\b"
+      - "\\brotaci[oó]n\\b"
+      - "\\bposible once\\b"
+
+  - name: rumor_no_confirmado
+    impact_default: negativo_bajo
+    patterns:
+      - "\\bseg[uú]n fuentes\\b"
+      - "\\bpodr[ií]a (perderse|no llegar)\\b"
+      - "\\bno est[aá] claro si\\b"
+      - "\\btrascendi[oó] que\\b"
+      - "\\bsin confirmar\\b"
+      - "\\ba falta de confirmaci[oó]n\\b"
+
+  - name: declaracion_contexto
+    impact_default: neutro
+    patterns:
+      - "\\bdeclar[oó]\\b"
+      - "\\basegur[oó]\\b"
+      - "\\ben rueda de prensa\\b"
+      - "\\bse[nñ]al[oó] que\\b"
+      - "\\bafirm[oó] que\\b"
+      - "\\ben conferencia de prensa\\b"
+
+# Ajusta positivo/negativo_alto según sentimiento explícito, útil sobre
+# todo para reclasificar "cambio_tactico" o "declaracion_contexto" cuando
+# el texto trae una palabra de sentimiento fuerte.
+sentiment_boost:
+  positivo_alto:
+    - "\\brefuerza\\b"
+    - "\\bgran noticia\\b"
+    - "\\bvuelve a marcar\\b"
+  negativo_alto:
+    - "\\bgolpe para\\b"
+    - "\\bmala noticia\\b"
+    - "\\bbaja sensible\\b"

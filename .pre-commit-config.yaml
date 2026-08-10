@@ -1,0 +1,36 @@
+# Local git hooks — same checks the GitLab CI lint job runs, so problems
+# show up before you push instead of after.
+#
+# Setup (once per clone):
+#   pip install -r requirements-dev.txt
+#   pre-commit install
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=5000"]
+
+  # ruff and pymarkdown run as "local" hooks against requirements-dev.txt
+  # instead of pinning a mirrored-repo revision, so version bumps only need
+  # editing requirements-dev.txt in one place.
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check (lint, incl. notebooks)
+        entry: ruff check
+        language: system
+        types_or: [python, jupyter]
+      - id: ruff-format
+        name: ruff format --check
+        entry: ruff format --check
+        language: system
+        types_or: [python, jupyter]
+      - id: pymarkdown
+        name: pymarkdown scan
+        entry: pymarkdown scan
+        language: system
+        types: [markdown]

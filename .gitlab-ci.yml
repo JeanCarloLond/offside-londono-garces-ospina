@@ -1,0 +1,27 @@
+# Lint-only pipeline. Deliberately small: one stage, one job, no GPU, runs
+# in well under a minute. Fine-tuning itself happens in Colab (see
+# proyecto1/README.md), not in CI.
+stages:
+  - lint
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+lint:
+  stage: lint
+  image: python:3.11-slim
+  cache:
+    key: pip-lint-cache
+    paths:
+      - .cache/pip
+  before_script:
+    - pip install --quiet ruff pymarkdownlnt
+  script:
+    # Real bugs / style, Python + notebooks in proyecto1/
+    - ruff check proyecto1
+    - ruff format --check proyecto1
+    # Markdown hygiene on the docs that make up the deliverable
+    - pymarkdown scan README.md proyecto1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'

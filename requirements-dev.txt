@@ -1,0 +1,4 @@
+# Dev-only tooling (linters + git hooks). Not needed to run the notebook in Colab.
+ruff>=0.6
+pymarkdownlnt>=0.9
+pre-commit>=3.7

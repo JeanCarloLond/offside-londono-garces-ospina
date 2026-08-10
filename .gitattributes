@@ -1,0 +1,4 @@
+# Normaliza a LF en el repo (el equipo mezcla Windows/Mac) para que los diffs
+# no se ensucien con cambios de línea. Git sigue mostrando CRLF en checkout
+# si autocrlf=true está configurado localmente.
+* text=auto eol=lf

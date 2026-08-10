@@ -1,0 +1,29 @@
+# Fuentes RSS verificadas manualmente (curl, HTTP 200 + XML válido) el 2026-08-09.
+# Todas son feeds públicos de titulares + resumen corto (no el artículo completo),
+# publicados por el propio medio para sindicación 
+# outlet: nombre del medio (queda en la columna "source" del dataset)
+# url: endpoint RSS
+# region: variante lingüística aproximada, para el sesgo de variante (ver dataset.md)
+sources:
+  - outlet: marca
+    url: "https://www.marca.com/rss/futbol.xml"
+    region: es
+  - outlet: marca_laliga
+    url: "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml"
+    region: es
+  - outlet: as
+    url: "https://as.com/rss/tags/ultimas_noticias.xml"
+    region: es
+  - outlet: sport
+    url: "https://www.sport.es/es/rss/portada/rss.xml"
+    region: es
+
+# Feeds descartados en la verificación del 2026-08-09:
+# - mundodeportivo.com/rss/*, as.com/futbol/rss.xml -> no respondían o 404.
+# - espn.com/espn/rss/soccer/news -> responde 200 pero el contenido es EN
+#   (ESPN.com internacional), no ES; espn.com.co/* daba 503.
+#   URL correcta para variante latam.
+#
+# TODO equipo: sumar 1-2 fuentes latam (ej. ESPN Colombia/México, olé.com.ar)
+# para atacar el sesgo de variante lingüística que ya identificamos en
+# docs/dataset.md — de momento el seed está sesgado a prensa española.

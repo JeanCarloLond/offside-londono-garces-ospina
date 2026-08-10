@@ -1,0 +1,45 @@
+# --- Claude Code local tooling: never part of the team deliverable ---
+.claude/
+
+# --- Personal course material (labs, slides, assignment brief) ---
+# This repo is the team deliverable (proyecto1/); class notebooks/PDFs are
+# kept locally for reference but are not pushed to the shared GitLab repo.
+/Context.md
+/clase2.md
+/clase_IA.md
+/STAI_Plantilla_Proyecto.md
+/STAI_M1_Asignacion_Fine-tuning_baseline.pdf
+/S01_Demo_Capacidades.ipynb
+/S02_Lab_Abrir_la_caja (1).ipynb
+/S03_Lab_El_bloque_y_las_familias.ipynb
+/S04_Lab_Fine-tuning_LoRA.ipynb
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.egg-info/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Data: raw scraped cache and full article text never get committed ---
+# (copyright — see docs/dataset.md). Only fragments/labels/hashes under
+# data/processed and data/gold are tracked.
+proyecto1/data/raw/
+proyecto1/data/interim/
+
+# --- Model artifacts / experiment tracking ---
+proyecto1/**/checkpoints/
+proyecto1/**/*.ckpt
+proyecto1/**/wandb/
+proyecto1/**/runs/
+*.safetensors
+*.bin
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
