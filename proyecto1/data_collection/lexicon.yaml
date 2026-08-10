@@ -21,6 +21,8 @@ categories:
       - "\\bfuera de la convocatoria\\b"
       - "\\bcausa baja\\b"
       - "\\bse queda fuera (del|de la)\\b"
+      - "\\bpas(ó|ar) por el quir[oó]fano\\b"
+      - "\\boperad[oa]\\b"
 
   - name: sancion_suspension
     impact_default: negativo_alto
@@ -40,8 +42,11 @@ categories:
       - "\\brecibe el alta\\b"
       - "\\bde vuelta al equipo\\b"
       - "\\bregresa a (los entrenamientos|la convocatoria|el grupo)\\b"
+      - "\\bregresa antes de tiempo\\b"
       - "\\bdisponible de nuevo\\b"
       - "\\brecupera(do|da)? para\\b"
+      - "\\bvuelve (antes|tras)\\b"
+      - "\\badelantan? su vuelta al trabajo\\b"
 
   - name: duda_fisica
     impact_default: negativo_bajo
@@ -83,6 +88,8 @@ categories:
       - "\\bse[nñ]al[oó] que\\b"
       - "\\bafirm[oó] que\\b"
       - "\\ben conferencia de prensa\\b"
+      - "\".+\"" # titular con cita textual (frecuente en declaraciones de jugador/DT)
+      - "[“”].+[“”]" # variante con comillas tipográficas
 
 # Ajusta positivo/negativo_alto según sentimiento explícito, útil sobre
 # todo para reclasificar "cambio_tactico" o "declaracion_contexto" cuando

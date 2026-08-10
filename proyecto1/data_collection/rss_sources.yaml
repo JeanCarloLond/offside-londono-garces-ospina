@@ -11,19 +11,29 @@ sources:
   - outlet: marca_laliga
     url: "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml"
     region: es
-  - outlet: as
-    url: "https://as.com/rss/tags/ultimas_noticias.xml"
+  - outlet: marca_segunda
+    url: "https://e00-marca.uecdn.es/rss/futbol/segunda-division.xml"
     region: es
-  - outlet: sport
-    url: "https://www.sport.es/es/rss/portada/rss.xml"
+  - outlet: marca_champions
+    url: "https://www.marca.com/rss/futbol/champions-league.xml"
+    region: es
+  - outlet: marca_premier
+    url: "https://www.marca.com/rss/futbol/premier-league.xml"
+    region: es
+  - outlet: marca_bundesliga
+    url: "https://www.marca.com/rss/futbol/bundesliga.xml"
     region: es
 
-# Feeds descartados en la verificación del 2026-08-09:
-# - mundodeportivo.com/rss/*, as.com/futbol/rss.xml -> no respondían o 404.
-# - espn.com/espn/rss/soccer/news -> responde 200 pero el contenido es EN
-#   (ESPN.com internacional), no ES; espn.com.co/* daba 503.
-#   URL correcta para variante latam.
+# Feeds probados y descartados el 2026-08-09 (motivo entre paréntesis):
+# - mundodeportivo.com/rss/* (no responde), as.com/futbol/rss.xml (404)
+# - as.com/rss/tags/ultimas_noticias.xml (200 + XML válido pero <channel>
+#   vacío, lastBuildDate de marzo 2024: feed abandonado, no roto)
+# - sport.es/es/rss/portada/rss.xml (mismo caso: canal sin <item>)
+# - espn.com/espn/rss/soccer/news (200 pero contenido en inglés, no ES;
+#   espn.com.co/* daba 503 al probarlo)
+# - marca.com/rss/tags/lesion.xml, /tags/sancion.xml, /segunda-division.xml
+#   (404 — la ruta correcta de Segunda es la de e00-marca.uecdn.es de arriba)
 #
 # TODO equipo: sumar 1-2 fuentes latam (ej. ESPN Colombia/México, olé.com.ar)
 # para atacar el sesgo de variante lingüística que ya identificamos en
-# docs/dataset.md — de momento el seed está sesgado a prensa española.
+# docs/dataset.md — de momento el seed está sesgado a prensa española (Marca).

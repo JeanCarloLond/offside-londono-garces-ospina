@@ -1,0 +1,4 @@
+# Only needed to run proyecto1/data_collection/*.py (collection + weak
+# labeling). Not needed to run the Colab notebook itself.
+requests>=2.31
+pyyaml>=6.0
