@@ -45,9 +45,7 @@ def compile_lexicon(cfg: dict) -> list[tuple[str, str, list[re.Pattern]]]:
 
 def compile_sentiment(cfg: dict) -> dict[str, list[re.Pattern]]:
     boost = cfg.get("sentiment_boost", {})
-    return {
-        label: [re.compile(p, re.IGNORECASE) for p in pats] for label, pats in boost.items()
-    }
+    return {label: [re.compile(p, re.IGNORECASE) for p in pats] for label, pats in boost.items()}
 
 
 def label_one(text: str, categories, sentiment) -> tuple[str, str]:

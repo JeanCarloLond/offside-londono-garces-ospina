@@ -21,7 +21,7 @@ lint:
     - ruff check proyecto1
     - ruff format --check proyecto1
     # Markdown hygiene on the docs that make up the deliverable
-    - pymarkdown scan README.md proyecto1
+    - pymarkdown -c .pymarkdown.json scan README.md proyecto1
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'

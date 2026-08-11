@@ -31,6 +31,6 @@ repos:
         types_or: [python, jupyter]
       - id: pymarkdown
         name: pymarkdown scan
-        entry: pymarkdown scan
+        entry: pymarkdown -c .pymarkdown.json scan
         language: system
         types: [markdown]
