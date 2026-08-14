@@ -19,6 +19,11 @@ repos:
   # editing requirements-dev.txt in one place.
   - repo: local
     hooks:
+      - id: check-secrets
+        name: check secrets (tokens, claves, credenciales en URLs)
+        entry: python scripts/check_secrets.py
+        language: system
+        pass_filenames: true
       - id: ruff-check
         name: ruff check (lint, incl. notebooks)
         entry: ruff check

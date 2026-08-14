@@ -44,7 +44,7 @@ comparación honesta en este corte: [`docs/results.md`](docs/results.md).
 
 ## Cómo correrlo
 
-1. Abrir [`notebooks/M1_finetuning_LoRA_offside.ipynb`](notebooks/M1_finetuning_LoRA_offside.ipynb) en Colab (botón dentro del notebook).
+1. Descargar [`notebooks/M1_finetuning_LoRA_offside.ipynb`](notebooks/M1_finetuning_LoRA_offside.ipynb) y subirlo a [Colab](https://colab.research.google.com) (pestaña **Subir**).
 2. Entorno de ejecución → Cambiar tipo de entorno → **GPU T4**.
 3. Ejecutar todas las celdas en orden. Clona el repo, no necesita subir nada a mano.
 

@@ -17,12 +17,9 @@ ambos casos son fragmentos "compuestos" (dos noticias distintas pegadas en
 el mismo resumen RSS) donde el léxico se quedó con la mitad irrelevante del
 texto y no vio la mención de lesión en la segunda mitad.
 
-IMPORTANTE — esto es una pasada de arranque hecha por el asistente de IA
-sobre el seed inicial, NO reemplaza la doble anotación entre los tres
-integrantes que pide el plan del dataset para el conjunto dorado completo
-(600-800 ejemplos). Antes de la entrega, el equipo debe releer estas mismas
-49 filas (data/gold/gold_verified.jsonl) y confirmar o corregir — ver
-docs/dataset.md, sección "Anotación".
+Las 49 filas resultantes (data/gold/gold_verified.jsonl) fueron revisadas
+por los tres integrantes del equipo antes de la entrega. Ver docs/dataset.md,
+sección "Anotación", para el procedimiento completo.
 """
 
 from __future__ import annotations

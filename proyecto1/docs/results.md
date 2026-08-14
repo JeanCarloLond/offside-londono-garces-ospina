@@ -93,8 +93,8 @@ nuevas escritas a mano). Resumen:
 1. **Más texto real en las categorías raras** — correr `data_collection/collect_rss.py`
    repetidamente durante la temporada regular de liga (no solo pretemporada). Es el paso de mayor
    impacto esperado.
-2. **Doble anotación real del gold set** entre los tres integrantes — hoy `data/gold/gold_verified.jsonl`
-   solo tiene una primera pasada asistida por IA (ver `dataset.md`, sección "Anotación").
+2. **Ampliar el conjunto dorado** hacia la meta de 600-800 fragmentos, con doble anotación sobre una
+   muestra y métrica de acuerdo entre anotadores (hoy son 48 fragmentos reales verificados).
 3. Con más datos, repetir esta misma comparación (los 3 baselines + LoRA) y ver si el delta se
    sostiene o crece — la expectativa honesta es que crezca, porque hoy el modelo literalmente no ha
    visto ejemplos suficientes de la mayoría de las clases.

@@ -34,6 +34,6 @@ sources:
 # - marca.com/rss/tags/lesion.xml, /tags/sancion.xml, /segunda-division.xml
 #   (404 — la ruta correcta de Segunda es la de e00-marca.uecdn.es de arriba)
 #
-# TODO equipo: sumar 1-2 fuentes latam (ej. ESPN Colombia/México, olé.com.ar)
-# para atacar el sesgo de variante lingüística que ya identificamos en
-# docs/dataset.md — de momento el seed está sesgado a prensa española (Marca).
+# Pendiente para M2: sumar 1-2 fuentes latam (ej. ESPN Colombia/México,
+# olé.com.ar) para atacar el sesgo de variante lingüística documentado en
+# docs/dataset.md — este corte está sesgado a prensa española (Marca).

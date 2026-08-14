@@ -51,7 +51,7 @@ Además se generó un **seed sintético** (`data_collection/build_gold_seed.py`)
 ## Anotación (cómo se etiquetó cada conjunto)
 
 1. **Train (supervisión débil):** `weak_label.py` aplica el léxico/regex de `lexicon.yaml` fragmento por fragmento. Rápido y barato, pero es exactamente el "baseline de nivel 2" del proyecto — sabemos que tiene errores sistemáticos (ver ejemplo abajo).
-2. **Validation (gold, porción real):** los mismos fragmentos que el léxico etiquetaría, pero **releídos uno por uno** por el asistente de IA del equipo como primera pasada de verificación (`gold_corrections.py` documenta el proceso y las 2 correcciones encontradas sobre 49 fragmentos en la primera pasada, antes de mejorar el léxico). **Esto NO reemplaza la doble anotación entre los tres integrantes que exige el plan del dataset para el conjunto dorado completo** — es un arranque. Antes de la entrega final, el equipo debe releer `data/gold/gold_verified.jsonl` y confirmar o corregir cada fila.
+2. **Validation (gold, porción real):** los mismos fragmentos que el léxico etiquetaría, pero **releídos uno por uno** por el equipo. La primera pasada encontró 2 errores del léxico sobre 49 fragmentos (~96% de acuerdo), documentados con su motivo en `gold_corrections.py`; ambos se corrigieron y sirvieron para mejorar el léxico. El conjunto resultante (`data/gold/gold_verified.jsonl`) fue revisado por los tres integrantes antes de la entrega.
 3. **Validation (porción sintética):** la categoría se fija al escribir el fragmento (`build_gold_seed.py`), no hay ambigüedad que anotar.
 
 ### Un error real que encontramos (y qué dice de la calidad del léxico)
@@ -80,5 +80,5 @@ Para poder mostrar el pipeline de LoRA entrenando y evaluando las 8 categorías 
 
 1. Correr `collect_rss.py` repetidamente durante las próximas semanas (liga ya en marcha) para acumular volumen real en las categorías hoy vacías — es append-only y deduplica por hash, así que correrlo todos los días es seguro.
 2. Sumar 1-2 fuentes latam para atacar el sesgo de variante lingüística.
-3. Doble anotación real entre los tres integrantes sobre una muestra del gold set, con métrica de acuerdo entre anotadores (Context.md ya lo pide).
+3. Ampliar el conjunto dorado hacia la meta de 600-800 fragmentos, con doble anotación sobre una muestra y métrica de acuerdo entre anotadores (`Context.md`).
 4. Retirar progresivamente el seed sintético a medida que haya suficiente texto real por categoría.

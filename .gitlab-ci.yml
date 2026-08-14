@@ -17,6 +17,8 @@ lint:
   before_script:
     - pip install --quiet ruff pymarkdownlnt
   script:
+    # Credenciales: va primero, es el check que más caro sale si falla tarde.
+    - python scripts/check_secrets.py .
     # Real bugs / style, Python + notebooks in proyecto1/
     - ruff check proyecto1
     - ruff format --check proyecto1
