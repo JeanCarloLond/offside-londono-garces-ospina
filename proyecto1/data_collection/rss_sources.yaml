@@ -23,6 +23,12 @@ sources:
   - outlet: marca_bundesliga
     url: "https://www.marca.com/rss/futbol/bundesliga.xml"
     region: es
+  - outlet: eltiempo_deportes
+    url: "https://www.eltiempo.com/rss/deportes.xml"
+    region: co
+  - outlet: eltiempo_futbol_colombiano
+    url: "https://www.eltiempo.com/rss/deportes_futbol-colombiano.xml"
+    region: co
 
 # Feeds probados y descartados el 2026-08-09 (motivo entre paréntesis):
 # - mundodeportivo.com/rss/* (no responde), as.com/futbol/rss.xml (404)
