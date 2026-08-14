@@ -20,8 +20,8 @@ lint:
     # Credenciales: va primero, es el check que más caro sale si falla tarde.
     - python scripts/check_secrets.py .
     # Real bugs / style, Python + notebooks in proyecto1/
-    - ruff check proyecto1
-    - ruff format --check proyecto1
+    - ruff check proyecto1 scripts
+    - ruff format --check proyecto1 scripts
     # Markdown hygiene on the docs that make up the deliverable
     - pymarkdown -c .pymarkdown.json scan README.md proyecto1
   rules:

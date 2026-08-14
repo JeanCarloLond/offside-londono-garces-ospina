@@ -25,7 +25,9 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 │   ├── data_collection/      # Scraping/recolección + limpieza + weak labeling
 │   ├── data/                 # processed/ y gold/ se versionan; raw/ e interim/ no (ver .gitignore)
 │   └── docs/                 # Descripción del dataset y reporte de resultados
-├── .gitlab-ci.yml           # Pipeline de lint (rápido, sin GPU)
+├── scripts/check_secrets.py # Bloquea tokens/credenciales antes de que entren al repo
+├── .gitlab-ci.yml           # Pipeline de lint en GitLab (rápido, sin GPU)
+├── .github/workflows/       # El mismo lint, en GitHub Actions
 ├── .pre-commit-config.yaml  # Mismos checks del CI, en local antes de commitear
 ├── pyproject.toml           # Config de ruff (Python + notebooks)
 └── requirements-dev.txt     # Herramientas de desarrollo (lint, hooks) — no hace falta en Colab
@@ -33,7 +35,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 
 ## Buenas prácticas del repo
 
-- **Lint automático**: cada push/MR corre `ruff` (Python + notebooks) y `pymarkdown` (Markdown) en un pipeline de GitLab CI de un solo job, sin GPU (`.gitlab-ci.yml`). Debe pasar antes de mergear a `main`.
+- **Lint automático**: cada push/MR corre búsqueda de credenciales, `ruff` (Python + notebooks) y `pymarkdown` (Markdown) en un job único sin GPU. El repo vive en GitLab (trabajo diario) y en GitHub (entrega pública), así que los mismos checks están definidos en `.gitlab-ci.yml` y en `.github/workflows/lint.yml`.
 - **Hooks locales opcionales, mismos checks que el CI**:
 
   ```bash

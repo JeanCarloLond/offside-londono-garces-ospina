@@ -1,0 +1,37 @@
+# Equivalente en GitHub Actions del job de lint de .gitlab-ci.yml.
+# El repo vive en los dos sitios (GitLab para trabajar, GitHub para la
+# entrega publica), asi que los mismos checks corren en ambos.
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Instalar linters
+        run: pip install --quiet ruff pymarkdownlnt
+
+      # Credenciales: va primero, es el check que mas caro sale si falla tarde.
+      - name: Buscar secretos
+        run: python scripts/check_secrets.py .
+
+      - name: ruff check (Python + notebooks)
+        run: ruff check proyecto1 scripts
+
+      - name: ruff format
+        run: ruff format --check proyecto1 scripts
+
+      - name: pymarkdown
+        run: pymarkdown -c .pymarkdown.json scan README.md proyecto1
