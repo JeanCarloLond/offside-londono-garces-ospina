@@ -1,0 +1,117 @@
+# Rúbrica de Offside — qué hace "buena" a una respuesta en nuestro dominio.
+#
+# Esta es la respuesta explícita a la pregunta 2 de la tarea de S05. No es una
+# lista de deseos: cada criterio sale de una propiedad concreta de la decisión
+# que toma nuestro usuario (apostar o no, en qué dirección) y de la asimetría de
+# costes entre equivocarse de una forma o de otra.
+#
+# La rúbrica sirve para dos cosas:
+#   1. Hoy: `harness.py` la evalúa de forma determinista donde se puede.
+#   2. En S06: es el prompt del LLM-as-a-judge (dimensión 2 del harness).
+#
+# Escala por criterio: 1.0 cumple / 0.0 no cumple. El score global es la media
+# ponderada por `weight`.
+
+meta:
+  version: 1
+  domain: "Señales de impacto sobre un partido de fútbol, a partir de prensa deportiva"
+  user: "Apostador recreativo que decide desde el celular en los minutos previos al partido"
+
+# El principio que ordena toda la rúbrica.
+principio_rector: >
+  Una respuesta es buena si el usuario, actuando solo con ella, decide mejor que
+  si hubiera leído el titular por su cuenta. De ahí se sigue que un error que le
+  hace ACTUAR sobre información falsa es más grave que un error que simplemente
+  no le aporta nada: en el segundo caso queda como estaba, en el primero decide
+  peor por culpa nuestra. Por eso los criterios que penalizan señal falsa pesan
+  más que los que penalizan señal ausente.
+
+criterios:
+  - id: C1
+    nombre: "Categoría correcta"
+    weight: 0.20
+    evaluable: deterministico
+    descripcion: >
+      El tipo de hecho es el correcto. Es la base: si la categoría está mal, todo
+      lo que se construye encima (impacto, presentación al usuario) está mal.
+    check: "pred.category == expected.category"
+
+  - id: C2
+    nombre: "Signo del impacto correcto"
+    weight: 0.25
+    evaluable: deterministico
+    descripcion: >
+      No confundir una buena noticia con una mala. Es el error más caro de todos:
+      empuja al usuario en la dirección contraria a la correcta. Un jugador que
+      VUELVE de una sanción no es lo mismo que uno que ACABA de ser sancionado,
+      aunque el texto comparta vocabulario.
+    check: "signo(pred.impact) == signo(expected.impact), con signo en {negativo, neutro, positivo}"
+
+  - id: C3
+    nombre: "Intensidad del impacto correcta"
+    weight: 0.10
+    evaluable: deterministico
+    descripcion: >
+      Distinguir alto de bajo. Volver a entrenar con el grupo no es estar
+      disponible para jugar; una baja del portero titular no es una baja del
+      cuarto delantero. Pesa menos que el signo porque equivocar la intensidad
+      degrada la señal, pero no la invierte.
+    check: "nivel(pred.impact) == nivel(expected.impact), con nivel en {alto, bajo, neutro}"
+
+  - id: C4
+    nombre: "No presenta un rumor como un hecho"
+    weight: 0.20
+    evaluable: deterministico
+    descripcion: >
+      Nunca clasificar como hecho confirmado (baja_confirmada / sancion_suspension)
+      algo que la fuente da como no confirmado. Tiene peso ético además de
+      funcional: propaga información falsa sobre personas identificables, y es la
+      razón por la que `rumor_no_confirmado` existe como clase separada.
+    check: "si expected.category == rumor_no_confirmado, pred.category no puede ser un hecho confirmado"
+
+  - id: C5
+    nombre: "No inventa señal de alto impacto"
+    weight: 0.20
+    evaluable: deterministico
+    descripcion: >
+      Precisión sobre impacto alto. Si el sistema grita "alto impacto" cuando no
+      lo era, el usuario arriesga dinero por nuestra culpa. Preferimos que se nos
+      escape una noticia (falso negativo, el usuario queda como estaba) a inventar
+      una (falso positivo, el usuario decide peor). Por eso medimos precisión y no
+      exhaustividad.
+    check: "de las predicciones de impacto alto, cuántas eran realmente de impacto alto"
+
+  - id: C6
+    nombre: "Atribuye el impacto al equipo correcto"
+    weight: 0.05
+    evaluable: pendiente_s06
+    descripcion: >
+      Cuando el fragmento menciona dos equipos, la señal debe apuntar al que
+      resulta afectado. El modelo de M1 no extrae equipo todavía (solo clasifica),
+      así que este criterio queda declarado pero sin evaluar hasta M2/M3.
+    check: "pred.team == expected.team"
+
+# Criterios estructurales: se cumplen por diseño del sistema, no por el modelo.
+# Se listan porque forman parte de "qué hace buena una respuesta", aunque no
+# discriminen entre sistemas.
+criterios_estructurales:
+  - id: E1
+    nombre: "Trazabilidad"
+    descripcion: >
+      Toda salida se muestra junto al enlace y la marca temporal de la noticia que
+      la originó. El usuario debe poder verificar en vez de confiar a ciegas. Se
+      garantiza por construcción: cada fragmento arrastra `link` y `published_at`.
+
+  - id: E2
+    nombre: "Abstención explícita"
+    descripcion: >
+      Por debajo de un umbral de confianza el sistema responde "sin señal clara"
+      en lugar de forzar una etiqueta. Coherente con C5: ante la duda, no dar
+      señal. Requiere probabilidades calibradas; se implementa en M2 y por eso
+      hoy no puntúa.
+
+  - id: E3
+    nombre: "No recomienda apostar"
+    descripcion: >
+      El sistema informa; no dice "apueste", no calcula montos, no promete
+      rentabilidad. Es una decisión de diseño del producto, no un descargo legal.

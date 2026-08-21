@@ -6,6 +6,11 @@ repo público eso es una credencial regalada a cualquiera que pase por ahí.
 
 Corre en el pipeline de lint y en pre-commit. Sin dependencias externas.
 
+Solo escanea lo que git versiona o versionaria (`git ls-files --cached --others
+--exclude-standard`): el objetivo es impedir que una credencial ENTRE al repo,
+asi que ficheros ignorados quedan fuera a proposito. Fuera de un repo git, cae
+a recorrer el arbol de directorios.
+
 Uso:
     python scripts/check_secrets.py [rutas...]   # por defecto, todo el repo
 """
@@ -13,6 +18,7 @@ Uso:
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -38,19 +44,38 @@ SKIP_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".safetensors", ".bin"
 SELF = Path(__file__).resolve()
 
 
+def git_files(root: Path) -> list[Path] | None:
+    """Ficheros que git versiona o versionaria bajo `root`, o None si no hay repo."""
+    try:
+        out = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "--", str(root)],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return [Path(name) for name in out.splitlines() if name.strip()]
+
+
+def keep(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    if any(part in SKIP_DIRS for part in path.parts):
+        return False
+    return path.suffix.lower() not in SKIP_SUFFIXES
+
+
 def iter_files(roots: list[Path]):
     for root in roots:
         if root.is_file():
             yield root
             continue
-        for path in root.rglob("*"):
-            if not path.is_file():
-                continue
-            if any(part in SKIP_DIRS for part in path.parts):
-                continue
-            if path.suffix.lower() in SKIP_SUFFIXES:
-                continue
-            yield path
+        tracked = git_files(root)
+        candidates = tracked if tracked is not None else root.rglob("*")
+        for path in candidates:
+            if keep(path):
+                yield path
 
 
 def main(argv: list[str]) -> int:

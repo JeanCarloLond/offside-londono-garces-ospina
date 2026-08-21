@@ -13,6 +13,8 @@
 /S02_Lab_Abrir_la_caja (1).ipynb
 /S03_Lab_El_bloque_y_las_familias.ipynb
 /S04_Lab_Fine-tuning_LoRA.ipynb
+/SI4006_S05_Semana5_Sesion5.pdf
+/SI4006_S05_Semana5_Sesion5.pptx
 
 # --- Python ---
 __pycache__/
@@ -43,3 +45,8 @@ proyecto1/**/runs/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# --- Artefactos de entrenamiento/evaluación (se regeneran con los scripts) ---
+proyecto1/eval/_train_out/
+proyecto1/eval/train_log.txt
+proyecto1/m1_lora_adapter*/

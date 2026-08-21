@@ -1,4 +1,4 @@
-# Proyecto 1 — Entrega M1: Fine-tuning baseline con LoRA
+# Proyecto 1 — Offside (M1: fine-tuning con LoRA · M2: evaluación)
 
 > **Offside** lee noticias de fútbol y le dice a un apostador recreativo qué información ya "sabe" el mercado y cuál todavía no — este módulo entrena la primera versión del clasificador que hace esa lectura.
 
@@ -14,13 +14,19 @@ proyecto1/
 │   ├── README.md                             # cómo correr cada script, en qué orden
 │   ├── collect_rss.py / weak_label.py / build_gold_seed.py / gold_corrections.py
 │   ├── rss_sources.yaml / lexicon.yaml
+├── eval/                                    # M2: eval set de dominio + harness
+│   ├── eval_set.jsonl                        # 10 ejemplos gold: input + salida esperada
+│   ├── rubric.yaml                           # qué hace "buena" a una respuesta
+│   ├── harness.py                            # 3 dimensiones -> scorecard
+│   └── build_eval_set.py / train_holdout_model.py
 ├── data/
 │   ├── raw/            # (gitignored) crudo del scraping, nunca se commitea
 │   ├── processed/       # weak_labeled.jsonl — train, supervisión débil
 │   └── gold/            # gold_seed_synthetic.jsonl + gold_verified.jsonl — validación
 └── docs/
     ├── dataset.md        # descripción completa del dataset (fuente, tamaño, licencia, sesgos)
-    └── results.md         # tabla de resultados + lectura honesta
+    ├── results.md         # tabla de resultados + lectura honesta
+    └── eval-set.md        # M2: eval set de dominio, rúbrica y scorecard
 ```
 
 ## Modelo base y tarea
@@ -59,3 +65,20 @@ del proyecto (meta: 4.000-6.000 fragmentos). El pipeline completo (LoRA, baselin
 funciona de punta a punta; lo que falta para un resultado sólido es más texto real de temporada
 regular y una segunda pasada de anotación manual entre los tres integrantes — el plan está al final de
 `docs/dataset.md` y `docs/results.md`.
+
+## M2 · Evaluación: nuestro propio eval set
+
+Ningún benchmark público mide nuestro dominio, y los que existen se contaminan. Construimos el
+nuestro: diez ejemplos gold reales, etiquetados a mano y **elegidos para ser difíciles**, más un
+harness que los convierte en un scorecard con tres dimensiones (métrica clásica, rúbrica y vista de
+dominio).
+
+El hallazgo que lo justifica: sobre el conjunto de validación de M1 el baseline de léxico sacaba
+**F1 macro 1.00**; sobre este eval set saca **0.275**. El léxico no cambió — cambió que dejamos de
+medirlo con ejemplos que él mismo etiquetó.
+
+```bash
+cd proyecto1/eval && python harness.py
+```
+
+Detalle completo, rúbrica y scorecard: [`docs/eval-set.md`](docs/eval-set.md).

@@ -15,6 +15,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 ## Estado del proyecto
 
 - ✅ M1 · Arquitectura transformer y fine-tuning eficiente — ver [`proyecto1/`](proyecto1/)
+- 🔄 M2 · Evaluación: eval set de dominio + harness — ver [`proyecto1/docs/eval-set.md`](proyecto1/docs/eval-set.md)
 
 ## Estructura del repo
 
@@ -23,6 +24,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 ├── proyecto1/              # Entregable M1 (y base de los siguientes módulos)
 │   ├── notebooks/           # Notebook de fine-tuning, ejecutable en Colab
 │   ├── data_collection/      # Scraping/recolección + limpieza + weak labeling
+│   ├── eval/                 # M2: eval set de dominio, rúbrica y harness
 │   ├── data/                 # processed/ y gold/ se versionan; raw/ e interim/ no (ver .gitignore)
 │   └── docs/                 # Descripción del dataset y reporte de resultados
 ├── scripts/check_secrets.py # Bloquea tokens/credenciales antes de que entren al repo
