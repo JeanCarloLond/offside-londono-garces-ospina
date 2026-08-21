@@ -1,0 +1,318 @@
+{
+  "eval_set": "eval_set.jsonl",
+  "n_ejemplos": 10,
+  "rubric_version": 1,
+  "sistemas": {
+    "mayoritaria": {
+      "dim1": {
+        "f1_macro": 0.041666666666666664,
+        "accuracy": 0.2
+      },
+      "dim2": {
+        "criterios": {
+          "C1": {
+            "nombre": "Categoría correcta",
+            "score": 0.2,
+            "n": 10
+          },
+          "C2": {
+            "nombre": "Signo del impacto correcto",
+            "score": 0.4,
+            "n": 10
+          },
+          "C3": {
+            "nombre": "Intensidad del impacto correcta",
+            "score": 0.4,
+            "n": 10
+          },
+          "C4": {
+            "nombre": "No presenta un rumor como un hecho",
+            "score": null,
+            "n": 0
+          },
+          "C5": {
+            "nombre": "No inventa señal de alto impacto",
+            "score": null,
+            "n": 0
+          },
+          "C6": {
+            "nombre": "Atribuye el impacto al equipo correcto",
+            "score": null,
+            "n": 0
+          }
+        },
+        "score_global": 0.32727272727272727,
+        "peso_cubierto": 0.55
+      },
+      "dim3": {
+        "por_dificultad": {
+          "declaracion_que_contiene_un_hecho": {
+            "n": 1,
+            "ok": 0
+          },
+          "falso_negativo_total": {
+            "n": 1,
+            "ok": 0
+          },
+          "vocabulario_disparador_fuera_de_contexto": {
+            "n": 1,
+            "ok": 1
+          },
+          "tiempo_verbal_signo_invertido": {
+            "n": 1,
+            "ok": 0
+          },
+          "regreso_sin_vocabulario_de_regreso": {
+            "n": 1,
+            "ok": 0
+          },
+          "impacto_sobrestimado": {
+            "n": 1,
+            "ok": 0
+          },
+          "fragmento_compuesto": {
+            "n": 1,
+            "ok": 0
+          },
+          "distractor_normativo": {
+            "n": 1,
+            "ok": 1
+          },
+          "homonimia_dudas": {
+            "n": 1,
+            "ok": 0
+          },
+          "frontera_declaracion_rumor": {
+            "n": 1,
+            "ok": 0
+          }
+        },
+        "senal_falsa_alto_impacto": [],
+        "senal_perdida_alto_impacto": [
+          "OFF-01",
+          "OFF-02",
+          "OFF-04",
+          "OFF-07"
+        ],
+        "signo_invertido": []
+      }
+    },
+    "lexico": {
+      "dim1": {
+        "f1_macro": 0.275,
+        "accuracy": 0.5
+      },
+      "dim2": {
+        "criterios": {
+          "C1": {
+            "nombre": "Categoría correcta",
+            "score": 0.5,
+            "n": 10
+          },
+          "C2": {
+            "nombre": "Signo del impacto correcto",
+            "score": 0.5,
+            "n": 10
+          },
+          "C3": {
+            "nombre": "Intensidad del impacto correcta",
+            "score": 0.5,
+            "n": 10
+          },
+          "C4": {
+            "nombre": "No presenta un rumor como un hecho",
+            "score": null,
+            "n": 0
+          },
+          "C5": {
+            "nombre": "No inventa señal de alto impacto",
+            "score": 0.5,
+            "n": 4
+          },
+          "C6": {
+            "nombre": "Atribuye el impacto al equipo correcto",
+            "score": null,
+            "n": 0
+          }
+        },
+        "score_global": 0.5,
+        "peso_cubierto": 0.75
+      },
+      "dim3": {
+        "por_dificultad": {
+          "declaracion_que_contiene_un_hecho": {
+            "n": 1,
+            "ok": 0
+          },
+          "falso_negativo_total": {
+            "n": 1,
+            "ok": 0
+          },
+          "vocabulario_disparador_fuera_de_contexto": {
+            "n": 1,
+            "ok": 0
+          },
+          "tiempo_verbal_signo_invertido": {
+            "n": 1,
+            "ok": 0
+          },
+          "regreso_sin_vocabulario_de_regreso": {
+            "n": 1,
+            "ok": 0
+          },
+          "impacto_sobrestimado": {
+            "n": 1,
+            "ok": 1
+          },
+          "fragmento_compuesto": {
+            "n": 1,
+            "ok": 1
+          },
+          "distractor_normativo": {
+            "n": 1,
+            "ok": 1
+          },
+          "homonimia_dudas": {
+            "n": 1,
+            "ok": 1
+          },
+          "frontera_declaracion_rumor": {
+            "n": 1,
+            "ok": 1
+          }
+        },
+        "senal_falsa_alto_impacto": [
+          "OFF-03",
+          "OFF-06"
+        ],
+        "senal_perdida_alto_impacto": [
+          "OFF-01",
+          "OFF-02"
+        ],
+        "signo_invertido": [
+          "OFF-04"
+        ]
+      }
+    },
+    "lora_finetuned": {
+      "dim1": {
+        "f1_macro": 0.10555555555555556,
+        "accuracy": 0.3
+      },
+      "dim2": {
+        "criterios": {
+          "C1": {
+            "nombre": "Categoría correcta",
+            "score": 0.3,
+            "n": 10
+          },
+          "C2": {
+            "nombre": "Signo del impacto correcto",
+            "score": 0.4,
+            "n": 10
+          },
+          "C3": {
+            "nombre": "Intensidad del impacto correcta",
+            "score": 0.4,
+            "n": 10
+          },
+          "C4": {
+            "nombre": "No presenta un rumor como un hecho",
+            "score": null,
+            "n": 0
+          },
+          "C5": {
+            "nombre": "No inventa señal de alto impacto",
+            "score": null,
+            "n": 0
+          },
+          "C6": {
+            "nombre": "Atribuye el impacto al equipo correcto",
+            "score": null,
+            "n": 0
+          }
+        },
+        "score_global": 0.36363636363636365,
+        "peso_cubierto": 0.55
+      },
+      "dim3": {
+        "por_dificultad": {
+          "declaracion_que_contiene_un_hecho": {
+            "n": 1,
+            "ok": 0
+          },
+          "falso_negativo_total": {
+            "n": 1,
+            "ok": 0
+          },
+          "vocabulario_disparador_fuera_de_contexto": {
+            "n": 1,
+            "ok": 1
+          },
+          "tiempo_verbal_signo_invertido": {
+            "n": 1,
+            "ok": 0
+          },
+          "regreso_sin_vocabulario_de_regreso": {
+            "n": 1,
+            "ok": 0
+          },
+          "impacto_sobrestimado": {
+            "n": 1,
+            "ok": 0
+          },
+          "fragmento_compuesto": {
+            "n": 1,
+            "ok": 0
+          },
+          "distractor_normativo": {
+            "n": 1,
+            "ok": 1
+          },
+          "homonimia_dudas": {
+            "n": 1,
+            "ok": 0
+          },
+          "frontera_declaracion_rumor": {
+            "n": 1,
+            "ok": 1
+          }
+        },
+        "senal_falsa_alto_impacto": [],
+        "senal_perdida_alto_impacto": [
+          "OFF-01",
+          "OFF-02",
+          "OFF-04",
+          "OFF-07"
+        ],
+        "signo_invertido": []
+      }
+    }
+  },
+  "holdout": {
+    "eval_ids": [
+      "024ca02de28ba07e",
+      "07ef5a01c92d183f",
+      "118d03958a0c1f46",
+      "1c4483eeeea95edd",
+      "200eadd0cede0fdb",
+      "50271335c0a843ea",
+      "c7e96a97e238a5e9",
+      "d6bd98772e5975c9",
+      "f31bd83c4ff5d3f4",
+      "f538603932f7ce91"
+    ],
+    "en_corpus": [
+      "024ca02de28ba07e",
+      "07ef5a01c92d183f",
+      "118d03958a0c1f46",
+      "1c4483eeeea95edd",
+      "200eadd0cede0fdb",
+      "50271335c0a843ea",
+      "c7e96a97e238a5e9",
+      "d6bd98772e5975c9",
+      "f31bd83c4ff5d3f4",
+      "f538603932f7ce91"
+    ]
+  }
+}

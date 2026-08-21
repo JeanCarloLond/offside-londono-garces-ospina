@@ -97,20 +97,37 @@ python harness.py --json scorecard.json
 
 ```text
 DIMENSIÓN 1 · MÉTRICA CLÁSICA
-sistema          F1 macro    accuracy
-mayoritaria        0.0417      0.2000
-lexico             0.2750      0.5000
+sistema             F1 macro    accuracy
+mayoritaria           0.0417      0.2000
+lexico                0.2750      0.5000
+lora_finetuned        0.1056      0.3000
 
 DIMENSIÓN 2 · RÚBRICA
-sistema            C1      C2      C3      C4      C5    GLOBAL
-mayoritaria      0.20    0.40    0.40     n/d     n/d     0.327
-lexico           0.50    0.50    0.50     n/d    0.50     0.500
+sistema               C1      C2      C3      C4      C5    GLOBAL
+mayoritaria         0.20    0.40    0.40     n/d     n/d     0.327
+lexico              0.50    0.50    0.50     n/d    0.50     0.500
+lora_finetuned      0.30    0.40    0.40     n/d     n/d     0.364
 
 DIMENSIÓN 3 · ERRORES CAROS
-lexico:  señal FALSA de alto impacto: 2 (OFF-03, OFF-06)
-         señal PERDIDA de alto impacto: 2 (OFF-01, OFF-02)
-         signo del impacto INVERTIDO: 1 (OFF-04)
+sistema          señal FALSA   señal PERDIDA   signo INVERTIDO
+mayoritaria                0               4                 0
+lexico                     2               2                 1
+lora_finetuned             0               4                 0
 ```
+
+`lora_finetuned` es el modelo reentrenado excluyendo el eval set (ver contaminación, abajo), así que
+la comparación es limpia.
+
+**Cómo se lee esta tabla.** En la métrica clásica el léxico gana (0.2750 contra 0.1056), y hay que
+decirlo. Pero la dimensión 3 matiza el veredicto: el léxico consigue su ventaja **gritando**, y dos de
+sus aciertos vienen acompañados de dos señales **falsas** de alto impacto y una inversión de signo —
+justo los errores que nuestra rúbrica considera más caros. El modelo afinado no acierta más, pero
+tampoco inventa: cero señales falsas y cero inversiones de signo. Es conservador hasta el punto de ser
+inútil (pierde las cuatro noticias de alto impacto), aunque en el sentido del error asimétrico que nos
+importa, falla más barato.
+
+Ninguno de los dos sirve todavía. Esa es la conclusión honesta, y el eval set es lo que permite verla:
+en la validación de M1 esta diferencia era invisible.
 
 `C4` sale `n/d` porque el eval set actual no contiene ningún ejemplo cuya verdad sea `rumor_no_confirmado` — no había ninguno claro en el corpus de pretemporada. El harness lo reporta como no medible en vez de dar un 1.0 gratis; ampliar el set con rumores reales es la primera tarea pendiente.
 
@@ -160,6 +177,12 @@ LoraConfig(..., modules_to_save=["classifier", "pooler"])
 ```
 
 Y para que el fallo no pueda volver en silencio, el harness ahora **revisa el `adapter_config.json` antes de cargar** y avisa si el adaptador no persiste el pooler.
+
+**Un efecto secundario que no esperábamos.** Al persistir el pooler también dejó de estar congelado
+en valores aleatorios y pasó a entrenarse. El F1 macro sobre el conjunto de validación subió de
+**0.3125 a 0.6341**, y los parámetros entrenables de 301.064 (0.27%) a 891.656 (0.81%). O sea que el
+pooler aleatorio congelado no era solo un problema de reproducibilidad: era un cuello de botella real
+entre el encoder y la cabeza de clasificación, y llevaba ahí desde M1 sin que lo viéramos.
 
 **Por qué importa más allá de este caso.** Un modelo que rinde distinto cada vez que se carga no es evaluable, y el síntoma no se parece a un bug: se parece a "el modelo es malo". Sin el harness pidiendo el mismo número dos veces, esto habría pasado desapercibido y habríamos reportado como resultado lo que era ruido de inicialización.
 
