@@ -134,6 +134,7 @@ class FineTunedPredictor(Predictor):
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
         self.torch = torch
+        self.avisos = self._revisar_adaptador(adapter_dir)
         self.tokenizer = AutoTokenizer.from_pretrained(base_model)
         base = AutoModelForSequenceClassification.from_pretrained(
             base_model, num_labels=len(CATEGORIES)
@@ -144,6 +145,29 @@ class FineTunedPredictor(Predictor):
         cfg = yaml.safe_load(lexicon_path.read_text(encoding="utf-8"))
         self.cat_impact = {c["name"]: c["impact_default"] for c in cfg["categories"]}
         self.cat_impact["irrelevante"] = "neutro"
+
+    @staticmethod
+    def _revisar_adaptador(adapter_dir: Path) -> list[str]:
+        """Comprueba que el adaptador basta para reproducir el modelo entrenado.
+
+        BETO es un checkpoint de MLM: no trae `bert.pooler`, así que transformers
+        lo inicializa AL AZAR en cada carga. El pooler está entre el encoder y la
+        cabeza de clasificación, o sea que forma parte de la función del modelo.
+        Si el adaptador no lo guarda, al recargar sale un pooler distinto, la
+        cabeza entrenada deja de encajar con él y las predicciones cambian en
+        cada proceso — un fallo silencioso que parece "el modelo es malo".
+        """
+        cfg_path = adapter_dir / "adapter_config.json"
+        if not cfg_path.exists():
+            return [f"no encuentro {cfg_path}"]
+        guardados = json.loads(cfg_path.read_text(encoding="utf-8")).get("modules_to_save") or []
+        if not any("pooler" in m for m in guardados):
+            return [
+                "el adaptador NO guarda `pooler`: se inicializa al azar en cada carga, "
+                "así que estas predicciones no son reproducibles. Reentrena con "
+                "modules_to_save=['classifier', 'pooler'] (ver train_holdout_model.py)."
+            ]
+        return []
 
     def predict(self, text: str) -> tuple[str, str]:
         inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=128)
@@ -402,6 +426,11 @@ def main() -> int:
 
     if not predictores:
         raise SystemExit("No hay sistemas que evaluar (--systems / --adapter).")
+
+    for p in predictores:
+        for aviso in getattr(p, "avisos", []):
+            print(f"AVISO [{p.name}]: {aviso}")
+            print()
 
     resultados = {}
     for p in predictores:

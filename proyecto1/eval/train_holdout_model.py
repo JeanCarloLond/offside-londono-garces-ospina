@@ -144,6 +144,13 @@ def main() -> int:
             lora_alpha=16,
             lora_dropout=0.1,
             target_modules=["query", "value"],
+            # `pooler` va aquí por reproducibilidad, no por capacidad. BETO es un
+            # checkpoint de MLM: no trae pooler, así que transformers lo inicializa
+            # AL AZAR en cada carga. Si no se guarda con el adaptador, al recargar
+            # aparece un pooler distinto y la cabeza entrenada deja de tener sentido
+            # -> las predicciones cambian en cada proceso. Incluirlo en
+            # modules_to_save lo persiste y hace el adaptador autocontenido.
+            modules_to_save=["classifier", "pooler"],
         ),
     )
     model.print_trainable_parameters()

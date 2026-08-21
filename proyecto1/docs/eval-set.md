@@ -145,6 +145,26 @@ python harness.py --adapter ../m1_lora_adapter_holdout
 
 ---
 
+## Un bug de reproducibilidad que encontró el harness
+
+Al añadir el modelo afinado al scorecard apareció algo raro: **el mismo adaptador daba un número distinto en cada corrida** (F1 macro 0.0000, luego 0.0312, luego 0.0500). Un modelo cargado desde disco y evaluado en modo `eval()` debería ser determinista.
+
+**La causa.** BETO es un checkpoint de *masked language modeling*: no incluye `bert.pooler`. Cuando se carga como `AutoModelForSequenceClassification`, transformers avisa de ello (`bert.pooler.dense.weight | MISSING`) y **lo inicializa al azar**. Ese pooler está entre el encoder y la cabeza de clasificación, así que forma parte de la función del modelo. Durante el fine-tuning con LoRA queda congelado en esos valores aleatorios, y la cabeza aprende a leer *ese* pooler concreto — pero el adaptador solo guarda las matrices LoRA y el `classifier`. Al recargar aparece un pooler distinto, la cabeza entrenada ya no encaja con él, y las predicciones se degradan de forma silenciosa.
+
+**Cómo lo confirmamos.** Fijando la misma semilla del entrenamiento (`torch.manual_seed(42)`) antes de construir el modelo, el pooler se reconstruye idéntico y el resultado vuelve a ser determinista y reproducible. Es la prueba de que la fuente de aleatoriedad era esa y no otra: sin semilla los números bailan, con la semilla del train salen siempre iguales.
+
+**El arreglo.** No depender de una semilla —eso es frágil— sino hacer el adaptador autocontenido:
+
+```python
+LoraConfig(..., modules_to_save=["classifier", "pooler"])
+```
+
+Y para que el fallo no pueda volver en silencio, el harness ahora **revisa el `adapter_config.json` antes de cargar** y avisa si el adaptador no persiste el pooler.
+
+**Por qué importa más allá de este caso.** Un modelo que rinde distinto cada vez que se carga no es evaluable, y el síntoma no se parece a un bug: se parece a "el modelo es malo". Sin el harness pidiendo el mismo número dos veces, esto habría pasado desapercibido y habríamos reportado como resultado lo que era ruido de inicialización.
+
+---
+
 ## Pendientes hacia la entrega M2
 
 1. **Ampliar a rumores reales** para poder medir C4, hoy no evaluable.
