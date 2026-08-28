@@ -54,3 +54,10 @@ proyecto1/eval/*_run.log
 proyecto1/eval/run_all.log
 proyecto1/eval/judge_check.log
 proyecto1/m1_lora_adapter*/
+# ...salvo el adaptador del entregable: son 3,5 MB y es lo que permite que el
+# notebook de M2 corra en Colab sin reentrenar. Se regenera con
+# eval/train_holdout_model.py, pero versionarlo hace el entregable reproducible
+# de un clic.
+!proyecto1/m1_lora_adapter_holdout/
+!proyecto1/m1_lora_adapter_holdout/**
+!proyecto1/m1_lora_adapter_holdout/*.safetensors
