@@ -111,7 +111,7 @@ baseline está **sobreajustado a las trampas conocidas y ciego a los casos corri
 
 **Y el hallazgo que más nos costó aceptar: nuestro juez discrimina poco.** Las medias de los tres
 sistemas son 2,52 / 2,57 / 2,52. Medido con rigor: da 2,83 cuando la categoría es correcta y 2,38
-cuando no (delta +0,45), y **en 8 de 21 ejemplos le pone la misma nota a una respuesta correcta y a
+cuando no (delta +0,45), y **en 9 de 21 ejemplos le pone la misma nota a una respuesta correcta y a
 una incorrecta**. Un modelo de 1.5B en un solo forward pass no ejecuta la comparación que pide la
 rúbrica. En M3 lo dejaremos razonar antes de puntuar.
 

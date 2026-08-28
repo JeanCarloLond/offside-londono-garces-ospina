@@ -30,6 +30,26 @@
       "detecta_signo_invertido": false,
       "aciertos_exactos": 3,
       "total_casos": 5
+    },
+    "poder_discriminante": {
+      "n_correctas": 23,
+      "n_incorrectas": 40,
+      "media_correctas": 2.8260869565217392,
+      "media_incorrectas": 2.375,
+      "delta": 0.45108695652173925,
+      "ejemplos_indistinguibles": [
+        "OFF-03",
+        "OFF-06",
+        "OFF-07",
+        "OFF-09",
+        "OFF-10",
+        "OFF-14",
+        "OFF-17",
+        "OFF-20",
+        "OFF-21"
+      ],
+      "n_ejemplos_indistinguibles": 9,
+      "n_ejemplos": 21
     }
   },
   "sistemas": {
@@ -409,7 +429,7 @@
           "accionable_estricto": false
         },
         {
-          "eval_id": "OFF-18",
+          "eval_id": "OFF-21",
           "adversarial": true,
           "gold_category": "rumor_no_confirmado",
           "gold_impact": "negativo_bajo",
@@ -803,7 +823,7 @@
           "accionable_estricto": false
         },
         {
-          "eval_id": "OFF-18",
+          "eval_id": "OFF-21",
           "adversarial": true,
           "gold_category": "rumor_no_confirmado",
           "gold_impact": "negativo_bajo",
@@ -1197,7 +1217,7 @@
           "accionable_estricto": false
         },
         {
-          "eval_id": "OFF-18",
+          "eval_id": "OFF-21",
           "adversarial": true,
           "gold_category": "rumor_no_confirmado",
           "gold_impact": "negativo_bajo",

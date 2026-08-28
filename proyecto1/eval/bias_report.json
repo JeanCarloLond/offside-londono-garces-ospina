@@ -1,0 +1,93 @@
+{
+  "sesgo": "verbosidad",
+  "juez": "Qwen/Qwen2.5-1.5B-Instruct",
+  "rubrica_version": 1,
+  "n_ejemplos": 21,
+  "condiciones": {
+    "escueta": {
+      "longitud_media_chars": 23.8,
+      "nota_media": 2.619,
+      "niveles": [
+        3,
+        1,
+        2,
+        1,
+        3,
+        4,
+        3,
+        3,
+        3,
+        3,
+        2,
+        2,
+        2,
+        4,
+        1,
+        3,
+        3,
+        5,
+        3,
+        3,
+        1
+      ]
+    },
+    "fija": {
+      "longitud_media_chars": 55.1,
+      "nota_media": 2.571,
+      "niveles": [
+        3,
+        1,
+        2,
+        1,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        2,
+        3,
+        2,
+        3,
+        1,
+        3,
+        3,
+        5,
+        3,
+        3,
+        1
+      ]
+    },
+    "verbosa": {
+      "longitud_media_chars": 352.1,
+      "nota_media": 3.048,
+      "niveles": [
+        3,
+        3,
+        2,
+        1,
+        3,
+        4,
+        4,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5,
+        3,
+        3,
+        1
+      ]
+    }
+  },
+  "delta_verbosa_menos_escueta": 0.429,
+  "ejemplos_que_cambian_de_nivel": 7,
+  "detectado": true,
+  "mitigacion": "render_senal(): plantilla de longitud fija para todos los sistemas, así la longitud no lleva información y el juez no puede premiarla."
+}

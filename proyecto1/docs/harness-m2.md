@@ -226,7 +226,7 @@ Lo medimos con rigor en vez de intuirlo (`diagnostico_juez`):
 | Nota media cuando la categoría era **correcta** | 2,83 |
 | Nota media cuando era **incorrecta** | 2,38 |
 | Diferencia | **+0,45** |
-| Ejemplos donde da la **misma** nota a una respuesta correcta y a una incorrecta | **8 de 21** |
+| Ejemplos donde da la **misma** nota a una respuesta correcta y a una incorrecta | **9 de 21** |
 
 Hay señal, pero es débil, y está comprimida: el juez pone un 3 a dos tercios de todo. Casos concretos que duelen: en `OFF-21` el modelo afinado identifica **correctamente** el rumor como `rumor_no_confirmado` y el juez le da un **1**, la peor nota posible.
 
