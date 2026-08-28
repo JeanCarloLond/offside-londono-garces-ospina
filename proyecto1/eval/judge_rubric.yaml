@@ -1,0 +1,136 @@
+# Rúbrica del LLM-as-a-judge · Offside
+#
+# Versionada a propósito: cambiar una ancla cambia el veredicto, así que el
+# scorecard solo es comparable entre corridas que usen la MISMA versión. El
+# harness escribe `rubric_version` en el scorecard para que quede registrado.
+#
+# Qué juzga: la señal que el sistema le entrega al usuario a partir de un
+# fragmento de prensa. No juzga el texto de la noticia ni el estilo de la
+# respuesta: juzga si esa señal le sirve al usuario para decidir.
+#
+# El juez recibe tres cosas y NUNCA la etiqueta gold literal:
+#   1. el fragmento de prensa,
+#   2. el criterio de ese ejemplo (qué haría buena a la respuesta, en prosa),
+#   3. la señal emitida por el sistema, en un formato fijo.
+# Ver `judge.py` para el prompt exacto.
+
+version: 1
+escala: [1, 2, 3, 4, 5]
+
+# El principio del que salen las anclas. Es el mismo de rubric.yaml: lo que
+# ordena la escala no es "cuánto acierta" sino "cuánto daño hace al decidir".
+principio: >
+  Una respuesta es buena si el usuario, actuando solo con ella, decide mejor
+  que si hubiera leído el titular por su cuenta. Por eso la escala no es
+  simétrica: fallar sin engañar (no dar señal) puntúa por encima de acertar a
+  medias engañando (dar una señal falsa). Un error que hace ACTUAR sobre
+  información falsa es peor que un error que simplemente no aporta nada.
+
+anclas:
+  - nivel: 5
+    nombre: "Señal correcta y accionable"
+    descripcion: >
+      Acierta el tipo de hecho, la dirección del impacto (negativo / neutro /
+      positivo) y su intensidad (alto / bajo), y apunta al equipo correcto. El
+      usuario puede actuar con esta señal tal como está.
+    ejemplo_de_lo_que_lo_merece: >
+      El fragmento dice que un jugador se pierde toda la temporada por lesión y
+      la señal responde "baja confirmada, impacto negativo alto" para el club
+      correcto.
+
+    demo:
+      fragmento: "El Real Cauca confirma que su portero titular se pierde el resto de la temporada tras romperse el ligamento cruzado."
+      criterio: "El club confirma una lesion de larga duracion: es una baja confirmada de impacto negativo alto para el Real Cauca."
+      senal: "baja_confirmada | impacto: negativo_alto | equipo: Real Cauca"
+  - nivel: 4
+    nombre: "Correcta con un matiz menor"
+    descripcion: >
+      El tipo de hecho y la DIRECCIÓN del impacto son correctos, pero falla la
+      intensidad o el equipo afectado. El usuario decide en el sentido correcto,
+      aunque calibre mal la magnitud.
+    ejemplo_de_lo_que_lo_merece: >
+      El fragmento dice que unos jugadores adelantan su vuelta a los
+      entrenamientos y la señal responde "regreso, impacto positivo ALTO" cuando
+      lo correcto era positivo bajo: volver a entrenar no es estar disponible.
+
+    demo:
+      fragmento: "Tres jugadores del Union Norte adelantaron su vuelta a los entrenamientos y se ejercitaron en el dia libre del grupo."
+      criterio: "Volver a entrenar es un regreso, pero no es estar disponible para jugar: el impacto correcto es positivo BAJO."
+      senal: "regreso_alta | impacto: positivo_alto | equipo: Union Norte"
+  - nivel: 3
+    nombre: "No engaña, pero tampoco sirve"
+    descripcion: >
+      Cae aquí todo lo que deja al usuario como estaba, sin empujarlo a un
+      error. Son dos situaciones. (a) NO EMITE SEÑAL habiendo una: se pierde la
+      noticia, pero no se inventa nada. (b) CATEGORÍA VECINA con el signo
+      correcto: por ejemplo confundir una baja con una sanción, que son
+      distintas pero significan lo mismo para el usuario — ese jugador no está
+      disponible.
+    ejemplo_de_lo_que_lo_merece: >
+      El fragmento anuncia una baja de tres meses y la señal responde
+      "irrelevante": el usuario no se entera, pero tampoco actúa sobre algo
+      falso.
+
+    demo:
+      fragmento: "El delantero del Atletico Pena estara de baja alrededor de tres meses tras la lesion del sabado."
+      criterio: "Una baja de tres meses es una senal de impacto negativo alto para el Atletico Pena."
+      senal: "irrelevante | impacto: neutro | equipo: ninguno"
+  - nivel: 2
+    nombre: "Señal engañosa"
+    descripcion: >
+      Emite una señal donde no la había, o infla el impacto a ALTO cuando no lo
+      era. El usuario actúa sobre información que no sostiene la decisión. Es
+      peor que el nivel 3 porque añade daño en vez de limitarse a no aportar.
+    ejemplo_de_lo_que_lo_merece: >
+      El fragmento habla de una expulsión en un amistoso de pretemporada, que no
+      arrastra sanción liguera, y la señal responde "sanción, impacto negativo
+      alto" como si afectara al próximo partido.
+
+    demo:
+      fragmento: "El Sporting Bahia se lleva el trofeo de pretemporada en un amistoso en el que su lateral fue expulsado."
+      criterio: "La roja fue en un amistoso, asi que no arrastra sancion liguera y no cambia la disponibilidad para ningun partido: no hay senal que dar."
+      senal: "sancion_suspension | impacto: negativo_alto | equipo: Sporting Bahia"
+  - nivel: 1
+    nombre: "Señal dañina"
+    descripcion: >
+      Cualquiera de estas dos. (a) INVIERTE EL SIGNO del impacto: dice negativo
+      donde era positivo o al revés, así que empuja al usuario exactamente en la
+      dirección contraria. (b) PRESENTA UN RUMOR COMO HECHO confirmado, lo que
+      además propaga información falsa sobre una persona identificable.
+    ejemplo_de_lo_que_lo_merece: >
+      El fragmento cuenta que un jugador VUELVE tras cumplir una sanción y la
+      señal responde "sanción, impacto negativo alto", justo lo contrario de lo
+      que pasó.
+    demo:
+      fragmento: "El capitan del Club Andino vuelve a la convocatoria 400 dias despues; habia sido sancionado en 2024."
+      criterio: "La noticia es que el jugador VUELVE; la sancion esta en pasado. El impacto es positivo alto para el Club Andino."
+      senal: "sancion_suspension | impacto: negativo_alto | equipo: Club Andino"
+
+# Reglas de desempate para el juez, en el prompt.
+instrucciones_al_juez:
+  - "REGLA DURA: si la direccion del impacto de la señal es opuesta a la del criterio
+     (dice positivo donde el criterio dice negativo, o al reves), el puntaje es 1."
+  - "Juzga solo si la señal le sirve al usuario para decidir, no su redacción ni su longitud."
+  - "Si dudas entre dos niveles, elige el MÁS BAJO."
+  - "No penalices que la señal sea escueta: todas se emiten en el mismo formato fijo."
+  - "Responde únicamente con el número del 1 al 5. Sin explicación, sin texto adicional."
+
+# Sesgos conocidos que este diseño intenta contener. Ver README y
+# `bias_check.py` para la detección y la mitigación medidas.
+sesgos_considerados:
+  - id: verbosidad
+    descripcion: >
+      Los jueces LLM tienden a puntuar más alto las respuestas largas, aunque no
+      aporten información. Mitigación estructural: todas las señales se renderizan
+      con la MISMA plantilla de longitud fija (`render_senal` en harness.py), así
+      que la longitud no puede llevar información y el juez no tiene de dónde
+      sacar la preferencia. `bias_check.py` mide si la mitigación funciona.
+  - id: auto_preferencia
+    descripcion: >
+      Un juez tiende a preferir texto que él mismo generaría. No aplica aquí
+      porque ninguno de los sistemas evaluados genera texto libre: todos emiten
+      etiquetas que se renderizan con la misma plantilla.
+  - id: posicion
+    descripcion: >
+      Relevante en comparaciones por pares (A vs B). No aplica: puntuamos cada
+      señal por separado, no enfrentamos dos respuestas.

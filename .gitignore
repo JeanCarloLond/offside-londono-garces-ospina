@@ -9,6 +9,7 @@
 /clase_IA.md
 /STAI_Plantilla_Proyecto.md
 /STAI_M1_Asignacion_Fine-tuning_baseline.pdf
+/STAI_M2_Asignacion_Harness_evaluacion.pdf
 /S01_Demo_Capacidades.ipynb
 /S02_Lab_Abrir_la_caja (1).ipynb
 /S03_Lab_El_bloque_y_las_familias.ipynb
@@ -49,4 +50,7 @@ Thumbs.db
 # --- Artefactos de entrenamiento/evaluación (se regeneran con los scripts) ---
 proyecto1/eval/_train_out/
 proyecto1/eval/train_log.txt
+proyecto1/eval/*_run.log
+proyecto1/eval/run_all.log
+proyecto1/eval/judge_check.log
 proyecto1/m1_lora_adapter*/

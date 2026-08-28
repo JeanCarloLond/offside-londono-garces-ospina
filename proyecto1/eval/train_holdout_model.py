@@ -72,7 +72,7 @@ def main() -> int:
         type=Path,
         default=here / ".." / "data" / "gold" / "gold_seed_synthetic.jsonl",
     )
-    parser.add_argument("--eval-set", type=Path, default=here / "eval_set.jsonl")
+    parser.add_argument("--eval-set", type=Path, default=here / "eval_set.json")
     parser.add_argument("--out", type=Path, default=here / ".." / "m1_lora_adapter_holdout")
     parser.add_argument("--base-model", default="dccuchile/bert-base-spanish-wwm-cased")
     parser.add_argument("--epochs", type=float, default=10)

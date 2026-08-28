@@ -1,32 +1,48 @@
-"""Harness de evaluación de Offside — produce el scorecard del baseline.
+"""Harness de evaluación de Offside — tres dimensiones y un scorecard.
 
-Combina las **tres dimensiones** que pide el módulo, sobre nuestro propio eval
-set de dominio (`eval_set.jsonl`):
+    harness(eval_set, sistema) -> Scorecard
 
-  1. MÉTRICA CLÁSICA   → F1 macro (automática, barata, reproducible)
-  2. RÚBRICA           → los criterios de `rubric.yaml`, evaluados de forma
-                         determinista donde se puede. En S06 esta misma rúbrica
-                         pasa a ser el prompt del LLM-as-a-judge; el hueco está
-                         declarado abajo en `LlmJudge`.
-  3. DE DOMINIO        → desglose por tipo de caso difícil y por el error que a
-                         nuestro usuario le sale más caro (señal falsa de alto
-                         impacto, y signo invertido).
+El sistema evaluado es cualquier callable que respete el contrato de abajo. Hoy
+lo cumplen la clase mayoritaria, el léxico y el modelo LoRA de M1; en M3 lo
+cumplirá el RAG sin tocar este archivo.
 
-Los sistemas evaluados son intercambiables (`--systems`). Por defecto corre los
-dos baselines, que no necesitan GPU ni pesos y tardan menos de un segundo.
+Las tres dimensiones
+--------------------
+1. MÉTRICA CLÁSICA — F1 macro sobre la categoría. Automática, barata y
+   reproducible, pero **ciega a la gravedad**: para F1, confundir una baja con
+   una sanción cuesta exactamente lo mismo que decir que un jugador vuelve
+   cuando en realidad lo sancionaron. Para nuestro usuario no es lo mismo.
+
+2. JUEZ LLM — Qwen2.5-1.5B-Instruct puntúa 1-5 con las anclas de
+   `judge_rubric.yaml`. Aporta lo que le falta a la dimensión 1: distingue un
+   error vecino e inofensivo de uno que engaña. Su punto ciego está medido en
+   `Judge.sanity_check()`.
+
+3. DOMINIO — tasa de señal accionable: qué fracción de los ejemplos pasa TODAS
+   las verificaciones duras de nuestro dominio. No depende del juez, y por eso
+   cubre justo lo que el juez no ve.
+
+Por qué las tres y no una
+-------------------------
+Cada una tapa el hueco de la otra. La 1 es objetiva pero no pesa el daño; la 2
+pesa el daño pero es un modelo pequeño y falible; la 3 es determinista e
+implacable con los dos errores que no nos podemos permitir. El scorecard las
+muestra juntas a propósito: leer una sola da una imagen equivocada.
 
 Uso:
-    python harness.py                          # baselines: mayoritaria + léxico
-    python harness.py --systems lexicon        # solo uno
-    python harness.py --adapter ../m1_lora_adapter   # añade el modelo afinado
-    python harness.py --json scorecard.json    # guarda el scorecard para comparar
+    python harness.py                                  # baselines
+    python harness.py --adapter ../m1_lora_adapter_holdout
+    python harness.py --sin-juez                       # solo dims 1 y 3, sin descargar el LLM
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
@@ -44,12 +60,48 @@ CATEGORIES = [
 ]
 HECHOS_CONFIRMADOS = {"baja_confirmada", "sancion_suspension"}
 
+# Categorías que para el usuario significan lo mismo ("ese jugador no está
+# disponible"). Confundirlas entre sí es un error vecino, no uno que engañe.
+FAMILIAS = [
+    {"baja_confirmada", "sancion_suspension"},
+    {"regreso_alta"},
+    {"duda_fisica", "rumor_no_confirmado"},
+    {"cambio_tactico", "declaracion_contexto"},
+    {"irrelevante"},
+]
 
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Contrato del sistema evaluado
+#
+#   sistema(input: dict) -> dict
+#     input     {"text": str, "source": str, "published_at": str | None}
+#     respuesta {"category": str, "impact": str, "team": str}
+#
+# Cualquier cosa que cumpla esto se puede pasar por el harness. Es lo que
+# permite que en M3 el RAG entre sin modificar este archivo.
+# ---------------------------------------------------------------------------
+Sistema = Callable[[dict], dict]
+
+
+def render_senal(respuesta: dict) -> str:
+    """Renderiza la respuesta con una plantilla de longitud FIJA.
+
+    Esto no es cosmético: es la mitigación del sesgo de verbosidad del juez.
+    Si cada sistema pudiera redactar su señal a su manera, el juez premiaría al
+    que escribe más largo, no al que acierta. Con una plantilla fija la longitud
+    no lleva información y deja de ser una variable. `bias_check.py` mide que la
+    mitigación funcione.
+    """
+    return (
+        f"{respuesta['category']} | impacto: {respuesta['impact']} | "
+        f"equipo: {respuesta.get('team') or 'ninguno'}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Utilidades de impacto
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 def signo(impacto: str) -> str:
-    """negativo / neutro / positivo. Equivocar esto invierte la decisión."""
     if impacto.startswith("negativo"):
         return "negativo"
     if impacto.startswith("positivo"):
@@ -57,48 +109,28 @@ def signo(impacto: str) -> str:
     return "neutro"
 
 
-def nivel(impacto: str) -> str:
-    """alto / bajo / neutro. Equivocar esto degrada la señal, no la invierte."""
-    if impacto.endswith("_alto"):
-        return "alto"
-    if impacto.endswith("_bajo"):
-        return "bajo"
-    return "neutro"
-
-
 def es_alto_impacto(impacto: str) -> bool:
     return impacto in ("negativo_alto", "positivo_alto")
 
 
-# --------------------------------------------------------------------------
-# Sistemas evaluables (intercambiables)
-# --------------------------------------------------------------------------
-class Predictor:
-    """Un sistema que, dado un texto, devuelve (categoría, impacto)."""
-
-    name = "base"
-
-    def predict(self, text: str) -> tuple[str, str]:
-        raise NotImplementedError
+def misma_familia(a: str, b: str) -> bool:
+    return any(a in fam and b in fam for fam in FAMILIAS)
 
 
-class MajorityPredictor(Predictor):
+# ---------------------------------------------------------------------------
+# Sistemas evaluables
+# ---------------------------------------------------------------------------
+def sistema_mayoritaria(entrada: dict) -> dict:
     """Responde siempre la clase mayoritaria. El piso absoluto."""
-
-    name = "mayoritaria"
-
-    def predict(self, text: str) -> tuple[str, str]:
-        return "irrelevante", "neutro"
+    return {"category": "irrelevante", "impact": "neutro", "team": "ninguno"}
 
 
-class LexiconPredictor(Predictor):
+class SistemaLexico:
     """El léxico/regex de `lexicon.yaml`: el baseline que queremos superar."""
-
-    name = "lexico"
 
     def __init__(self, lexicon_path: Path):
         cfg = yaml.safe_load(lexicon_path.read_text(encoding="utf-8"))
-        self.rules = [
+        self.reglas = [
             (c["name"], c["impact_default"], [re.compile(p, re.I) for p in c["patterns"]])
             for c in cfg["categories"]
         ]
@@ -107,34 +139,29 @@ class LexiconPredictor(Predictor):
             for label, pats in cfg.get("sentiment_boost", {}).items()
         }
 
-    def predict(self, text: str) -> tuple[str, str]:
-        for name, impact_default, patterns in self.rules:
-            if any(p.search(text) for p in patterns):
-                impact = impact_default
+    def __call__(self, entrada: dict) -> dict:
+        texto = entrada["text"]
+        for nombre, impacto_def, patrones in self.reglas:
+            if any(p.search(texto) for p in patrones):
+                impacto = impacto_def
                 for boosted, pats in self.boost.items():
-                    if any(p.search(text) for p in pats):
-                        impact = boosted
+                    if any(p.search(texto) for p in pats):
+                        impacto = boosted
                         break
-                return name, impact
-        return "irrelevante", "neutro"
+                return {"category": nombre, "impact": impacto, "team": "desconocido"}
+        return {"category": "irrelevante", "impact": "neutro", "team": "ninguno"}
 
 
-class FineTunedPredictor(Predictor):
-    """BETO + adaptador LoRA de M1. El impacto se deriva de la categoría.
-
-    Importar torch/transformers es caro, así que se hace aquí dentro: el harness
-    corre los baselines sin tener nada de ML instalado.
-    """
-
-    name = "lora_finetuned"
+class SistemaLoRA:
+    """BETO + adaptador LoRA de M1. El impacto se deriva de la categoría."""
 
     def __init__(self, adapter_dir: Path, lexicon_path: Path, base_model: str):
         import torch
         from peft import PeftModel
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-        self.torch = torch
         self.avisos = self._revisar_adaptador(adapter_dir)
+        self.torch = torch
         self.tokenizer = AutoTokenizer.from_pretrained(base_model)
         base = AutoModelForSequenceClassification.from_pretrained(
             base_model, num_labels=len(CATEGORIES)
@@ -143,19 +170,17 @@ class FineTunedPredictor(Predictor):
         self.model.eval()
 
         cfg = yaml.safe_load(lexicon_path.read_text(encoding="utf-8"))
-        self.cat_impact = {c["name"]: c["impact_default"] for c in cfg["categories"]}
-        self.cat_impact["irrelevante"] = "neutro"
+        self.cat_impacto = {c["name"]: c["impact_default"] for c in cfg["categories"]}
+        self.cat_impacto["irrelevante"] = "neutro"
 
     @staticmethod
     def _revisar_adaptador(adapter_dir: Path) -> list[str]:
-        """Comprueba que el adaptador basta para reproducir el modelo entrenado.
+        """El adaptador debe bastar para reproducir el modelo entrenado.
 
-        BETO es un checkpoint de MLM: no trae `bert.pooler`, así que transformers
-        lo inicializa AL AZAR en cada carga. El pooler está entre el encoder y la
-        cabeza de clasificación, o sea que forma parte de la función del modelo.
-        Si el adaptador no lo guarda, al recargar sale un pooler distinto, la
-        cabeza entrenada deja de encajar con él y las predicciones cambian en
-        cada proceso — un fallo silencioso que parece "el modelo es malo".
+        BETO es un checkpoint de MLM: no trae `bert.pooler`, así que se
+        inicializa al azar en cada carga. Si el adaptador no lo guarda, las
+        predicciones cambian entre procesos — un fallo silencioso que parece
+        "el modelo es malo". Lo encontramos midiendo dos veces el mismo número.
         """
         cfg_path = adapter_dir / "adapter_config.json"
         if not cfg_path.exists():
@@ -163,304 +188,328 @@ class FineTunedPredictor(Predictor):
         guardados = json.loads(cfg_path.read_text(encoding="utf-8")).get("modules_to_save") or []
         if not any("pooler" in m for m in guardados):
             return [
-                "el adaptador NO guarda `pooler`: se inicializa al azar en cada carga, "
-                "así que estas predicciones no son reproducibles. Reentrena con "
+                "el adaptador NO guarda `pooler`: se inicializa al azar en cada carga, así que "
+                "estas predicciones no son reproducibles. Reentrena con "
                 "modules_to_save=['classifier', 'pooler'] (ver train_holdout_model.py)."
             ]
         return []
 
-    def predict(self, text: str) -> tuple[str, str]:
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=128)
+    def __call__(self, entrada: dict) -> dict:
+        inputs = self.tokenizer(
+            entrada["text"], return_tensors="pt", truncation=True, max_length=128
+        )
         with self.torch.no_grad():
             logits = self.model(**inputs).logits
-        category = CATEGORIES[int(logits.argmax(-1))]
-        return category, self.cat_impact[category]
+        categoria = CATEGORIES[int(logits.argmax(-1))]
+        return {
+            "category": categoria,
+            "impact": self.cat_impacto[categoria],
+            "team": "desconocido",
+        }
 
 
-class LlmJudge:
-    """Dimensión 2 completa: un LLM aplica `rubric.yaml` a cada respuesta.
+# ---------------------------------------------------------------------------
+# Scorecard
+# ---------------------------------------------------------------------------
+@dataclass
+class Scorecard:
+    sistema: str
+    n_ejemplos: int
+    d1_f1_macro: float
+    d1_accuracy: float
+    d2_juez_media: float | None
+    d2_juez_distribucion: dict[int, int]
+    d3_tasa_accionable: float
+    d3_tasa_accionable_estricta: float | None
+    d3_detalle: dict[str, int]
+    adversariales: dict[str, float]
+    normales: dict[str, float]
+    filas: list[dict] = field(default_factory=list)
+    meta: dict = field(default_factory=dict)
 
-    Pendiente de S06 (el módulo lo cubre esa semana). El hueco queda declarado
-    a propósito en vez de improvisar un juez: la rúbrica ya está escrita y es
-    exactamente el prompt que recibirá. Hasta entonces, `score_rubric()` evalúa
-    de forma determinista los criterios que no necesitan juicio (C1-C5).
+    def como_fila_csv(self) -> dict:
+        return {
+            "sistema": self.sistema,
+            "n_ejemplos": self.n_ejemplos,
+            "d1_f1_macro": round(self.d1_f1_macro, 4),
+            "d1_accuracy": round(self.d1_accuracy, 4),
+            "d2_juez_media": "" if self.d2_juez_media is None else round(self.d2_juez_media, 3),
+            "d3_tasa_accionable": round(self.d3_tasa_accionable, 4),
+            "d3_tasa_accionable_estricta": (
+                ""
+                if self.d3_tasa_accionable_estricta is None
+                else round(self.d3_tasa_accionable_estricta, 4)
+            ),
+            "d3_senal_falsa_alto_impacto": self.d3_detalle["senal_falsa_alto_impacto"],
+            "d3_signo_invertido": self.d3_detalle["signo_invertido"],
+            "d3_rumor_como_hecho": self.d3_detalle["rumor_como_hecho"],
+            "f1_macro_adversariales": round(self.adversariales["f1_macro"], 4),
+            "f1_macro_normales": round(self.normales["f1_macro"], 4),
+            "tasa_accionable_adversariales": round(self.adversariales["tasa_accionable"], 4),
+            "tasa_accionable_normales": round(self.normales["tasa_accionable"], 4),
+        }
+
+
+def _f1(golds: list[str], preds: list[str]) -> float:
+    if not golds:
+        return float("nan")
+    return f1_score(golds, preds, average="macro", labels=CATEGORIES, zero_division=0)
+
+
+def _tasa(filas: list[dict]) -> float:
+    return sum(f["accionable"] for f in filas) / len(filas) if filas else float("nan")
+
+
+def harness(
+    eval_set: list[dict],
+    sistema: Sistema,
+    nombre: str = "sistema",
+    juez=None,
+) -> Scorecard:
+    """Corre las tres dimensiones sobre `eval_set` y devuelve el scorecard.
+
+    `juez` es opcional: sin él se calculan las dimensiones 1 y 3, que no
+    necesitan descargar ningún LLM. Es lo que permite correr el harness en
+    cualquier laptop y dejar el juez para Colab.
     """
+    filas = []
+    for ej in eval_set:
+        respuesta = sistema(ej["input"])
+        gold = ej["esperado"]
+        senal = render_senal(respuesta)
 
-    available = False
-
-
-# --------------------------------------------------------------------------
-# Las tres dimensiones
-# --------------------------------------------------------------------------
-def dim1_metrica_clasica(gold_cats: list[str], pred_cats: list[str]) -> dict:
-    """F1 macro (la métrica principal del proyecto) + accuracy para contraste."""
-    return {
-        "f1_macro": f1_score(
-            gold_cats, pred_cats, average="macro", labels=CATEGORIES, zero_division=0
-        ),
-        "accuracy": accuracy_score(gold_cats, pred_cats),
-    }
-
-
-def score_rubric(rows: list[dict], rubric: dict) -> dict:
-    """Dimensión 2: puntúa los criterios deterministas de la rúbrica."""
-    pesos = {c["id"]: c["weight"] for c in rubric["criterios"]}
-    nombres = {c["id"]: c["nombre"] for c in rubric["criterios"]}
-
-    c1 = [r["pred_cat"] == r["gold_cat"] for r in rows]
-    c2 = [signo(r["pred_imp"]) == signo(r["gold_imp"]) for r in rows]
-    c3 = [nivel(r["pred_imp"]) == nivel(r["gold_imp"]) for r in rows]
-
-    # C4 solo aplica donde la verdad es un rumor; si no hay rumores en el eval
-    # set, el criterio no se puede medir (y decirlo es mejor que dar un 1.0).
-    rumores = [r for r in rows if r["gold_cat"] == "rumor_no_confirmado"]
-    c4 = [r["pred_cat"] not in HECHOS_CONFIRMADOS for r in rumores]
-
-    # C5 = precisión sobre impacto alto: de lo que marcamos como alto, cuánto lo era.
-    marcados_alto = [r for r in rows if es_alto_impacto(r["pred_imp"])]
-    c5 = [es_alto_impacto(r["gold_imp"]) for r in marcados_alto]
-
-    def media(xs):
-        return sum(xs) / len(xs) if xs else None
-
-    detalle = {
-        "C1": {"nombre": nombres["C1"], "score": media(c1), "n": len(c1)},
-        "C2": {"nombre": nombres["C2"], "score": media(c2), "n": len(c2)},
-        "C3": {"nombre": nombres["C3"], "score": media(c3), "n": len(c3)},
-        "C4": {"nombre": nombres["C4"], "score": media(c4), "n": len(c4)},
-        "C5": {"nombre": nombres["C5"], "score": media(c5), "n": len(c5)},
-        "C6": {"nombre": nombres["C6"], "score": None, "n": 0},
-    }
-
-    # Media ponderada solo sobre los criterios que sí se pudieron medir.
-    medibles = [(cid, d) for cid, d in detalle.items() if d["score"] is not None]
-    peso_total = sum(pesos[cid] for cid, _ in medibles)
-    global_score = (
-        sum(pesos[cid] * d["score"] for cid, d in medibles) / peso_total if peso_total else None
-    )
-    return {"criterios": detalle, "score_global": global_score, "peso_cubierto": peso_total}
-
-
-def dim3_dominio(rows: list[dict]) -> dict:
-    """Dimensión de dominio: dónde falla, en el lenguaje de nuestro problema."""
-    por_dificultad = {}
-    for r in rows:
-        d = por_dificultad.setdefault(r["difficulty"], {"n": 0, "ok": 0})
-        d["n"] += 1
-        d["ok"] += int(r["pred_cat"] == r["gold_cat"])
-
-    señal_falsa = [
-        r for r in rows if es_alto_impacto(r["pred_imp"]) and not es_alto_impacto(r["gold_imp"])
-    ]
-    señal_perdida = [
-        r for r in rows if es_alto_impacto(r["gold_imp"]) and not es_alto_impacto(r["pred_imp"])
-    ]
-    signo_invertido = [
-        r
-        for r in rows
-        if signo(r["pred_imp"]) != signo(r["gold_imp"])
-        and "neutro" not in (signo(r["pred_imp"]), signo(r["gold_imp"]))
-    ]
-    return {
-        "por_dificultad": por_dificultad,
-        "senal_falsa_alto_impacto": [r["eval_id"] for r in señal_falsa],
-        "senal_perdida_alto_impacto": [r["eval_id"] for r in señal_perdida],
-        "signo_invertido": [r["eval_id"] for r in signo_invertido],
-    }
-
-
-# --------------------------------------------------------------------------
-# Contaminación
-# --------------------------------------------------------------------------
-def check_holdout(eval_records: list[dict], corpus_path: Path) -> dict:
-    """El eval set sale del mismo corpus que alimenta el train: hay que excluirlo.
-
-    Un eval set contaminado no mide generalización, mide memoria. Esto reporta
-    los ids que el entrenamiento debe dejar fuera.
-    """
-    eval_ids = {r["provenance"]["corpus_id"] for r in eval_records}
-    if not corpus_path.exists():
-        return {"eval_ids": sorted(eval_ids), "en_corpus": None}
-    corpus_ids = set()
-    with corpus_path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                corpus_ids.add(json.loads(line)["id"])
-    return {"eval_ids": sorted(eval_ids), "en_corpus": sorted(eval_ids & corpus_ids)}
-
-
-def eval_corpus_ids(eval_path: Path) -> set[str]:
-    """Para que el código de entrenamiento excluya el eval set en una línea."""
-    with eval_path.open(encoding="utf-8") as f:
-        return {json.loads(line)["provenance"]["corpus_id"] for line in f if line.strip()}
-
-
-# --------------------------------------------------------------------------
-def evaluar(predictor: Predictor, eval_records: list[dict]) -> list[dict]:
-    rows = []
-    for rec in eval_records:
-        pred_cat, pred_imp = predictor.predict(rec["input"]["text"])
-        rows.append(
-            {
-                "eval_id": rec["eval_id"],
-                "difficulty": rec["difficulty"],
-                "gold_cat": rec["expected"]["category"],
-                "gold_imp": rec["expected"]["impact"],
-                "pred_cat": pred_cat,
-                "pred_imp": pred_imp,
-            }
+        # --- verificaciones duras de dominio (dimensión 3) ---
+        signo_invertido = signo(respuesta["impact"]) != signo(gold["impact"]) and "neutro" not in (
+            signo(respuesta["impact"]),
+            signo(gold["impact"]),
         )
-    return rows
+        senal_falsa = es_alto_impacto(respuesta["impact"]) and not es_alto_impacto(gold["impact"])
+        rumor_como_hecho = (
+            gold["category"] == "rumor_no_confirmado"
+            and respuesta["category"] in HECHOS_CONFIRMADOS
+        )
+        familia_ok = misma_familia(respuesta["category"], gold["category"])
+
+        fila = {
+            "eval_id": ej["eval_id"],
+            "adversarial": ej["adversarial"],
+            "gold_category": gold["category"],
+            "gold_impact": gold["impact"],
+            "pred_category": respuesta["category"],
+            "pred_impact": respuesta["impact"],
+            "senal": senal,
+            "signo_invertido": signo_invertido,
+            "senal_falsa_alto_impacto": senal_falsa,
+            "rumor_como_hecho": rumor_como_hecho,
+            "familia_ok": familia_ok,
+        }
+
+        if juez is not None:
+            res = juez.score(ej["input"]["text"], ej["criterio"], senal)
+            fila["juez_nivel"] = res.nivel
+            fila["juez_confianza"] = round(res.confianza, 3)
+
+        # Una señal es ACCIONABLE si supera las tres verificaciones duras y
+        # acierta al menos la familia de la categoría. DELIBERADAMENTE no
+        # depende del juez.
+        #
+        # El módulo sugiere "juez >= 4" como posible criterio de dominio, y lo
+        # probamos: nuestro juez concentra dos tercios de sus notas en el 3 y no
+        # detecta la inversión de signo. Atarle la dimensión 3 le importaría ese
+        # punto ciego justo a la dimensión que existe para cubrirlo, y las tres
+        # dejarían de ser miradas independientes. Se calcula igualmente como
+        # `accionable_estricto` para que se vea el criterio alternativo.
+        accionable = not signo_invertido and not senal_falsa and not rumor_como_hecho and familia_ok
+        fila["accionable"] = accionable
+        if juez is not None:
+            fila["accionable_estricto"] = accionable and fila["juez_nivel"] >= 4
+        filas.append(fila)
+
+    golds = [f["gold_category"] for f in filas]
+    preds = [f["pred_category"] for f in filas]
+    adv = [f for f in filas if f["adversarial"]]
+    nor = [f for f in filas if not f["adversarial"]]
+    niveles = [f["juez_nivel"] for f in filas if "juez_nivel" in f]
+
+    return Scorecard(
+        sistema=nombre,
+        n_ejemplos=len(filas),
+        d1_f1_macro=_f1(golds, preds),
+        d1_accuracy=accuracy_score(golds, preds),
+        d2_juez_media=(sum(niveles) / len(niveles)) if niveles else None,
+        d2_juez_distribucion={n: niveles.count(n) for n in range(1, 6)} if niveles else {},
+        d3_tasa_accionable=_tasa(filas),
+        d3_tasa_accionable_estricta=(
+            sum(f["accionable_estricto"] for f in filas) / len(filas)
+            if filas and "accionable_estricto" in filas[0]
+            else None
+        ),
+        d3_detalle={
+            "senal_falsa_alto_impacto": sum(f["senal_falsa_alto_impacto"] for f in filas),
+            "signo_invertido": sum(f["signo_invertido"] for f in filas),
+            "rumor_como_hecho": sum(f["rumor_como_hecho"] for f in filas),
+        },
+        adversariales={
+            "n": len(adv),
+            "f1_macro": _f1([f["gold_category"] for f in adv], [f["pred_category"] for f in adv]),
+            "tasa_accionable": _tasa(adv),
+        },
+        normales={
+            "n": len(nor),
+            "f1_macro": _f1([f["gold_category"] for f in nor], [f["pred_category"] for f in nor]),
+            "tasa_accionable": _tasa(nor),
+        },
+        filas=filas,
+    )
 
 
-def imprimir_scorecard(resultados: dict, eval_records: list[dict], holdout: dict) -> None:
-    sistemas = list(resultados)
-    ancho = max(len(s) for s in sistemas) + 2
+# ---------------------------------------------------------------------------
+def eval_corpus_ids(eval_set_path: Path) -> set[str]:
+    """Ids del corpus que forman el eval set, para excluirlos del entrenamiento."""
+    datos = json.loads(eval_set_path.read_text(encoding="utf-8"))
+    return {r["procedencia"]["corpus_id"] for r in datos if r["procedencia"].get("corpus_id")}
+
+
+def imprimir_scorecard(
+    tarjetas: list[Scorecard], eval_set: list[dict], sanity: dict | None
+) -> None:
+    ancho = max(len(t.sistema) for t in tarjetas) + 2
+    n_adv = sum(1 for e in eval_set if e["adversarial"])
 
     print("=" * 78)
-    print("SCORECARD · Offside — eval set de dominio")
+    print("SCORECARD · Offside")
     print("=" * 78)
-    print(f"Ejemplos: {len(eval_records)}  |  Sistemas: {', '.join(sistemas)}")
-    dificiles = sum(1 for r in eval_records if r["lexicon_fails"])
-    print(f"Casos donde el léxico falla por diseño del set: {dificiles}/{len(eval_records)}")
+    print(
+        f"Eval set: {len(eval_set)} ejemplos "
+        f"({n_adv} adversariales / borde, {100 * n_adv / len(eval_set):.0f}%)"
+    )
 
     print("\n" + "-" * 78)
     print("DIMENSIÓN 1 · MÉTRICA CLÁSICA (automática)")
     print("-" * 78)
-    print(f"{'sistema':<{ancho}}{'F1 macro':>12}{'accuracy':>12}")
-    for s in sistemas:
-        d = resultados[s]["dim1"]
-        print(f"{s:<{ancho}}{d['f1_macro']:>12.4f}{d['accuracy']:>12.4f}")
-    print("\n  accuracy se muestra solo para contraste: sube con la clase mayoritaria")
-    print("  y por eso no la usamos como métrica principal.")
+    print(f"{'sistema':<{ancho}}{'F1 macro':>11}{'accuracy':>11}")
+    for t in tarjetas:
+        print(f"{t.sistema:<{ancho}}{t.d1_f1_macro:>11.4f}{t.d1_accuracy:>11.4f}")
+    print("\n  accuracy va solo como contraste: sube con la clase mayoritaria.")
+
+    if any(t.d2_juez_media is not None for t in tarjetas):
+        print("\n" + "-" * 78)
+        print("DIMENSIÓN 2 · LLM-AS-A-JUDGE (rúbrica 1-5 anclada)")
+        print("-" * 78)
+        print(f"{'sistema':<{ancho}}{'media':>8}   distribución 1..5")
+        for t in tarjetas:
+            if t.d2_juez_media is None:
+                continue
+            dist = " ".join(f"{n}:{t.d2_juez_distribucion.get(n, 0)}" for n in range(1, 6))
+            print(f"{t.sistema:<{ancho}}{t.d2_juez_media:>8.2f}   {dist}")
+        if sanity:
+            print(
+                f"\n  El juez separa útil de inútil: "
+                f"{'SÍ' if sanity['separa_util_de_inutil'] else 'NO'}."
+            )
+            print(
+                f"  Detecta el signo invertido:    "
+                f"{'SÍ' if sanity['detecta_signo_invertido'] else 'NO — punto ciego medido'}."
+            )
+            print("  Por eso el signo invertido lo verifica la dimensión 3, no el juez.")
 
     print("\n" + "-" * 78)
-    print("DIMENSIÓN 2 · RÚBRICA DE DOMINIO (criterios de rubric.yaml)")
+    print("DIMENSIÓN 3 · DOMINIO (tasa de señal accionable)")
     print("-" * 78)
-    ids = ["C1", "C2", "C3", "C4", "C5"]
-    print(f"{'sistema':<{ancho}}" + "".join(f"{c:>8}" for c in ids) + f"{'GLOBAL':>10}")
-    for s in sistemas:
-        r = resultados[s]["dim2"]
-        celdas = ""
-        for c in ids:
-            sc = r["criterios"][c]["score"]
-            celdas += f"{'  n/d':>8}" if sc is None else f"{sc:>8.2f}"
-        g = r["score_global"]
-        print(f"{s:<{ancho}}" + celdas + (f"{g:>10.3f}" if g is not None else f"{'n/d':>10}"))
-    print()
-    for c in ids:
-        print(f"  {c} = {resultados[sistemas[0]]['dim2']['criterios'][c]['nombre']}")
-    print("  C6 (equipo afectado) y el juez LLM llegan en S06 — ver rubric.yaml.")
-
-    print("\n" + "-" * 78)
-    print("DIMENSIÓN 3 · VISTA DE DOMINIO (dónde falla, en lenguaje del problema)")
-    print("-" * 78)
-    dificultades = sorted({r["difficulty"] for r in eval_records})
-    print(f"{'caso difícil':<44}" + "".join(f"{s:>16}" for s in sistemas))
-    for d in dificultades:
-        fila = f"{d:<44}"
-        for s in sistemas:
-            pd = resultados[s]["dim3"]["por_dificultad"].get(d, {"n": 0, "ok": 0})
-            marcador = f"{pd['ok']}/{pd['n']}"
-            fila += f"{marcador:>16}"
-        print(fila)
-
-    print("\n  Errores que más caros salen para el usuario:")
-    for s in sistemas:
-        d3 = resultados[s]["dim3"]
-        print(f"    {s}:")
+    print(
+        f"{'sistema':<{ancho}}{'tasa':>8}{'falsa':>8}{'signo':>8}{'rumor':>8}"
+        f"{'  adversar.':>12}{'normales':>10}"
+    )
+    for t in tarjetas:
+        d = t.d3_detalle
         print(
-            f"      señal FALSA de alto impacto (el peor): "
-            f"{len(d3['senal_falsa_alto_impacto'])} → {d3['senal_falsa_alto_impacto'] or '-'}"
+            f"{t.sistema:<{ancho}}{t.d3_tasa_accionable:>8.2f}"
+            f"{d['senal_falsa_alto_impacto']:>8}{d['signo_invertido']:>8}{d['rumor_como_hecho']:>8}"
+            f"{t.adversariales['tasa_accionable']:>12.2f}{t.normales['tasa_accionable']:>10.2f}"
         )
-        print(
-            f"      señal PERDIDA de alto impacto:         "
-            f"{len(d3['senal_perdida_alto_impacto'])} → {d3['senal_perdida_alto_impacto'] or '-'}"
-        )
-        print(
-            f"      signo del impacto INVERTIDO:           "
-            f"{len(d3['signo_invertido'])} → {d3['signo_invertido'] or '-'}"
-        )
-
-    print("\n" + "-" * 78)
-    print("CONTAMINACIÓN / HOLD-OUT")
-    print("-" * 78)
-    en_corpus = holdout["en_corpus"]
-    if en_corpus:
-        print(f"  {len(en_corpus)} de los {len(holdout['eval_ids'])} ejemplos del eval set están")
-        print("  en el corpus que alimenta el entrenamiento. DEBEN excluirse del train:")
-        print("  usar eval_corpus_ids() desde el código de entrenamiento.")
-    else:
-        print("  El eval set no se solapa con el corpus de entrenamiento.")
+    print("\n  falsa = señales de alto impacto inventadas · signo = impacto invertido")
+    print("  rumor = un rumor presentado como hecho confirmado")
+    print("  Las tres son las verificaciones duras; ninguna depende del juez.")
 
 
 def main() -> int:
     here = Path(__file__).parent
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--eval-set", type=Path, default=here / "eval_set.jsonl")
-    parser.add_argument("--rubric", type=Path, default=here / "rubric.yaml")
+    parser.add_argument("--eval-set", type=Path, default=here / "eval_set.json")
     parser.add_argument(
         "--lexicon", type=Path, default=here / ".." / "data_collection" / "lexicon.yaml"
     )
-    parser.add_argument(
-        "--corpus", type=Path, default=here / ".." / "data" / "processed" / "weak_labeled.jsonl"
-    )
-    parser.add_argument("--systems", nargs="*", default=["mayoritaria", "lexico"])
-    parser.add_argument("--adapter", type=Path, default=None, help="dir del adaptador LoRA")
+    parser.add_argument("--adapter", type=Path, default=None)
     parser.add_argument("--base-model", default="dccuchile/bert-base-spanish-wwm-cased")
-    parser.add_argument("--json", type=Path, default=None, help="guardar scorecard en JSON")
+    parser.add_argument("--sin-juez", action="store_true", help="omite la dimensión 2")
+    parser.add_argument("--csv", type=Path, default=here / "scorecard_baseline.csv")
+    parser.add_argument("--json", type=Path, default=here / "scorecard_baseline.json")
     args = parser.parse_args()
 
-    with args.eval_set.open(encoding="utf-8") as f:
-        eval_records = [json.loads(line) for line in f if line.strip()]
-    rubric = yaml.safe_load(args.rubric.read_text(encoding="utf-8"))
+    eval_set = json.loads(args.eval_set.read_text(encoding="utf-8"))
 
-    predictores: list[Predictor] = []
-    if "mayoritaria" in args.systems:
-        predictores.append(MajorityPredictor())
-    if "lexico" in args.systems:
-        predictores.append(LexiconPredictor(args.lexicon))
+    sistemas: list[tuple[str, Sistema]] = [
+        ("mayoritaria", sistema_mayoritaria),
+        ("lexico", SistemaLexico(args.lexicon)),
+    ]
     if args.adapter:
-        predictores.append(FineTunedPredictor(args.adapter, args.lexicon, args.base_model))
+        sistemas.append(
+            ("lora_finetuned", SistemaLoRA(args.adapter, args.lexicon, args.base_model))
+        )
 
-    if not predictores:
-        raise SystemExit("No hay sistemas que evaluar (--systems / --adapter).")
+    juez, sanity = None, None
+    if not args.sin_juez:
+        from judge import Judge
 
-    for p in predictores:
-        for aviso in getattr(p, "avisos", []):
-            print(f"AVISO [{p.name}]: {aviso}")
-            print()
+        juez = Judge()
+        print(f"Juez: {juez.modelo_id} | rúbrica v{juez.version_rubrica} | device={juez.device}")
+        print("Corriendo sanity check del juez...", flush=True)
+        sanity = juez.sanity_check()
 
-    resultados = {}
-    for p in predictores:
-        rows = evaluar(p, eval_records)
-        resultados[p.name] = {
-            "dim1": dim1_metrica_clasica(
-                [r["gold_cat"] for r in rows], [r["pred_cat"] for r in rows]
-            ),
-            "dim2": score_rubric(rows, rubric),
-            "dim3": dim3_dominio(rows),
-            "predicciones": rows,
-        }
+    tarjetas = []
+    for nombre, sistema in sistemas:
+        for aviso in getattr(sistema, "avisos", []):
+            print(f"AVISO [{nombre}]: {aviso}\n")
+        print(f"Evaluando {nombre}...", flush=True)
+        tarjetas.append(harness(eval_set, sistema, nombre, juez))
 
-    holdout = check_holdout(eval_records, args.corpus)
-    imprimir_scorecard(resultados, eval_records, holdout)
+    imprimir_scorecard(tarjetas, eval_set, sanity)
 
-    if args.json:
-        payload = {
-            "eval_set": str(args.eval_set.name),
-            "n_ejemplos": len(eval_records),
-            "rubric_version": rubric["meta"]["version"],
-            "sistemas": {
-                s: {"dim1": r["dim1"], "dim2": r["dim2"], "dim3": r["dim3"]}
-                for s, r in resultados.items()
-            },
-            "holdout": holdout,
-        }
-        args.json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"\nScorecard guardado en {args.json}")
+    with args.csv.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(tarjetas[0].como_fila_csv().keys()))
+        w.writeheader()
+        for t in tarjetas:
+            w.writerow(t.como_fila_csv())
+    print(f"\nScorecard -> {args.csv}")
 
+    payload = {
+        "eval_set": args.eval_set.name,
+        "n_ejemplos": len(eval_set),
+        "juez": None
+        if juez is None
+        else {
+            "modelo": juez.modelo_id,
+            "rubrica_version": juez.version_rubrica,
+            "sanity_check": sanity,
+        },
+        "sistemas": {
+            t.sistema: {
+                "d1": {"f1_macro": t.d1_f1_macro, "accuracy": t.d1_accuracy},
+                "d2": {"media": t.d2_juez_media, "distribucion": t.d2_juez_distribucion},
+                "d3": {
+                    "tasa_accionable": t.d3_tasa_accionable,
+                    "tasa_accionable_estricta": t.d3_tasa_accionable_estricta,
+                    "detalle": t.d3_detalle,
+                },
+                "adversariales": t.adversariales,
+                "normales": t.normales,
+                "filas": t.filas,
+            }
+            for t in tarjetas
+        },
+    }
+    args.json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Detalle    -> {args.json}")
     return 0
 
 
