@@ -155,6 +155,18 @@ Los otros dos sesgos clásicos no aplican a este diseño y lo decimos: **posici�
 
 Si la nota sube al crecer la longitud, el sesgo está y es medible: nada más cambió.
 
+### El resultado: el sesgo existe y está medido
+
+| Condición | Longitud media | Nota media del juez |
+|---|---:|---:|
+| `escueta` | 24 chars | 2,62 |
+| `fija` (la que usamos) | 55 chars | 2,57 |
+| `verbosa` | **352 chars** | **3,05** |
+
+**Delta verbosa − escueta: +0,43 puntos de rúbrica**, y **7 de 21 ejemplos cambian de nivel solo por la longitud**. La información es idéntica en las tres condiciones: lo único que cambió fue cuánto texto envuelve la misma respuesta.
+
+Un matiz honesto: entre `escueta` (24 chars) y `fija` (55 chars) la nota apenas se mueve —de hecho baja un poco—, así que el efecto no es una pendiente suave sino que aparece con diferencias grandes de longitud. Eso es suficiente para lo que nos importa: en M3 el RAG va a redactar señales varias veces más largas que el clasificador, y ahí el sesgo sí mordería.
+
 ### La mitigación
 
 `render_senal()` en el harness emite **todas** las señales con la misma plantilla de longitud fija, sea cual sea el sistema. Así la longitud deja de ser una variable y no puede llevar información: el juez no tiene de dónde sacar la preferencia.
@@ -163,7 +175,79 @@ Es una mitigación **estructural**, no un ajuste sobre el puntaje. No pretendemo
 
 ---
 
-## 5 · Reproducibilidad
+## 5 · El scorecard del baseline
+
+Los tres sistemas, sobre los mismos 21 ejemplos. El `lora_finetuned` es el modelo de M1 **reentrenado excluyendo el eval set**, así que la comparación es limpia.
+
+| Sistema | D1 · F1 macro | D2 · juez (media) | D3 · tasa accionable |
+|---|---:|---:|---:|
+| Clase mayoritaria | 0,0400 | 2,52 | 0,19 |
+| **Léxico/regex** | **0,4238** | 2,57 | **0,52** |
+| LoRA afinado (M1) | 0,3208 | 2,52 | 0,33 |
+
+Y el desglose de la dimensión 3, que es donde se ve lo que las medias esconden:
+
+| Sistema | Señal falsa de alto impacto | Signo invertido | Rumor como hecho | Adversariales | Normales |
+|---|---:|---:|---:|---:|---:|
+| Clase mayoritaria | 0 | 0 | 0 | 0,23 | 0,12 |
+| Léxico/regex | **2** | **1** | 0 | 0,62 | 0,38 |
+| LoRA afinado | 1 | 0 | 0 | 0,38 | 0,25 |
+
+El archivo completo, con el detalle por ejemplo, está en [`../eval/scorecard_baseline.csv`](../eval/scorecard_baseline.csv) y [`../eval/scorecard_baseline.json`](../eval/scorecard_baseline.json).
+
+---
+
+## 6 · Lectura honesta
+
+### El léxico sigue ganando, y hay que decirlo
+
+En la métrica clásica el baseline de regex (0,42) le gana al modelo afinado (0,32). No lo maquillamos. Pero la dimensión 3 matiza el veredicto: el léxico consigue su ventaja **gritando**. Emite **dos señales falsas de alto impacto** y **una inversión de signo** — los dos errores que nuestra rúbrica considera más caros. El modelo afinado emite una señal falsa y ninguna inversión: acierta menos, pero **falla más barato**.
+
+Con una sola métrica esa diferencia es invisible. Ese es exactamente el argumento de por qué hay tres dimensiones.
+
+### La dimensión más severa es la 3, y por buenas razones
+
+La tasa de señal accionable del mejor sistema es **0,52**: aproximadamente la mitad de los ejemplos produce una señal que un usuario podría usar. Es la dimensión más dura porque es la única con **verificaciones binarias**: una sola inversión de signo tumba el ejemplo entero, sin nota parcial. Es deliberado — en producción, una señal con el signo al revés no es «medio buena».
+
+### Qué pasó con los casos adversariales
+
+Aquí hay un resultado que no esperábamos: **el léxico va mejor en los adversariales (0,62) que en los normales (0,38)**. Suena al revés, y la explicación es incómoda pero instructiva: varios de los casos con trampa son precisamente los que estudiamos en M1 y que nos llevaron a **parchear el léxico** (`OFF-07` es literalmente el test de regresión de uno de esos parches). El bucket «normal», en cambio, está lleno de bajas reales de temporada que el léxico simplemente no tiene patrones para ver.
+
+Dicho de otro modo: **el baseline está sobreajustado a las trampas que ya conocíamos y ciego a los casos corrientes que nunca miramos.** Es un argumento a favor de seguir ampliando el eval set con casos normales, no solo con trampas.
+
+### El resultado más importante: nuestro juez discrimina poco
+
+Este es el hallazgo que más nos costó aceptar. Las medias del juez para los tres sistemas son **2,52 / 2,57 / 2,52**: prácticamente idénticas. Un evaluador que no distingue entre un sistema que responde siempre lo mismo y uno afinado no está midiendo gran cosa.
+
+Lo medimos con rigor en vez de intuirlo (`diagnostico_juez`):
+
+| | |
+|---|---:|
+| Nota media cuando la categoría era **correcta** | 2,83 |
+| Nota media cuando era **incorrecta** | 2,38 |
+| Diferencia | **+0,45** |
+| Ejemplos donde da la **misma** nota a una respuesta correcta y a una incorrecta | **8 de 21** |
+
+Hay señal, pero es débil, y está comprimida: el juez pone un 3 a dos tercios de todo. Casos concretos que duelen: en `OFF-21` el modelo afinado identifica **correctamente** el rumor como `rumor_no_confirmado` y el juez le da un **1**, la peor nota posible.
+
+**Qué haríamos distinto en M3.** Tres cosas, en orden de coste: (1) permitir al juez razonar antes de puntuar y leer los logits al final —lo descartamos aquí porque en CPU multiplicaba por diez el tiempo, pero en Colab con T4 es viable—; (2) subir de tamaño el juez dentro de lo que permita Colab; (3) promediar varias corridas con el orden de las anclas permutado. Lo que **no** haríamos es seguir puliendo el prompt: ya pasamos de 1/5 a 3/5 aciertos y el punto ciego del signo no se movió.
+
+### Lo que hay que mejorar, y por qué creemos que pasa
+
+| Qué falla | Por qué creemos que pasa | Qué haremos |
+|---|---|---|
+| El modelo afinado no supera al léxico | El corpus sigue teniendo 8 categorías muy desbalanceadas; ampliarlo en temporada ya subió el F1 de validación de 0,63 a **0,70**, así que la dirección funciona | Seguir recolectando durante la liga; es lo que más ha movido la aguja |
+| El juez casi no discrimina | Un modelo de 1.5B en un solo forward pass no ejecuta la comparación de la rúbrica | Razonamiento antes de puntuar, en Colab con GPU |
+| Ningún sistema extrae el equipo afectado | Ni el léxico ni el clasificador de M1 lo intentan; devuelven «desconocido» | Es una de las cosas que el RAG de M3 sí puede hacer |
+| El eval set no tiene rumores reales | El formato RSS (titular + entradilla) no los trae | Ampliar la recolección al cuerpo del artículo donde la licencia lo permita |
+
+### La frase corta
+
+**Hoy ningún sistema sirve para el usuario, y ahora sabemos exactamente por qué:** el léxico acierta más pero se equivoca de la forma más cara, el modelo afinado falla más barato pero detecta menos, y nuestro juez es demasiado pequeño para arbitrar entre los dos. Lo que sí tenemos es la vara: el mismo scorecard va a medir el RAG de M3 sin cambiar una línea del harness.
+
+---
+
+## 7 · Reproducibilidad
 
 | Requisito | Cómo se cumple |
 |---|---|
