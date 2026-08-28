@@ -37,11 +37,24 @@ def fragment_hash(link: str) -> str:
 
 
 def parse_pubdate(raw: str | None) -> str | None:
+    """Normaliza la fecha del item a ISO-8601 en UTC.
+
+    Los feeds no se ponen de acuerdo: Marca publica en RFC 822
+    ("Thu, 27 Aug 2026 21:11:32 -0500") y El Tiempo en ISO 8601
+    ("2026-08-27T20:59:22-05:00"). Hay que intentar los dos formatos: si solo
+    se prueba RFC 822, las fechas de El Tiempo se descartan en silencio y esos
+    fragmentos quedan fuera del split temporal.
+    """
     if not raw:
         return None
+    raw = raw.strip()
     try:
         return parsedate_to_datetime(raw).astimezone(UTC).isoformat()
     except (TypeError, ValueError):
+        pass
+    try:
+        return datetime.fromisoformat(raw).astimezone(UTC).isoformat()
+    except ValueError:
         return None
 
 
