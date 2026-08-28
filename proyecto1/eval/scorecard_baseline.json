@@ -1,7 +1,37 @@
 {
   "eval_set": "eval_set.json",
   "n_ejemplos": 21,
-  "juez": null,
+  "juez": {
+    "modelo": "Qwen/Qwen2.5-1.5B-Instruct",
+    "rubrica_version": 1,
+    "sanity_check": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 4,
+        "categoria_vecina": 4,
+        "sin_senal": 3,
+        "signo_invertido": 3
+      },
+      "niveles_esperados": {
+        "correcta": 5,
+        "equipo_incorrecto": 4,
+        "categoria_vecina": 3,
+        "sin_senal": 3,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 0.993,
+        "equipo_incorrecto": 0.862,
+        "categoria_vecina": 0.387,
+        "sin_senal": 0.874,
+        "signo_invertido": 0.464
+      },
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": false,
+      "aciertos_exactos": 3,
+      "total_casos": 5
+    }
+  },
   "sistemas": {
     "mayoritaria": {
       "d1": {
@@ -9,12 +39,18 @@
         "accuracy": 0.19047619047619047
       },
       "d2": {
-        "media": null,
-        "distribucion": {}
+        "media": 2.5238095238095237,
+        "distribucion": {
+          "1": 3,
+          "2": 4,
+          "3": 14,
+          "4": 0,
+          "5": 0
+        }
       },
       "d3": {
         "tasa_accionable": 0.19047619047619047,
-        "tasa_accionable_estricta": null,
+        "tasa_accionable_estricta": 0.0,
         "detalle": {
           "senal_falsa_alto_impacto": 0,
           "signo_invertido": 0,
@@ -44,7 +80,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.557,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-02",
@@ -58,7 +97,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 1,
+          "juez_confianza": 0.766,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-03",
@@ -72,7 +114,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 2,
+          "juez_confianza": 0.648,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-04",
@@ -86,7 +131,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 1,
+          "juez_confianza": 0.993,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-05",
@@ -100,7 +148,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.783,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-06",
@@ -114,7 +165,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.92,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-07",
@@ -128,7 +182,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.825,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-08",
@@ -142,7 +199,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.65,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-09",
@@ -156,7 +216,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.671,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-10",
@@ -170,7 +233,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.743,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-11",
@@ -184,7 +250,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.468,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-12",
@@ -198,7 +267,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.54,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-13",
@@ -212,7 +284,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.521,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-14",
@@ -226,7 +301,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.767,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-15",
@@ -240,7 +318,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.523,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-16",
@@ -254,7 +335,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.926,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-17",
@@ -268,7 +352,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.648,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-18",
@@ -282,7 +369,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.427,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-19",
@@ -296,7 +386,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.789,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-20",
@@ -310,7 +403,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.978,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-18",
@@ -324,7 +420,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 1,
+          "juez_confianza": 0.99,
+          "accionable": false,
+          "accionable_estricto": false
         }
       ]
     },
@@ -334,12 +433,18 @@
         "accuracy": 0.5238095238095238
       },
       "d2": {
-        "media": null,
-        "distribucion": {}
+        "media": 2.5714285714285716,
+        "distribucion": {
+          "1": 4,
+          "2": 3,
+          "3": 13,
+          "4": 0,
+          "5": 1
+        }
       },
       "d3": {
         "tasa_accionable": 0.5238095238095238,
-        "tasa_accionable_estricta": null,
+        "tasa_accionable_estricta": 0.047619047619047616,
         "detalle": {
           "senal_falsa_alto_impacto": 2,
           "signo_invertido": 1,
@@ -369,7 +474,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.539,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-02",
@@ -383,7 +491,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 1,
+          "juez_confianza": 0.766,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-03",
@@ -397,7 +508,10 @@
           "senal_falsa_alto_impacto": true,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.525,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-04",
@@ -411,7 +525,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 1,
+          "juez_confianza": 0.994,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-05",
@@ -425,7 +542,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.783,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-06",
@@ -439,7 +559,10 @@
           "senal_falsa_alto_impacto": true,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.574,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-07",
@@ -453,7 +576,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.666,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-08",
@@ -467,7 +593,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.65,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-09",
@@ -481,7 +610,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.607,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-10",
@@ -495,7 +627,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.587,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-11",
@@ -509,7 +644,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.468,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-12",
@@ -523,7 +661,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.54,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-13",
@@ -537,7 +678,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 2,
+          "juez_confianza": 0.521,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-14",
@@ -551,7 +695,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.559,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-15",
@@ -565,7 +712,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 1,
+          "juez_confianza": 0.618,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-16",
@@ -579,7 +729,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.926,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-17",
@@ -593,7 +746,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": false,
-          "accionable": false
+          "juez_nivel": 3,
+          "juez_confianza": 0.648,
+          "accionable": false,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-18",
@@ -607,7 +763,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 5,
+          "juez_confianza": 0.855,
+          "accionable": true,
+          "accionable_estricto": true
         },
         {
           "eval_id": "OFF-19",
@@ -621,7 +780,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.789,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-20",
@@ -635,7 +797,10 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 3,
+          "juez_confianza": 0.896,
+          "accionable": true,
+          "accionable_estricto": false
         },
         {
           "eval_id": "OFF-18",
@@ -649,7 +814,404 @@
           "senal_falsa_alto_impacto": false,
           "rumor_como_hecho": false,
           "familia_ok": true,
-          "accionable": true
+          "juez_nivel": 1,
+          "juez_confianza": 0.98,
+          "accionable": true,
+          "accionable_estricto": false
+        }
+      ]
+    },
+    "lora_finetuned": {
+      "d1": {
+        "f1_macro": 0.3208333333333333,
+        "accuracy": 0.38095238095238093
+      },
+      "d2": {
+        "media": 2.5238095238095237,
+        "distribucion": {
+          "1": 3,
+          "2": 4,
+          "3": 14,
+          "4": 0,
+          "5": 0
+        }
+      },
+      "d3": {
+        "tasa_accionable": 0.3333333333333333,
+        "tasa_accionable_estricta": 0.0,
+        "detalle": {
+          "senal_falsa_alto_impacto": 1,
+          "signo_invertido": 0,
+          "rumor_como_hecho": 0
+        }
+      },
+      "adversariales": {
+        "n": 13,
+        "f1_macro": 0.3125,
+        "tasa_accionable": 0.38461538461538464
+      },
+      "normales": {
+        "n": 8,
+        "f1_macro": 0.15625,
+        "tasa_accionable": 0.25
+      },
+      "filas": [
+        {
+          "eval_id": "OFF-01",
+          "adversarial": true,
+          "gold_category": "baja_confirmada",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.492,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-02",
+          "adversarial": false,
+          "gold_category": "baja_confirmada",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 1,
+          "juez_confianza": 0.88,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-03",
+          "adversarial": true,
+          "gold_category": "irrelevante",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 2,
+          "juez_confianza": 0.592,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-04",
+          "adversarial": true,
+          "gold_category": "regreso_alta",
+          "gold_impact": "positivo_alto",
+          "pred_category": "declaracion_contexto",
+          "pred_impact": "neutro",
+          "senal": "declaracion_contexto | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 1,
+          "juez_confianza": 0.992,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-05",
+          "adversarial": false,
+          "gold_category": "regreso_alta",
+          "gold_impact": "positivo_bajo",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.743,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-06",
+          "adversarial": false,
+          "gold_category": "regreso_alta",
+          "gold_impact": "positivo_bajo",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.924,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-07",
+          "adversarial": true,
+          "gold_category": "baja_confirmada",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.803,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-08",
+          "adversarial": true,
+          "gold_category": "irrelevante",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.664,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-09",
+          "adversarial": true,
+          "gold_category": "declaracion_contexto",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.626,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-10",
+          "adversarial": true,
+          "gold_category": "declaracion_contexto",
+          "gold_impact": "neutro",
+          "pred_category": "declaracion_contexto",
+          "pred_impact": "neutro",
+          "senal": "declaracion_contexto | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.587,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-11",
+          "adversarial": true,
+          "gold_category": "sancion_suspension",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 2,
+          "juez_confianza": 0.395,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-12",
+          "adversarial": false,
+          "gold_category": "baja_confirmada",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.532,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-13",
+          "adversarial": false,
+          "gold_category": "cambio_tactico",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 2,
+          "juez_confianza": 0.552,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-14",
+          "adversarial": true,
+          "gold_category": "duda_fisica",
+          "gold_impact": "negativo_bajo",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.769,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-15",
+          "adversarial": true,
+          "gold_category": "sancion_suspension",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 2,
+          "juez_confianza": 0.442,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-16",
+          "adversarial": true,
+          "gold_category": "irrelevante",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.884,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-17",
+          "adversarial": true,
+          "gold_category": "sancion_suspension",
+          "gold_impact": "negativo_bajo",
+          "pred_category": "sancion_suspension",
+          "pred_impact": "negativo_alto",
+          "senal": "sancion_suspension | impacto: negativo_alto | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": true,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.413,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-18",
+          "adversarial": false,
+          "gold_category": "baja_confirmada",
+          "gold_impact": "negativo_alto",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": false,
+          "juez_nivel": 3,
+          "juez_confianza": 0.471,
+          "accionable": false,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-19",
+          "adversarial": false,
+          "gold_category": "irrelevante",
+          "gold_impact": "neutro",
+          "pred_category": "irrelevante",
+          "pred_impact": "neutro",
+          "senal": "irrelevante | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.766,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-20",
+          "adversarial": false,
+          "gold_category": "declaracion_contexto",
+          "gold_impact": "neutro",
+          "pred_category": "declaracion_contexto",
+          "pred_impact": "neutro",
+          "senal": "declaracion_contexto | impacto: neutro | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 3,
+          "juez_confianza": 0.896,
+          "accionable": true,
+          "accionable_estricto": false
+        },
+        {
+          "eval_id": "OFF-18",
+          "adversarial": true,
+          "gold_category": "rumor_no_confirmado",
+          "gold_impact": "negativo_bajo",
+          "pred_category": "rumor_no_confirmado",
+          "pred_impact": "negativo_bajo",
+          "senal": "rumor_no_confirmado | impacto: negativo_bajo | equipo: desconocido",
+          "signo_invertido": false,
+          "senal_falsa_alto_impacto": false,
+          "rumor_como_hecho": false,
+          "familia_ok": true,
+          "juez_nivel": 1,
+          "juez_confianza": 0.976,
+          "accionable": true,
+          "accionable_estricto": false
         }
       ]
     }

@@ -395,7 +395,6 @@ CURADOS: list[dict] = [
 # --------------------------------------------------------------------------
 REDACTADOS: list[dict] = [
     {
-        "eval_id": "OFF-18",
         "input": {
             "text": (
                 "Según fuentes cercanas al vestuario, el capitán del Deportivo Sauce podría "
@@ -480,7 +479,16 @@ def main() -> int:
                 },
             }
         )
-    registros.extend(REDACTADOS)
+    # Los redactados se numeran DESPUÉS de los curados. Tenerlo fijo en el
+    # diccionario provocó un eval_id duplicado al añadir ejemplos nuevos, y el
+    # duplicado no rompía nada de forma visible: simplemente hacía que dos
+    # ejemplos se pisaran en cualquier análisis agrupado por eval_id.
+    for j, red in enumerate(REDACTADOS, start=len(registros) + 1):
+        registros.append({"eval_id": f"OFF-{j:02d}", **red})
+
+    ids = [r["eval_id"] for r in registros]
+    if len(set(ids)) != len(ids):
+        raise SystemExit(f"eval_id duplicado: {sorted({i for i in ids if ids.count(i) > 1})}")
 
     args.out.write_text(
         json.dumps(registros, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

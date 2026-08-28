@@ -54,17 +54,17 @@ El módulo pide al menos un 20 % de casos ambiguos, con trampa, fuera de dominio
 | **Ambiguo: ¿a quién sanciona?** | `OFF-17` Dimayor castiga con seis fechas a un «integrante» | La sanción es indiscutible; el sujeto es vago, así que el impacto no se puede afirmar alto |
 | **Fuera de dominio** | `OFF-16` Camila Osorio en el US Open | Es tenis. Llega por el mismo feed, tiene nombres propios y calendario: todo se parece menos lo esencial |
 | **Variante lingüística** | `OFF-15` roja en Liga BetPlay (Colombia) | Todo el entrenamiento es prensa española. Mide el sesgo de variante que documentamos en M1 |
-| **Rumor con forma de baja** | `OFF-18` (redactado) «según fuentes… podría perderse el derbi» | Comparte casi todo el vocabulario con una baja; solo lo separan los marcadores de incertidumbre |
+| **Rumor con forma de baja** | `OFF-21` (redactado) «según fuentes… podría perderse el derbi» | Comparte casi todo el vocabulario con una baja; solo lo separan los marcadores de incertidumbre |
 
 ### Los tres controles, y por qué importan
 
-`OFF-19`, `OFF-20` y `OFF-21` son **fáciles a propósito**: una baja explícita, un fichaje irrelevante y una declaración sin hecho dentro.
+`OFF-18`, `OFF-19` y `OFF-20` son **fáciles a propósito**: una baja explícita, un fichaje irrelevante y una declaración sin hecho dentro.
 
 Sin ellos el eval set sería solo dificultad, y entonces no se podría distinguir *«el sistema es malo»* de *«los casos son imposibles»*. También son la red de seguridad ante regresiones: si un cambio futuro rompe **estos**, algo va muy mal.
 
 ### El ejemplo redactado
 
-`OFF-18` es el único que no sale del corpus. El motivo está documentado en el código: **el corpus no contiene ni un solo rumor no confirmado sobre disponibilidad**. Los únicos rumores que llegan por RSS son de fichajes.
+`OFF-21` es el único que no sale del corpus. El motivo está documentado en el código: **el corpus no contiene ni un solo rumor no confirmado sobre disponibilidad**. Los únicos rumores que llegan por RSS son de fichajes.
 
 Es una limitación real del formato titular + entradilla, no un descuido: ese tipo de rumor vive en el cuerpo del artículo o en redes, que deliberadamente no scrapeamos. Sin ningún ejemplo de esa clase, el criterio «no presentar un rumor como un hecho» no se puede medir, y es de los que más pesan. Lo redactamos con **entidades ficticias a propósito**, como todo lo sintético del proyecto: nunca atribuimos una lesión o sanción a una persona real que no la tuvo.
 

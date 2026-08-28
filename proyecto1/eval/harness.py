@@ -370,6 +370,42 @@ def eval_corpus_ids(eval_set_path: Path) -> set[str]:
     return {r["procedencia"]["corpus_id"] for r in datos if r["procedencia"].get("corpus_id")}
 
 
+def diagnostico_juez(tarjetas: list[Scorecard]) -> dict | None:
+    """¿Cuánto poder discriminante tiene el juez sobre ESTE eval set?
+
+    Una nota media del juez no dice nada por sí sola: hay que saber si el juez
+    premia acertar. Esto compara su nota cuando la categoría predicha era
+    correcta contra cuando no lo era, agrupando todos los sistemas, y cuenta en
+    cuántos ejemplos le da la MISMA nota a una respuesta correcta y a una
+    incorrecta — que es la forma más directa de ver dónde deja de distinguir.
+    """
+    todas = [f for t in tarjetas for f in t.filas if "juez_nivel" in f]
+    if not todas:
+        return None
+    ok = [f["juez_nivel"] for f in todas if f["pred_category"] == f["gold_category"]]
+    mal = [f["juez_nivel"] for f in todas if f["pred_category"] != f["gold_category"]]
+    por_ejemplo: dict[str, list[tuple[bool, int]]] = {}
+    for f in todas:
+        por_ejemplo.setdefault(f["eval_id"], []).append(
+            (f["pred_category"] == f["gold_category"], f["juez_nivel"])
+        )
+    empates = [
+        k
+        for k, v in por_ejemplo.items()
+        if len({c for c, _ in v}) > 1 and len({n for _, n in v}) == 1
+    ]
+    return {
+        "n_correctas": len(ok),
+        "n_incorrectas": len(mal),
+        "media_correctas": (sum(ok) / len(ok)) if ok else None,
+        "media_incorrectas": (sum(mal) / len(mal)) if mal else None,
+        "delta": ((sum(ok) / len(ok)) - (sum(mal) / len(mal))) if ok and mal else None,
+        "ejemplos_indistinguibles": empates,
+        "n_ejemplos_indistinguibles": len(empates),
+        "n_ejemplos": len(por_ejemplo),
+    }
+
+
 def imprimir_scorecard(
     tarjetas: list[Scorecard], eval_set: list[dict], sanity: dict | None
 ) -> None:
@@ -412,6 +448,19 @@ def imprimir_scorecard(
                 f"{'SÍ' if sanity['detecta_signo_invertido'] else 'NO — punto ciego medido'}."
             )
             print("  Por eso el signo invertido lo verifica la dimensión 3, no el juez.")
+        diag = diagnostico_juez(tarjetas)
+        if diag and diag["delta"] is not None:
+            print()
+            print(
+                f"  Poder discriminante sobre este eval set: nota media "
+                f"{diag['media_correctas']:.2f} cuando la categoría era correcta contra "
+                f"{diag['media_incorrectas']:.2f} cuando no lo era "
+                f"(delta {diag['delta']:+.2f})."
+            )
+            print(
+                f"  En {diag['n_ejemplos_indistinguibles']} de {diag['n_ejemplos']} ejemplos le da "
+                f"la MISMA nota a una respuesta correcta y a una incorrecta."
+            )
 
     print("\n" + "-" * 78)
     print("DIMENSIÓN 3 · DOMINIO (tasa de señal accionable)")
@@ -491,6 +540,7 @@ def main() -> int:
             "modelo": juez.modelo_id,
             "rubrica_version": juez.version_rubrica,
             "sanity_check": sanity,
+            "poder_discriminante": diagnostico_juez(tarjetas),
         },
         "sistemas": {
             t.sistema: {

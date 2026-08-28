@@ -1,3 +1,4 @@
 sistema,n_ejemplos,d1_f1_macro,d1_accuracy,d2_juez_media,d3_tasa_accionable,d3_tasa_accionable_estricta,d3_senal_falsa_alto_impacto,d3_signo_invertido,d3_rumor_como_hecho,f1_macro_adversariales,f1_macro_normales,tasa_accionable_adversariales,tasa_accionable_normales
-mayoritaria,21,0.04,0.1905,,0.1905,,0,0,0,0.0469,0.0278,0.2308,0.125
-lexico,21,0.4238,0.5238,,0.5238,,2,1,0,0.3798,0.3125,0.6154,0.375
+mayoritaria,21,0.04,0.1905,2.524,0.1905,0.0,0,0,0,0.0469,0.0278,0.2308,0.125
+lexico,21,0.4238,0.5238,2.571,0.5238,0.0476,2,1,0,0.3798,0.3125,0.6154,0.375
+lora_finetuned,21,0.3208,0.381,2.524,0.3333,0.0,1,0,0,0.3125,0.1562,0.3846,0.25

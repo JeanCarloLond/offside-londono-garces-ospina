@@ -45,7 +45,7 @@ Cualquier cosa que cumpla esto entra en el harness sin tocar nada:
 ```python
 def sistema(entrada: dict) -> dict:
     """entrada    {"text": str, "source": str, "published_at": str | None}
-       respuesta  {"category": str, "impact": str, "team": str}"""
+    respuesta  {"category": str, "impact": str, "team": str}"""
 ```
 
 Es lo que va a permitir que el RAG de M3 se evalúe con la misma vara sin modificar `harness.py`.
