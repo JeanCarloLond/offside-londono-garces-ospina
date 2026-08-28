@@ -14,11 +14,12 @@ proyecto1/
 │   ├── README.md                             # cómo correr cada script, en qué orden
 │   ├── collect_rss.py / weak_label.py / build_gold_seed.py / gold_corrections.py
 │   ├── rss_sources.yaml / lexicon.yaml
-├── eval/                                    # M2: eval set de dominio + harness
-│   ├── eval_set.jsonl                        # 10 ejemplos gold: input + salida esperada
-│   ├── rubric.yaml                           # qué hace "buena" a una respuesta
+├── eval/                                    # M2: harness de evaluación
+│   ├── eval_set.json                         # 21 ejemplos: input / esperado / criterio
+│   ├── judge_rubric.yaml                     # rúbrica 1-5 del juez, versionada
 │   ├── harness.py                            # 3 dimensiones -> scorecard
-│   └── build_eval_set.py / train_holdout_model.py
+│   ├── judge.py / bias_check.py              # juez LLM y su sesgo medido
+│   └── scorecard_baseline.csv                # el scorecard del baseline
 ├── data/
 │   ├── raw/            # (gitignored) crudo del scraping, nunca se commitea
 │   ├── processed/       # weak_labeled.jsonl — train, supervisión débil
@@ -26,7 +27,8 @@ proyecto1/
 └── docs/
     ├── dataset.md        # descripción completa del dataset (fuente, tamaño, licencia, sesgos)
     ├── results.md         # tabla de resultados + lectura honesta
-    └── eval-set.md        # M2: eval set de dominio, rúbrica y scorecard
+    ├── eval-set.md        # semilla del eval set (S05)
+    └── harness-m2.md      # M2: harness, rúbrica del juez, sesgo y scorecard
 ```
 
 ## Modelo base y tarea
@@ -66,19 +68,24 @@ funciona de punta a punta; lo que falta para un resultado sólido es más texto 
 regular y una segunda pasada de anotación manual entre los tres integrantes — el plan está al final de
 `docs/dataset.md` y `docs/results.md`.
 
-## M2 · Evaluación: nuestro propio eval set
+## M2 · Harness de evaluación
 
 Ningún benchmark público mide nuestro dominio, y los que existen se contaminan. Construimos el
-nuestro: diez ejemplos gold reales, etiquetados a mano y **elegidos para ser difíciles**, más un
-harness que los convierte en un scorecard con tres dimensiones (métrica clásica, rúbrica y vista de
-dominio).
+nuestro: un **harness de tres dimensiones** sobre un eval set curado a mano, que produce un scorecard
+del baseline y se puede volver a correr sobre cualquier sistema futuro — el RAG de M3 entra sin tocar
+el harness.
 
-El hallazgo que lo justifica: sobre el conjunto de validación de M1 el baseline de léxico sacaba
-**F1 macro 1.00**; sobre este eval set saca **0.275**. El léxico no cambió — cambió que dejamos de
-medirlo con ejemplos que él mismo etiquetó.
+| Dimensión | Qué es | Qué no ve |
+|---|---|---|
+| 1 · Métrica clásica | F1 macro sobre la categoría | La gravedad del error |
+| 2 · LLM-as-a-judge | Qwen2.5-1.5B con rúbrica 1-5 anclada y versionada | Es pequeño y falible; su punto ciego está medido |
+| 3 · Dominio | Tasa de señal accionable, con verificaciones deterministas | Matices: es una puerta de sí/no |
 
 ```bash
-cd proyecto1/eval && python harness.py
+cd proyecto1/eval
+python harness.py --sin-juez    # dims 1 y 3, instantáneo y sin GPU
+python harness.py               # las tres
 ```
 
-Detalle completo, rúbrica y scorecard: [`docs/eval-set.md`](docs/eval-set.md).
+Detalle completo —eval set, rúbrica del juez, sesgo mitigado y lectura honesta del
+scorecard— en [`docs/harness-m2.md`](docs/harness-m2.md).

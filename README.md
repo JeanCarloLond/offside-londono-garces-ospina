@@ -1,6 +1,8 @@
 # Offside
 
 > **Offside lee noticias de fútbol y le dice a un apostador recreativo qué información ya "sabe" el mercado y cuál todavía no** — para que decida con criterio y no solo con el titular que alcanzó a leer en el celular.
+>
+> **Y para saber si eso funciona, lo medimos.** Nuestro harness de evaluación comprueba si la señal que entregamos —qué pasó, a quién le afecta y cuánto— le sirve al usuario para decidir mejor que si hubiera leído el titular por su cuenta. Una respuesta es buena cuando **acierta el tipo de hecho, no se equivoca en la dirección del impacto, no confunde un rumor con un hecho, y ante la duda calla en vez de inventar**.
 
 Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA · Universidad EAFIT.
 
@@ -15,7 +17,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 ## Estado del proyecto
 
 - ✅ M1 · Arquitectura transformer y fine-tuning eficiente — ver [`proyecto1/`](proyecto1/)
-- 🔄 M2 · Evaluación: eval set de dominio + harness — ver [`proyecto1/docs/eval-set.md`](proyecto1/docs/eval-set.md)
+- ✅ M2 · Evaluación rigurosa: harness de 3 dimensiones + scorecard del baseline — ver [`proyecto1/docs/harness-m2.md`](proyecto1/docs/harness-m2.md)
 
 ## Estructura del repo
 
@@ -24,7 +26,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 ├── proyecto1/              # Entregable M1 (y base de los siguientes módulos)
 │   ├── notebooks/           # Notebook de fine-tuning, ejecutable en Colab
 │   ├── data_collection/      # Scraping/recolección + limpieza + weak labeling
-│   ├── eval/                 # M2: eval set de dominio, rúbrica y harness
+│   ├── eval/                 # M2: eval set, rúbrica del juez, harness y scorecard
 │   ├── data/                 # processed/ y gold/ se versionan; raw/ e interim/ no (ver .gitignore)
 │   └── docs/                 # Descripción del dataset y reporte de resultados
 ├── scripts/check_secrets.py # Bloquea tokens/credenciales antes de que entren al repo
