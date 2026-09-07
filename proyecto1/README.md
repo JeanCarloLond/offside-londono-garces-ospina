@@ -59,14 +59,15 @@ comparación honesta en este corte: [`docs/results.md`](docs/results.md).
 El dataset ya viene recolectado y versionado (`data/processed/`, `data/gold/`). Para ampliarlo o
 recolectar de nuevo, ver [`data_collection/README.md`](data_collection/README.md).
 
-## Estado y próximos pasos
+## Estado del dataset
 
-Este es un **primer corte real**, recolectado en pretemporada (agosto 2026) — pequeño y con
-limitaciones honestamente documentadas en [`docs/dataset.md`](docs/dataset.md), no el dataset final
-del proyecto (meta: 4.000-6.000 fragmentos). El pipeline completo (LoRA, baselines, comparación) ya
-funciona de punta a punta; lo que falta para un resultado sólido es más texto real de temporada
-regular y una segunda pasada de anotación manual entre los tres integrantes — el plan está al final de
-`docs/dataset.md` y `docs/results.md`.
+El corpus se recolectó primero en pretemporada (251 fragmentos) y se amplió con la liga ya en marcha
+hasta **497**, incorporando prensa colombiana. Eso llevó el F1 en validación de 0,63 a **0,70** y
+sacó los primeros ejemplos reales de `duda_fisica` y de alineaciones confirmadas.
+
+Sigue siendo un corpus pequeño y con desbalance severo: `irrelevante` es el 76 % y las clases
+accionables tienen entre 1 y 4 ejemplos. Las limitaciones están documentadas sin maquillar en
+[`docs/dataset.md`](docs/dataset.md).
 
 ## M2 · Harness de evaluación
 

@@ -21,10 +21,10 @@ este script genera un seed PEQUEÑO Y SINTÉTICO:
   - Etiquetado como source="synthetic_seed" / label_method="manual_synthetic"
     para que nunca se confunda con datos reales en ningún análisis posterior.
 
-Esto es un ANDAMIO, no el dataset final. El equipo debe reemplazarlo por
-anotación manual real en cuanto la recolección (corrida repetidamente a lo
-largo de las próximas semanas, ver README de data_collection) junte
-suficientes ejemplos reales de estas categorías.
+Es un andamio, no el dataset final: se retira por clase a medida que la
+recolección junta ejemplos reales. Tras ampliar el corpus en temporada ya hay
+ejemplos reales de `duda_fisica`, así que esa clase depende menos del seed que
+en el corte de pretemporada.
 """
 
 from __future__ import annotations

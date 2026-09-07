@@ -1,8 +1,8 @@
-# Eval set de dominio y harness de evaluación (M2)
+# La semilla del eval set (S05) y el bug de reproducibilidad
 
-> Entregable de la Sesión 5. Responde las tres cosas que pide el módulo: **(1)** diez ejemplos gold de nuestro dominio con su salida esperada, **(2)** qué hace *buena* a una respuesta en nuestro dominio, y **(3)** el harness ejecutable que lo convierte en un scorecard.
+> **Este documento es el registro de cómo arrancó la evaluación**, con los diez ejemplos iniciales y el bug de reproducibilidad que encontramos al construir el harness.
 >
-> Artefactos: [`../eval/eval_set.jsonl`](../eval/eval_set.jsonl) · [`../eval/rubric.yaml`](../eval/rubric.yaml) · [`../eval/harness.py`](../eval/harness.py)
+> El entregable de M2 —eval set de 21 ejemplos, rúbrica del juez, las tres dimensiones y el scorecard— está en **[`harness-m2.md`](harness-m2.md)**. Los números de aquí son los del corte de pretemporada y quedaron superados.
 
 ---
 
@@ -84,7 +84,7 @@ En resumen, y en una frase defendible ante cualquiera: **una respuesta buena aci
 ```bash
 cd proyecto1/eval
 python harness.py                    # baselines
-python harness.py --json scorecard.json
+python harness.py --json scorecard_baseline.json
 ```
 
 | Dimensión | Qué es aquí | Estado |
@@ -188,10 +188,15 @@ entre el encoder y la cabeza de clasificación, y llevaba ahí desde M1 sin que 
 
 ---
 
-## Pendientes hacia la entrega M2
+## Qué pasó con esto después
 
-1. **Ampliar a rumores reales** para poder medir C4, hoy no evaluable.
-2. **LLM-as-a-judge** (S06): la rúbrica ya está escrita y es el prompt; falta el juez.
-3. **Abstención calibrada**: implementar el umbral de confianza que hace posible el criterio estructural E2.
-4. **Extracción de equipo afectado** para activar C6.
-5. **Crecer el set** más allá de diez ejemplos, manteniendo la proporción de casos difíciles.
+Los cuatro pendientes que dejó esta semilla se cerraron en M2:
+
+| Pendiente de S05 | Estado |
+|---|---|
+| Ampliar con rumores reales para poder medir C4 | El corpus sigue sin producir rumores de disponibilidad, así que se redactó uno con entidades ficticias (`OFF-21`). C4 ya es medible |
+| LLM-as-a-judge | Implementado en `judge.py` con la rúbrica anclada de `judge_rubric.yaml` |
+| Crecer el eval set más allá de diez ejemplos | 21, con 13 adversariales y las 8 categorías cubiertas |
+| Ampliar el corpus fuera de pretemporada | 251 → 497 fragmentos, con fuentes colombianas integradas |
+
+El detalle está en [`harness-m2.md`](harness-m2.md).

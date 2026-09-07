@@ -84,11 +84,12 @@ criterios:
   - id: C6
     nombre: "Atribuye el impacto al equipo correcto"
     weight: 0.05
-    evaluable: pendiente_s06
+    evaluable: fuera_de_alcance_actual
     descripcion: >
       Cuando el fragmento menciona dos equipos, la señal debe apuntar al que
-      resulta afectado. El modelo de M1 no extrae equipo todavía (solo clasifica),
-      así que este criterio queda declarado pero sin evaluar hasta M2/M3.
+      resulta afectado. Ningún sistema evaluado extrae equipo: todos clasifican,
+      así que el criterio queda declarado y sin puntuar. Se activará cuando el
+      sistema devuelva el equipo de verdad y no un marcador de posición.
     check: "pred.team == expected.team"
 
 # Criterios estructurales: se cumplen por diseño del sistema, no por el modelo.
