@@ -1,12 +1,31 @@
 # Offside
 
+[![lint](https://github.com/JeanCarloLond/offside-londono-garces-ospina/actions/workflows/lint.yml/badge.svg)](https://github.com/JeanCarloLond/offside-londono-garces-ospina/actions/workflows/lint.yml)
+[![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+[![Módulo](https://img.shields.io/badge/SI4006-M1%20·%20M2-success)](#entregables)
+
 > **Offside lee noticias de fútbol y le dice a un apostador recreativo qué información ya "sabe" el mercado y cuál todavía no** — para que decida con criterio y no solo con el titular que alcanzó a leer en el celular.
 >
 > **Y para saber si eso funciona, lo medimos.** Nuestro harness de evaluación comprueba si la señal que entregamos —qué pasó, a quién le afecta y cuánto— le sirve al usuario para decidir mejor que si hubiera leído el titular por su cuenta. Una respuesta es buena cuando **acierta el tipo de hecho, no se equivoca en la dirección del impacto, no confunde un rumor con un hecho, y ante la duda calla en vez de inventar**.
 
 Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA · Universidad EAFIT.
 
-## Equipo
+---
+
+## Entregables
+
+| Módulo | Qué es | Empiece por aquí | Artefactos |
+|---|---|---|---|
+| **M2** · Evaluación rigurosa | Harness de 3 dimensiones + scorecard del baseline, con la rúbrica del juez y su sesgo medido | **[Ir a M2 ↓](#m2--harness-de-evaluación)** · [`docs/harness-m2.md`](proyecto1/docs/harness-m2.md) | [eval set](proyecto1/eval/eval_set.json) · [rúbrica del juez](proyecto1/eval/judge_rubric.yaml) · [scorecard](proyecto1/eval/scorecard_baseline.csv) · [notebook](proyecto1/notebooks/M2_harness_evaluacion.ipynb) |
+| **M1** · Fine-tuning con LoRA | BETO afinado sobre prensa deportiva, comparado contra tres baselines | **[Ir a M1 ↓](#m1--fine-tuning-con-lora)** · [`docs/results.md`](proyecto1/docs/results.md) | [notebook](proyecto1/notebooks/M1_finetuning_LoRA_offside.ipynb) · [dataset](proyecto1/docs/dataset.md) · [recolección](proyecto1/data_collection/) |
+
+Los dos notebooks abren en Colab con un clic y clonan el repo solos:
+
+[![M1 en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JeanCarloLond/offside-londono-garces-ospina/blob/main/proyecto1/notebooks/M1_finetuning_LoRA_offside.ipynb) M1 · fine-tuning
+&nbsp;&nbsp;
+[![M2 en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JeanCarloLond/offside-londono-garces-ospina/blob/main/proyecto1/notebooks/M2_harness_evaluacion.ipynb) M2 · harness
+
+### Equipo
 
 | Integrante | Correo |
 |---|---|
@@ -14,48 +33,20 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 | Alejandro Garcés Ramírez | agarcesr@eafit.edu.co |
 | Nicolás Ospina Torres | nospinat@eafit.edu.co |
 
-## Estado del proyecto
+---
 
-- ✅ M1 · Arquitectura transformer y fine-tuning eficiente — ver [`proyecto1/`](proyecto1/)
-- ✅ M2 · Evaluación rigurosa: harness de 3 dimensiones + scorecard del baseline — ver [`proyecto1/docs/harness-m2.md`](proyecto1/docs/harness-m2.md)
-
-## Estructura del repo
-
-```text
-.
-├── proyecto1/              # Entregable M1 (y base de los siguientes módulos)
-│   ├── notebooks/           # Notebook de fine-tuning, ejecutable en Colab
-│   ├── data_collection/      # Scraping/recolección + limpieza + weak labeling
-│   ├── eval/                 # M2: eval set, rúbrica del juez, harness y scorecard
-│   ├── data/                 # processed/ y gold/ se versionan; raw/ e interim/ no (ver .gitignore)
-│   └── docs/                 # Descripción del dataset y reporte de resultados
-├── scripts/check_secrets.py # Bloquea tokens/credenciales antes de que entren al repo
-├── .gitlab-ci.yml           # Pipeline de lint en GitLab (rápido, sin GPU)
-├── .github/workflows/       # El mismo lint, en GitHub Actions
-├── .pre-commit-config.yaml  # Mismos checks del CI, en local antes de commitear
-├── pyproject.toml           # Config de ruff (Python + notebooks)
-└── requirements-dev.txt     # Herramientas de desarrollo (lint, hooks) — no hace falta en Colab
-```
-
-## Buenas prácticas del repo
-
-- **Lint automático**: cada push/MR corre búsqueda de credenciales, `ruff` (Python + notebooks) y `pymarkdown` (Markdown) en un job único sin GPU. El repo vive en GitLab (trabajo diario) y en GitHub (entrega pública), así que los mismos checks están definidos en `.gitlab-ci.yml` y en `.github/workflows/lint.yml`.
-- **Hooks locales opcionales, mismos checks que el CI**:
-
-  ```bash
-  pip install -r requirements-dev.txt
-  pre-commit install
-  ```
-
-- **Nada de datos crudos ni artefactos de modelo en git**: `.gitignore` excluye `proyecto1/data/raw/`, checkpoints y pesos — ver por qué en [`proyecto1/docs/dataset.md`](proyecto1/docs/dataset.md#licencia-y-uso).
-- **Ramas + Merge Requests**: trabajo en ramas cortas (`feature/...`, `fix/...`), MR a `main` con al menos una revisión del equipo antes de mergear.
-
-## M2 · El harness de evaluación
+## M2 · Harness de evaluación
 
 Ningún benchmark público mide nuestro dominio, y los que existen se contaminan. Construimos el
 nuestro: un harness de **tres dimensiones** sobre 21 ejemplos curados a mano (13 adversariales), que
 produce un scorecard del baseline y se puede volver a correr sobre cualquier sistema futuro — el RAG
 de M3 entra sin tocar el harness.
+
+| Dimensión | Qué mide | Qué **no** ve |
+|---|---|---|
+| **1 · Métrica clásica** | F1 macro sobre la categoría. Automática y reproducible | La **gravedad**: confundir una baja con una sanción cuesta lo mismo que invertir el signo |
+| **2 · LLM-as-a-judge** | Si la señal le sirve al usuario, pesando el daño de cada error | Es un 1.5B falible. Su punto ciego está medido |
+| **3 · Dominio** | Verificaciones duras y deterministas de los errores que no nos podemos permitir | Matices: es una puerta de sí/no |
 
 ```bash
 cd proyecto1/eval
@@ -93,6 +84,9 @@ puntúa por encima de *emitir una falsa* (2).
 | Clase mayoritaria | 0 | 0 | 0,23 | 0,12 |
 | Léxico/regex | **2** | **1** | 0,62 | 0,38 |
 | LoRA afinado | 1 | 0 | 0,38 | 0,25 |
+
+Datos completos en [`scorecard_baseline.csv`](proyecto1/eval/scorecard_baseline.csv) y, por ejemplo,
+en [`scorecard_baseline.json`](proyecto1/eval/scorecard_baseline.json).
 
 ### La lectura, sin maquillar
 
@@ -142,6 +136,63 @@ se puede desde fuera), le quitamos la señal de la que se alimenta.
 
 Detalle completo en [`proyecto1/docs/harness-m2.md`](proyecto1/docs/harness-m2.md).
 
-## Cómo correr el entregable de M1
+---
 
-Ver [`proyecto1/README.md`](proyecto1/README.md) — incluye el link directo a Colab, el reporte de resultados y la descripción del dataset.
+## M1 · Fine-tuning con LoRA
+
+**Encoder — `dccuchile/bert-base-spanish-wwm-cased` (BETO)**, afinado con LoRA para clasificar
+fragmentos de prensa por categoría del hecho. Antes de fijar el modelo medimos la **fertilidad del
+tokenizador** sobre 40 términos del dominio: BETO parte nuestro vocabulario en **2,24** tokens por
+término, contra 2,88 del DistilBERT multilingüe y 3,48 del inglés.
+
+| Sistema | F1 macro (validación de M1) |
+|---|---:|
+| Clase mayoritaria | 0,1033 |
+| BETO zero-shot (sin afinar) | 0,0104 |
+| **LoRA afinado** | **0,2468** |
+
+LoRA mueve el **0,27 %** de los parámetros (301 064 de 110 M), con `r=8`, `alpha=16` y
+`target_modules=[query, value]`.
+
+Tras el M2 ampliamos el corpus con la liga ya en marcha —de **251 a 497** fragmentos, incorporando
+prensa colombiana— y el F1 en validación del modelo reentrenado subió a **0,7046**. El detalle y la
+lectura honesta están en [`docs/results.md`](proyecto1/docs/results.md), y el dataset con sus sesgos
+en [`docs/dataset.md`](proyecto1/docs/dataset.md).
+
+---
+
+## El repositorio
+
+```text
+.
+├── proyecto1/
+│   ├── notebooks/            # Los dos entregables, ejecutables en Colab
+│   ├── eval/                 # M2: eval set, rúbrica del juez, harness y scorecard
+│   ├── data_collection/      # Recolección RSS + limpieza + supervisión débil
+│   ├── data/                 # processed/ y gold/ se versionan; raw/ no (ver .gitignore)
+│   └── docs/                 # Dataset, resultados de M1 y harness de M2
+├── scripts/check_secrets.py  # Bloquea credenciales antes de que entren al repo
+├── .github/workflows/        # Lint en GitHub Actions
+├── .gitlab-ci.yml            # El mismo lint en GitLab
+└── .pre-commit-config.yaml   # Los mismos checks, en local antes de commitear
+```
+
+### Buenas prácticas
+
+- **Lint automático en cada push**: búsqueda de credenciales, `ruff` (Python y notebooks) y
+  `pymarkdown`, en un job sin GPU. El repo vive en GitLab (trabajo diario) y en GitHub (entrega
+  pública), así que los mismos checks están definidos en los dos.
+- **Hooks locales opcionales**, idénticos al CI:
+
+  ```bash
+  pip install -r requirements-dev.txt
+  pre-commit install
+  ```
+
+- **Nada de datos crudos ni pesos en git**: `.gitignore` excluye `proyecto1/data/raw/` y los
+  checkpoints. El porqué está en [`docs/dataset.md`](proyecto1/docs/dataset.md#licencia-y-uso): no
+  redistribuimos texto periodístico, solo fragmentos de sindicación con su enlace de vuelta.
+- **Licencia separada para código y datos**: el código es MIT; el texto de prensa sigue siendo de
+  cada medio, y así está dicho en [`LICENSE`](LICENSE).
+- **Ramas cortas y revisión**: `feature/...` o `fix/...`, con revisión de otro integrante antes de
+  mergear a `main`.
