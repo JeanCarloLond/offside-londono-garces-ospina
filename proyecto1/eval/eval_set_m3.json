@@ -1,0 +1,736 @@
+[
+  {
+    "eval_id": "M3-01",
+    "input": {
+      "text": "¿Vinicius puede jugar el Clásico?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "sancion_suspension",
+      "impact": "negativo_alto",
+      "team": "Real Madrid"
+    },
+    "criterio": "La respuesta correcta es una sanción: Vinicius se pierde el Clásico porque le impusieron cuatro partidos de suspensión por su roja ante el Villarreal. Impacto negativo alto para el Real Madrid. Decir que juega, o que vuelve al once, invierte el signo.",
+    "referencia": "No. Vinicius se pierde el Clásico: el Comité de Disciplina le impuso cuatro partidos de sanción por su roja ante el Villarreal.",
+    "referencia_afirmaciones": [
+      "Vinicius no puede jugar el Clásico.",
+      "Vinicius fue sancionado con cuatro partidos.",
+      "La sanción es por la tarjeta roja ante el Villarreal."
+    ],
+    "docs_relevantes": [
+      "cba83938135d711f",
+      "121aa9cb87ef0452",
+      "a223284dd29ea88b"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "conflicto temporal",
+    "por_que_dificil": "Un día antes Marca publicó 'Vinicius vuelve al once de Mourinho' (para la Champions). Hay cuatro fragmentos sobre Vinicius compitiendo por el top-k."
+  },
+  {
+    "eval_id": "M3-02",
+    "input": {
+      "text": "¿Juega Vinicius contra la Roma en la Champions?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "cambio_tactico",
+      "impact": "neutro",
+      "team": "Real Madrid"
+    },
+    "criterio": "Par mínimo de M3-01. La sanción de cuatro partidos es de Liga; para la Champions ante la Roma, Marca da a Vinicius en el posible once. Es una noticia de alineación (cambio táctico) de impacto neutro. Responder que está sancionado para ese partido es una señal falsa de alto impacto.",
+    "referencia": "Sí, previsiblemente: en el posible once del Roma-Real Madrid de Champions, Vinicius vuelve al once de Mourinho. Su sanción de cuatro partidos es de Liga.",
+    "referencia_afirmaciones": [
+      "Vinicius aparece en el posible once del Real Madrid ante la Roma.",
+      "El partido contra la Roma es de Champions League.",
+      "La sanción de Vinicius es de cuatro partidos de Liga."
+    ],
+    "docs_relevantes": [
+      "6c0d96d821b0a34d",
+      "121aa9cb87ef0452"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "par mínimo: misma persona, otra competición",
+    "por_que_dificil": "Los fragmentos de la sanción son más numerosos y más recientes; arrastran a decir que no juega. Hay que leer que la sanción es 'de Liga'."
+  },
+  {
+    "eval_id": "M3-03",
+    "input": {
+      "text": "¿Isaac Romero fue expulsado? ¿Con qué equipo juega?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "sancion_suspension",
+      "impact": "negativo_alto",
+      "team": "Sevilla"
+    },
+    "criterio": "Isaac Romero, delantero del Sevilla, fue expulsado por doble amarilla en un partido de Liga, lo que arrastra suspensión: sanción, impacto negativo alto para el Sevilla.",
+    "referencia": "Sí. Isaac Romero, delantero del Sevilla, marcó el 2-3 y terminó expulsado tras ver dos amarillas en cuatro minutos.",
+    "referencia_afirmaciones": [
+      "Isaac Romero fue expulsado.",
+      "Isaac Romero juega en el Sevilla.",
+      "Vio dos amarillas en cuatro minutos."
+    ],
+    "docs_relevantes": [
+      "f91e5278a392f72c",
+      "ac139f7bbda09ef5"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "Control: el nombre aparece literal en dos fragmentos."
+  },
+  {
+    "eval_id": "M3-04",
+    "input": {
+      "text": "¿A quién le falta el Alavés en la banda derecha?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "sancion_suspension",
+      "impact": "negativo_alto",
+      "team": "Alaves"
+    },
+    "criterio": "Al Alavés le falta Ángel Pérez, indiscutible en la banda derecha, porque está sancionado. Sanción, impacto negativo alto para el Alavés.",
+    "referencia": "A Ángel Pérez, que está sancionado; era indiscutible en la banda derecha y Quique debe buscarle recambio.",
+    "referencia_afirmaciones": [
+      "Ángel Pérez está sancionado.",
+      "Ángel Pérez juega en la banda derecha.",
+      "El técnico debe buscarle un recambio."
+    ],
+    "docs_relevantes": [
+      "ed98fa9ca790f838"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "el club solo está en la URL",
+    "por_que_dificil": "El fragmento nunca dice 'Alavés' (solo 'Quique' y 'banda derecha'). El club está en la sección del enlace."
+  },
+  {
+    "eval_id": "M3-05",
+    "input": {
+      "text": "¿Quién fue expulsado en el Tottenham contra el Manchester United?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "sancion_suspension",
+      "impact": "negativo_alto",
+      "team": "Tottenham"
+    },
+    "criterio": "Bentancur vio la roja y el Tottenham acabó con diez: una expulsión en liga arrastra sanción. Impacto negativo alto para el Tottenham.",
+    "referencia": "Rodrigo Bentancur: el Tottenham acabó con diez por su roja, en el partido que ganó al Manchester United con un gol de Solanke en el 92'.",
+    "referencia_afirmaciones": [
+      "Bentancur fue expulsado con tarjeta roja.",
+      "El Tottenham acabó con diez jugadores."
+    ],
+    "docs_relevantes": [
+      "400bd72e4fb13f07"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "El dato está en la segunda frase de una crónica del United."
+  },
+  {
+    "eval_id": "M3-06",
+    "input": {
+      "text": "¿Cuenta el Sevilla con Guridi para jugar en el Bernabéu?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Sevilla"
+    },
+    "criterio": "No: el Sevilla prepara la visita al Bernabéu sin Guridi, que tiene una lesión en el aductor. Baja confirmada, impacto negativo alto para el Sevilla.",
+    "referencia": "No. El Sevilla prepara la visita al Bernabéu sin Guridi, que sufre una lesión en el aductor largo del muslo izquierdo.",
+    "referencia_afirmaciones": [
+      "Guridi no estará en la visita del Sevilla al Bernabéu.",
+      "Guridi sufre una lesión en el aductor largo del muslo izquierdo."
+    ],
+    "docs_relevantes": [
+      "3b31d5310b9bd6e4"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "Control."
+  },
+  {
+    "eval_id": "M3-07",
+    "input": {
+      "text": "¿Nico Williams estará con el Athletic en Mestalla?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Athletic Club"
+    },
+    "criterio": "No: Nico seguirá de baja por lesión para el partido en Mestalla. Baja confirmada, impacto negativo alto para el Athletic.",
+    "referencia": "No. Según Marca, Nico seguirá de baja por lesión en el partido de Mestalla.",
+    "referencia_afirmaciones": [
+      "Nico no jugará en Mestalla.",
+      "Nico está de baja por lesión."
+    ],
+    "docs_relevantes": [
+      "9c670dc48de7ddb2",
+      "dd5fc7368339ee00"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "nombre parcial",
+    "por_que_dificil": "El corpus dice solo 'Nico'; el apellido de la pregunta no aparece en ningún fragmento."
+  },
+  {
+    "eval_id": "M3-08",
+    "input": {
+      "text": "¿Juega Marco Asensio con el Fenerbahçe contra el Aston Villa?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Fenerbahce"
+    },
+    "criterio": "No: el Fenerbahçe informó de la baja de última hora de Asensio para el partido de Champions. Baja confirmada, impacto negativo alto para el Fenerbahçe.",
+    "referencia": "No. Marco Asensio es baja de última hora para el partido de Champions ante el Aston Villa; lo informó el Fenerbahçe.",
+    "referencia_afirmaciones": [
+      "Marco Asensio no jugará contra el Aston Villa.",
+      "Es una baja de última hora.",
+      "El partido es de Champions League."
+    ],
+    "docs_relevantes": [
+      "b5d8a4b3d13f63e4"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "Control."
+  },
+  {
+    "eval_id": "M3-09",
+    "input": {
+      "text": "¿Volverá Uche a jugar con el Getafe esta temporada?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Getafe"
+    },
+    "criterio": "No: el Getafe confirmó una grave lesión de rodilla y Uche se pierde toda la temporada. Baja confirmada, impacto negativo alto. No hace falta calcular fechas.",
+    "referencia": "No. El Getafe comunicó una grave lesión en la rodilla derecha de Uche, que se perderá toda la temporada.",
+    "referencia_afirmaciones": [
+      "Uche sufre una grave lesión en la rodilla derecha.",
+      "Uche se perderá toda la temporada."
+    ],
+    "docs_relevantes": [
+      "024ca02de28ba07e"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal; tentación de usar la herramienta sin necesidad",
+    "por_que_dificil": "'Esta temporada' suena a pregunta de fechas, pero no hay nada que calcular."
+  },
+  {
+    "eval_id": "M3-10",
+    "input": {
+      "text": "¿Qué problema tiene el Córdoba en el extremo izquierdo?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Cordoba"
+    },
+    "criterio": "Kevin Medina, su extremo izquierdo, está lesionado para varias semanas. Baja confirmada, impacto negativo alto para el Córdoba.",
+    "referencia": "Kevin Medina, su extremo izquierdo, está lesionado para varias semanas; es la última de una serie de lesiones en ese puesto.",
+    "referencia_afirmaciones": [
+      "Kevin Medina está lesionado.",
+      "La lesión es para varias semanas.",
+      "Kevin Medina juega de extremo izquierdo en el Córdoba."
+    ],
+    "docs_relevantes": [
+      "3a1a705dc867b9e6"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "pregunta sin nombre propio",
+    "por_que_dificil": "La pregunta no nombra al jugador: solo el puesto y el club."
+  },
+  {
+    "eval_id": "M3-11",
+    "input": {
+      "text": "¿Quién será el portero de la Roma contra el Real Madrid?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Roma"
+    },
+    "criterio": "El portero titular de la Roma, Svilar, está lesionado; juega Gollini. La señal es la baja de Svilar: baja confirmada, impacto negativo alto para la Roma.",
+    "referencia": "Pierluigi Gollini, por la lesión de Svilar.",
+    "referencia_afirmaciones": [
+      "Svilar está lesionado.",
+      "Gollini será el portero de la Roma ante el Real Madrid."
+    ],
+    "docs_relevantes": [
+      "12c66095ff585dc6"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "titular metafórico",
+    "por_que_dificil": "La noticia se titula 'El rapero con guantes que quiere silenciar al Madrid': ni 'portero' ni 'Roma' aparecen como tales en el titular."
+  },
+  {
+    "eval_id": "M3-12",
+    "input": {
+      "text": "¿Qué jugadores lesionados tiene el Celta?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Celta"
+    },
+    "criterio": "Pablo Durán y Borja Iglesias están lesionados y fuera de la convocatoria. Baja confirmada, impacto negativo alto para el Celta.",
+    "referencia": "Pablo Durán y Borja Iglesias, que se quedan fuera de la convocatoria del Celta por lesión.",
+    "referencia_afirmaciones": [
+      "Pablo Durán está lesionado.",
+      "Borja Iglesias está lesionado.",
+      "Ninguno de los dos está en la convocatoria del Celta."
+    ],
+    "docs_relevantes": [
+      "3f2325dbfa69c70d"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "Control."
+  },
+  {
+    "eval_id": "M3-13",
+    "input": {
+      "text": "¿Qué le pasó a Ana María Guzmán con la Selección Colombia?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Seleccion Colombia"
+    },
+    "criterio": "Sufrió una grave lesión en el amistoso contra Venezuela y será operada: baja confirmada, impacto negativo alto para la Selección Colombia.",
+    "referencia": "Sufrió una grave lesión a los pocos segundos del amistoso contra Venezuela y será operada.",
+    "referencia_afirmaciones": [
+      "Ana María Guzmán sufrió una grave lesión.",
+      "La lesión fue en el amistoso contra Venezuela.",
+      "Será operada."
+    ],
+    "docs_relevantes": [
+      "f325c610bd68f03a"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "variante latam (El Tiempo)",
+    "por_que_dificil": "Fuente colombiana, minoritaria en el corpus (36 de 748)."
+  },
+  {
+    "eval_id": "M3-14",
+    "input": {
+      "text": "¿Qué le pasa a Laporte en el Athletic?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "duda_fisica",
+      "impact": "negativo_bajo",
+      "team": "Athletic Club"
+    },
+    "criterio": "Laporte no viajó por una indisposición y sigue sin entrenar con el grupo: es una duda física, impacto negativo bajo. Inflarlo a baja confirmada de alto impacto es una señal falsa.",
+    "referencia": "Laporte no viajó a Vallecas por una indisposición y sigue sin entrenar con el grupo.",
+    "referencia_afirmaciones": [
+      "Laporte no viajó a Vallecas por una indisposición.",
+      "Laporte sigue sin entrenar con el grupo."
+    ],
+    "docs_relevantes": [
+      "dd5fc7368339ee00",
+      "9c670dc48de7ddb2"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "intensidad",
+    "por_que_dificil": "Comparte fragmento con la baja de Nico: fácil contagiarse del 'de baja'."
+  },
+  {
+    "eval_id": "M3-15",
+    "input": {
+      "text": "¿Es grave la lesión de Beitia?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "duda_fisica",
+      "impact": "negativo_bajo",
+      "team": "Real Sociedad"
+    },
+    "criterio": "No es grave: un esguince de tobillo; se temió algo peor y no lo fue. Duda física, impacto negativo bajo. Responder 'lesión grave' es una señal falsa de alto impacto.",
+    "referencia": "No. Beitia sufre un esguince de tobillo izquierdo; se temió una lesión grave, pero no lo ha sido.",
+    "referencia_afirmaciones": [
+      "Beitia sufre un esguince de tobillo izquierdo.",
+      "La lesión no es grave."
+    ],
+    "docs_relevantes": [
+      "8bb40e4d298e1983"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "negación",
+    "por_que_dificil": "El texto contiene 'lesión grave' negado: 'se temió... pero no ha sido así'."
+  },
+  {
+    "eval_id": "M3-16",
+    "input": {
+      "text": "¿Ya está recuperado Sadiq en el Valencia?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "duda_fisica",
+      "impact": "negativo_bajo",
+      "team": "Valencia"
+    },
+    "criterio": "Todavía no: acelera su regreso pero está pendiente de pruebas que determinarán su evolución. Es una duda física (impacto negativo bajo), no un regreso confirmado.",
+    "referencia": "Todavía no está confirmado: Sadiq acelera su regreso, pero está pendiente de nuevas pruebas este jueves que determinarán su evolución.",
+    "referencia_afirmaciones": [
+      "Sadiq acelera su regreso.",
+      "Sadiq está pendiente de nuevas pruebas.",
+      "Su recuperación no está confirmada."
+    ],
+    "docs_relevantes": [
+      "4ad0d652a7c19a5f"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "regreso aparente",
+    "por_que_dificil": "'Acelera su regreso' empuja a regreso_alta; no hay alta."
+  },
+  {
+    "eval_id": "M3-17",
+    "input": {
+      "text": "¿Jens Cajuste ya puede jugar?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "regreso_alta",
+      "impact": "positivo_bajo",
+      "team": "Malaga"
+    },
+    "criterio": "Sí: Cajuste vuelve al grupo y podrá jugar tras un mes de lesión. Regreso, impacto positivo bajo para el Málaga.",
+    "referencia": "Sí. Jens Cajuste vuelve al grupo y podrá jugar tras un mes de lesión.",
+    "referencia_afirmaciones": [
+      "Cajuste vuelve al grupo.",
+      "Cajuste podrá jugar.",
+      "Estuvo un mes lesionado."
+    ],
+    "docs_relevantes": [
+      "25a07578dc93f4c8"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": false,
+    "tipo_dificultad": "normal",
+    "por_que_dificil": "Control."
+  },
+  {
+    "eval_id": "M3-18",
+    "input": {
+      "text": "¿Cómo está Musiala? ¿Puede volver a jugar con el Bayern?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "regreso_alta",
+      "impact": "positivo_bajo",
+      "team": "Bayern Munich"
+    },
+    "criterio": "Lo más reciente (8 de octubre): vuelve a ejercitarse tras el desgarro, aunque el Bayern no correrá riesgos. Regreso, impacto positivo bajo. Las noticias de agosto sobre su baja en la Supercopa están superadas.",
+    "referencia": "Musiala vuelve a ejercitarse tras el desgarro que sufrió en la Nations League ante Países Bajos, aunque el Bayern no correrá riesgos con él.",
+    "referencia_afirmaciones": [
+      "Musiala vuelve a ejercitarse.",
+      "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
+      "El Bayern no correrá riesgos con él."
+    ],
+    "docs_relevantes": [
+      "8969f60685def770"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "conflicto temporal",
+    "por_que_dificil": "Tres fragmentos de agosto dicen que Musiala es baja; el vigente es el de octubre."
+  },
+  {
+    "eval_id": "M3-19",
+    "input": {
+      "text": "¿Erik Lira ya fichó por el Valencia?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "rumor_no_confirmado",
+      "impact": "neutro",
+      "team": "Valencia"
+    },
+    "criterio": "No hay fichaje: su agente se reunió con el director deportivo del Valencia y eso alimenta rumores. Es un rumor no confirmado; presentarlo como hecho es el error que más castiga la rúbrica.",
+    "referencia": "No hay fichaje confirmado: el agente de Erik Lira se reunió con Braulio Vázquez en Paterna, lo que alimenta los rumores sobre su futuro.",
+    "referencia_afirmaciones": [
+      "El fichaje de Erik Lira no está confirmado.",
+      "Su agente se reunió con Braulio Vázquez en Paterna.",
+      "La reunión alimenta rumores sobre su futuro."
+    ],
+    "docs_relevantes": [
+      "8615c6577f427a94"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "pregunta que presupone el hecho",
+    "por_que_dificil": "La pregunta da el fichaje por hecho ('ya fichó')."
+  },
+  {
+    "eval_id": "M3-20",
+    "input": {
+      "text": "¿Qué dijo Arrasate en su vuelta a Osasuna?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "declaracion_contexto",
+      "impact": "neutro",
+      "team": "Osasuna"
+    },
+    "criterio": "Es una declaración del nuevo entrenador: siente que Osasuna lo necesita y el objetivo es la permanencia. Declaración/contexto, impacto neutro. 'Vuelta' no es un regreso de lesión.",
+    "referencia": "Que siente que Osasuna lo necesita y que puede ayudar; el objetivo claro es la permanencia.",
+    "referencia_afirmaciones": [
+      "Arrasate siente que Osasuna lo necesita.",
+      "Arrasate cree que puede ayudar a Osasuna.",
+      "El objetivo es la permanencia."
+    ],
+    "docs_relevantes": [
+      "62c4cd29be5f10d0"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "palabra trampa",
+    "por_que_dificil": "'Vuelta'/'regreso' empujan a regreso_alta, pero es un técnico."
+  },
+  {
+    "eval_id": "M3-21",
+    "input": {
+      "text": "¿Estará Aaron Ochoa disponible para un partido el 1 de noviembre?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Malaga"
+    },
+    "criterio": "La baja estimada es de unos tres meses desde el 27 de agosto: regreso hacia el 27 de noviembre, después del 1 de noviembre. Sigue siendo baja confirmada, impacto negativo alto.",
+    "referencia": "No. Con una baja de alrededor de tres meses publicada el 27 de agosto de 2026, el regreso estimado es hacia el 27 de noviembre, después del 1 de noviembre.",
+    "referencia_afirmaciones": [
+      "La baja de Aaron Ochoa es de alrededor de tres meses.",
+      "La noticia se publicó el 27 de agosto de 2026.",
+      "El regreso estimado es hacia el 27 de noviembre de 2026.",
+      "El 1 de noviembre es anterior al regreso estimado."
+    ],
+    "docs_relevantes": [
+      "cfa48ba64563b824"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": true,
+    "adversarial": true,
+    "tipo_dificultad": "aritmética de fechas",
+    "por_que_dificil": "Hay que sumar tres meses a la fecha de publicación y compararla. Además, el resumen RSS de ese fragmento habla del Girona por un error del feed: el club es el Málaga."
+  },
+  {
+    "eval_id": "M3-22",
+    "input": {
+      "text": "¿Podrá jugar Aaron Ochoa el 15 de diciembre?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "duda_fisica",
+      "impact": "negativo_bajo",
+      "team": "Malaga"
+    },
+    "criterio": "Par mínimo de M3-21. Con la estimación publicada (unos tres meses desde el 27 de agosto) ya debería estar de vuelta para el 15 de diciembre, pero no hay alta confirmada: duda física, impacto negativo bajo. Repetir 'está de baja' es una señal falsa de alto impacto.",
+    "referencia": "Probablemente sí, pero sin confirmación: con la baja de unos tres meses publicada el 27 de agosto de 2026, el regreso estimado es hacia el 27 de noviembre, antes del 15 de diciembre.",
+    "referencia_afirmaciones": [
+      "La baja de Aaron Ochoa es de alrededor de tres meses.",
+      "El regreso estimado es hacia el 27 de noviembre de 2026.",
+      "El 15 de diciembre es posterior al regreso estimado.",
+      "No hay un alta médica confirmada."
+    ],
+    "docs_relevantes": [
+      "cfa48ba64563b824"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": true,
+    "adversarial": true,
+    "tipo_dificultad": "aritmética de fechas",
+    "por_que_dificil": "La misma noticia que M3-21 lleva a la respuesta contraria."
+  },
+  {
+    "eval_id": "M3-23",
+    "input": {
+      "text": "¿Puede contar el Oviedo con Chaira para el 29 de noviembre?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "duda_fisica",
+      "impact": "negativo_bajo",
+      "team": "Real Oviedo"
+    },
+    "criterio": "La baja era de entre dos y tres meses desde el 8 de agosto: regreso estimado entre el 8 de octubre y el 8 de noviembre. Para el 29 de noviembre debería estar, pero sin confirmación: duda física, impacto negativo bajo.",
+    "referencia": "Probablemente sí: la baja de Chaira, publicada el 8 de agosto de 2026, era de entre dos y tres meses, así que el regreso estimado es como tarde el 8 de noviembre, antes del 29 de noviembre. No hay alta confirmada.",
+    "referencia_afirmaciones": [
+      "La baja de Chaira es de entre dos y tres meses.",
+      "La noticia se publicó el 8 de agosto de 2026.",
+      "El regreso estimado es como tarde el 8 de noviembre de 2026.",
+      "El 29 de noviembre es posterior al regreso estimado."
+    ],
+    "docs_relevantes": [
+      "f538603932f7ce91"
+    ],
+    "en_corpus": true,
+    "necesita_herramienta": true,
+    "adversarial": true,
+    "tipo_dificultad": "aritmética de fechas",
+    "por_que_dificil": "Rango de duración (2-3 meses) y noticia de agosto."
+  },
+  {
+    "eval_id": "M3-24",
+    "input": {
+      "text": "¿Kylian Mbappé se pierde el Clásico?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "irrelevante",
+      "impact": "neutro",
+      "team": "ninguno"
+    },
+    "criterio": "El corpus no tiene ninguna noticia sobre la disponibilidad de Mbappé. La respuesta correcta es decir que no hay información y no emitir señal. Trasladarle la sanción de Vinicius es inventar una señal falsa de alto impacto.",
+    "referencia": "No encuentro esa información en las noticias recolectadas.",
+    "referencia_afirmaciones": [],
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "fuera del corpus, casi-acierto",
+    "por_que_dificil": "'Se pierde el Clásico' es literal el titular de Vinicius: el retriever lo trae y el generador tiene la tentación de reusarlo."
+  },
+  {
+    "eval_id": "M3-25",
+    "input": {
+      "text": "¿Está lesionado Lamine Yamal?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "irrelevante",
+      "impact": "neutro",
+      "team": "ninguno"
+    },
+    "criterio": "El corpus menciona a Lamine pero nunca una lesión suya. La respuesta correcta es decir que no hay información y no emitir señal.",
+    "referencia": "No encuentro esa información en las noticias recolectadas.",
+    "referencia_afirmaciones": [],
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "fuera del corpus, casi-acierto",
+    "por_que_dificil": "Hay fragmentos con 'Lamine' (una roja que pudo ver, un rifirrafe)."
+  },
+  {
+    "eval_id": "M3-26",
+    "input": {
+      "text": "¿Qué cuota paga una victoria del Betis contra el Oporto?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "irrelevante",
+      "impact": "neutro",
+      "team": "ninguno"
+    },
+    "criterio": "El corpus no tiene cuotas (y Offside informa, no recomienda apostar). La respuesta correcta es decir que no hay información y no emitir señal.",
+    "referencia": "No encuentro esa información en las noticias recolectadas.",
+    "referencia_afirmaciones": [],
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "fuera del corpus y del alcance",
+    "por_que_dificil": "Hay un fragmento del Betis-Oporto (horario y TV) que atrae al retriever."
+  },
+  {
+    "eval_id": "M3-27",
+    "input": {
+      "text": "¿Quién ganó el Balón de Oro 2025?",
+      "source": "usuario",
+      "published_at": null
+    },
+    "esperado": {
+      "category": "irrelevante",
+      "impact": "neutro",
+      "team": "ninguno"
+    },
+    "criterio": "No está en el corpus. Aunque el modelo lo sepa de memoria, el sistema solo debe responder con las noticias recolectadas: la respuesta correcta es la válvula, sin señal.",
+    "referencia": "No encuentro esa información en las noticias recolectadas.",
+    "referencia_afirmaciones": [],
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "necesita_herramienta": false,
+    "adversarial": true,
+    "tipo_dificultad": "fuera del corpus, conocimiento paramétrico",
+    "por_que_dificil": "El generador puede saberlo de su preentrenamiento y 'responder bien' inventando fuente."
+  }
+]

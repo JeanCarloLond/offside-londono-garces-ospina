@@ -1,0 +1,11 @@
+# Módulo 3 (RAG). Lo que Colab no trae, con la versión exacta con la que se
+# produjeron los resultados de proyecto1/rag/resultados/. torch y numpy se usan
+# los de Colab (aquí: torch 2.14.1+cu126, numpy 2.5.4, Python 3.12).
+chromadb==1.5.9
+sentence-transformers==5.7.0
+rank-bm25==0.2.2
+transformers==4.57.6
+peft==0.21.2
+accelerate==1.15.0
+scikit-learn==1.9.1
+pyyaml==6.0.3

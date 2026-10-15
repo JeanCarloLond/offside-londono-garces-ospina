@@ -1,4 +1,4 @@
-# Proyecto 1 — Offside (M1: fine-tuning con LoRA · M2: evaluación)
+# Proyecto 1 — Offside (M1: fine-tuning con LoRA · M2: evaluación · M3: RAG agéntico)
 
 > **Offside** lee noticias de fútbol y le dice a un apostador recreativo qué información ya "sabe" el mercado y cuál todavía no — este módulo entrena la primera versión del clasificador que hace esa lectura.
 
@@ -8,14 +8,25 @@ SI4006 · Tópicos Especiales y Aplicaciones en IA · Universidad EAFIT · Equip
 
 ```text
 proyecto1/
-├── notebooks/
-│   └── M1_finetuning_LoRA_offside.ipynb   # el entregable: corre de punta a punta en Colab
+├── notebooks/                               # un notebook por módulo, cada uno corre en Colab
+│   ├── M1_finetuning_LoRA_offside.ipynb
+│   ├── M2_harness_evaluacion.ipynb
+│   └── M3_RAG_agentico.ipynb
+├── rag/                                     # M3: el sistema RAG
+│   ├── ingest.py / indice.py                 # ingest -> chunk -> embed -> store (Chroma + BM25)
+│   ├── generador.py / veredicto.py           # prompt base, parseo tolerante, sí/no por logits
+│   ├── sistemas.py                           # sistema_rag, sistema_rag_avanzado, sistema_final
+│   ├── herramientas.py                       # calcular_fecha: esquema, parseo, tope de pasos
+│   ├── correr_sistemas.py / evaluar_m3.py    # fase 1 (responder) y fase 2 (harness + RAGAS)
+│   ├── ragas_local.py                        # las cuatro métricas de RAGAS con juez local
+│   └── resultados/                           # scorecard_m3.csv, ragas_m3.csv, respuestas/...
 ├── data_collection/                         # recolección RSS + limpieza + supervisión débil
 │   ├── README.md                             # cómo correr cada script, en qué orden
 │   ├── collect_rss.py / weak_label.py / build_gold_seed.py / gold_corrections.py
 │   ├── rss_sources.yaml / lexicon.yaml
 ├── eval/                                    # M2: harness de evaluación
 │   ├── eval_set.json                         # 21 ejemplos: input / esperado / criterio
+│   ├── eval_set_m3.json / dev_set_m3.json    # M3: 27 preguntas sobre el corpus + dev set aparte
 │   ├── judge_rubric.yaml                     # rúbrica 1-5 del juez, versionada
 │   ├── harness.py                            # 3 dimensiones -> scorecard
 │   ├── judge.py / bias_check.py              # juez LLM y su sesgo medido
@@ -23,12 +34,14 @@ proyecto1/
 ├── data/
 │   ├── raw/            # (gitignored) crudo del scraping, nunca se commitea
 │   ├── processed/       # weak_labeled.jsonl — train, supervisión débil
+│   ├── rag/             # corpus.jsonl — los 748 fragmentos que indexa el RAG
 │   └── gold/            # gold_seed_synthetic.jsonl + gold_verified.jsonl — validación
 └── docs/
     ├── dataset.md        # descripción completa del dataset (fuente, tamaño, licencia, sesgos)
     ├── results.md         # tabla de resultados + lectura honesta
     ├── eval-set.md        # semilla del eval set (S05)
-    └── harness-m2.md      # M2: harness, rúbrica del juez, sesgo y scorecard
+    ├── harness-m2.md      # M2: harness, rúbrica del juez, sesgo y scorecard
+    └── rag-m3.md          # M3: corpus, decisiones, diagnóstico, técnicas, agente, tablas y lectura
 ```
 
 ## Modelo base y tarea
@@ -90,3 +103,22 @@ python harness.py               # las tres
 
 Detalle completo —eval set, rúbrica del juez, sesgo mitigado y lectura honesta del
 scorecard— en [`docs/harness-m2.md`](docs/harness-m2.md).
+
+## M3 · RAG que recupera, actúa y se evalúa
+
+Un RAG sobre 748 fragmentos reales de prensa (agosto y 14 de octubre de 2026) que responde preguntas
+de un apostador —«¿juega Vinicius el Clásico?»— con la misma señal estructurada que mide el harness de
+M2. Tres versiones con el mismo generador (`Qwen2.5-1.5B-Instruct`) y el mismo prompt base: ingenua
+(dense top-4), avanzada (híbrida + reranker + válvula verificada) y final (+ una herramienta de
+fechas). Se miden con el harness de M2 sin tocar y con RAGAS.
+
+```bash
+pip install -r ../requirements-m3.txt
+cd rag
+python indice.py --forzar        # reconstruye el índice
+python correr_sistemas.py        # todos los sistemas responden el eval set
+python evaluar_m3.py             # harness de M2 + RAGAS
+```
+
+Tablas, ablación y lectura en el [README raíz](../README.md#m3--rag-que-recupera-actúa-y-se-evalúa);
+el reporte completo, en [`docs/rag-m3.md`](docs/rag-m3.md).

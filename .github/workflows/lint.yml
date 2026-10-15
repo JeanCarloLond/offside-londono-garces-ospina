@@ -33,5 +33,8 @@ jobs:
       - name: ruff format
         run: ruff format --check proyecto1 scripts
 
+      - name: Pruebas del parseo tolerante y la herramienta (M3, sin LLM)
+        run: python proyecto1/rag/test_parseo.py
+
       - name: pymarkdown
         run: pymarkdown -c .pymarkdown.json scan README.md proyecto1

@@ -27,13 +27,19 @@ Además se generó un **seed sintético** (`data_collection/build_gold_seed.py`)
 
 | Conjunto | Fragmentos | Cómo se arma |
 |---|---:|---|
-| `data/raw/news_raw.jsonl` (no versionado) | 497 | Salida cruda de `collect_rss.py`, deduplicada por hash de link |
-| `data/processed/weak_labeled.jsonl` | 497 | Supervisión débil (léxico/regex, `weak_label.py`) |
+| `data/raw/news_raw.jsonl` (no versionado) | 755 | Salida cruda de `collect_rss.py`, deduplicada por hash de link. 497 hasta el 2026-08-28 + 258 del corte del 2026-10-14 |
+| `data/processed/weak_labeled.jsonl` | 497 | Supervisión débil (léxico/regex, `weak_label.py`). **Congelado en el corte de agosto**: es el train de M1/M2 |
 | `data/gold/gold_seed_synthetic.jsonl` | 30 | Sintético, entidades ficticias, cubre categorías con poco volumen real |
 | `data/gold/gold_verified.jsonl` | 48 | Verificación manual sobre el 20% más reciente por categoría |
 | `eval/eval_set.json` (M2) | 21 | Eval set de dominio, curado a mano y **excluido del entrenamiento** |
+| `data/rag/corpus.jsonl` (M3) | 748 | El corpus del RAG: los 755 crudos limpios por `rag/ingest.py` (7 descartados por cortos), con fecha, medio y sección de la URL |
+| `eval/eval_set_m3.json` (M3) | 27 | Preguntas sobre el corpus, 4 sin respuesta en él. Ver [`rag-m3.md`](rag-m3.md#4--el-eval-set) |
 
 **Split del entrenamiento vigente: 407 train / 100 validation**, tras excluir del corpus los 20 ids que forman el eval set (`Corpus: 497 -> 477`). El corte anterior, de pretemporada, era de 251 fragmentos y 227/54.
+
+El corte del 14 de octubre **no** se sumó a `weak_labeled.jsonl`: así los números de M1 y M2 siguen siendo reproducibles con el archivo versionado. Entra solo en el corpus del RAG.
+
+**Un problema del feed que apareció al construir el RAG:** en algunos ítems Marca pega el resumen de otra noticia. El de Aaron Ochoa trae la URL y el titular del Málaga y el resumen del técnico del Girona, y el eval set de M2 lo heredó (`OFF-12` está etiquetado como Girona). El mismo resumen del portero de Las Palmas aparece bajo cuatro titulares distintos. No lo corregimos a mano: es ruido real y en M3 se mide dónde muerde.
 
 **Por qué así y no aleatorio:** la porción real se separa **por fecha** (`published_at`), últimos ~20% por categoría a validación — evita fuga temporal (entrenar con una noticia y validar con su eco de la misma tarde). La porción sintética no tiene fecha real, así que se separa con muestreo aleatorio estratificado por categoría, semilla fija (`SEED=42`).
 
@@ -75,7 +81,7 @@ Para poder mostrar el pipeline de LoRA entrenando y evaluando las 8 categorías 
 
 - **Volumen por clase (el más importante):** aunque el corpus se duplicó al recolectar en temporada, las clases accionables siguen siendo minoritarias: 4 `sancion_suspension`, 3 `baja_confirmada`, 2 `regreso_alta`, 1 `duda_fisica` y 0 `rumor_no_confirmado` frente a 378 `irrelevante`. El modelo aprende bien lo que abunda y falla en lo que importa.
 - **Cobertura por club:** Marca es prensa española: sobrerrepresenta Real Madrid, Barcelona y LaLiga frente a equipos pequeños o ligas latinoamericanas — ver `Context.md`, sesgo de cobertura ya anticipado por el equipo.
-- **Variante lingüística:** 480 de 497 fragmentos son de prensa española y solo 17 de prensa colombiana. El léxico sigue construido sobre vocabulario ibérico, así que el sesgo persiste aunque las fuentes latinoamericanas ya estén integradas. El eval set lo mide explícitamente con `OFF-15`, una roja en Liga BetPlay.
+- **Variante lingüística:** 480 de 497 fragmentos son de prensa española y solo 17 de prensa colombiana. El léxico sigue construido sobre vocabulario ibérico, así que el sesgo persiste aunque las fuentes latinoamericanas ya estén integradas. El eval set lo mide explícitamente con `OFF-15`, una roja en Liga BetPlay. En el corpus del RAG (M3), con el corte de octubre, la proporción apenas mejora: 712 fragmentos de Marca y 36 de El Tiempo.
 - **Desbalance de clases severo:** `irrelevante` es ~77-98% del corpus real según la pasada de recolección — ver `docs/results.md` para por qué esto hace que accuracy sea una métrica engañosa y F1 macro la elegida.
 - **Fragmentos compuestos:** algunos resúmenes RSS mezclan dos noticias en un solo campo `summary` (ver el error real documentado arriba) — el léxico las etiqueta por la primera coincidencia, lo cual puede perder información.
 - **Etiqueta de impacto es una heurística, no un análisis de a qué equipo afecta:** `impact_default` en el léxico asigna un impacto típico por categoría, no sabe leer "a quién perjudica" cuando el fragmento menciona a dos equipos. Es una limitación conocida del baseline (nivel 2) que un modelo con más contexto debería superar — y una que el propio equipo ya había anticipado en `Context.md`.

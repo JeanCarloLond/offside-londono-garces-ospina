@@ -10,6 +10,7 @@
 /STAI_Plantilla_Proyecto.md
 /STAI_M1_Asignacion_Fine-tuning_baseline.pdf
 /STAI_M2_Asignacion_Harness_evaluacion.pdf
+/STAI_M3_Asignacion_RAG_agentico.pdf
 /S01_Demo_Capacidades.ipynb
 /S02_Lab_Abrir_la_caja (1).ipynb
 /S03_Lab_El_bloque_y_las_familias.ipynb
@@ -61,3 +62,7 @@ proyecto1/m1_lora_adapter*/
 !proyecto1/m1_lora_adapter_holdout/
 !proyecto1/m1_lora_adapter_holdout/**
 !proyecto1/m1_lora_adapter_holdout/*.safetensors
+
+# --- M3 (RAG): el índice Chroma se reconstruye con rag/indice.py; logs de corridas ---
+proyecto1/rag/_chroma/
+proyecto1/rag/resultados/*.log

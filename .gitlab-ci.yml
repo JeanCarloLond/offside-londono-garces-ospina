@@ -22,6 +22,8 @@ lint:
     # Real bugs / style, Python + notebooks in proyecto1/
     - ruff check proyecto1 scripts
     - ruff format --check proyecto1 scripts
+    # M3: parseo tolerante del JSON del modelo y herramienta de fechas (sin LLM, stdlib)
+    - python proyecto1/rag/test_parseo.py
     # Markdown hygiene on the docs that make up the deliverable
     - pymarkdown -c .pymarkdown.json scan README.md proyecto1
   rules:

@@ -1,0 +1,16 @@
+[
+  {"dev_id": "DEV-01", "pregunta": "¿Courtois ya volvió a entrenar con el Real Madrid?", "categoria": "regreso_alta", "en_corpus": true, "docs_relevantes": ["8cd0dabc77256e99", "8e2bfaee4d6262e8"]},
+  {"dev_id": "DEV-02", "pregunta": "¿Qué lesión tiene Lizancos?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["7c44fd3a047d7e56"]},
+  {"dev_id": "DEV-03", "pregunta": "¿Cuánto tiempo estará de baja Sergio Álvarez?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["217d8345989756a5"]},
+  {"dev_id": "DEV-04", "pregunta": "¿Por qué operaron a Ely en el Almería?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["e3472916af19749b"]},
+  {"dev_id": "DEV-05", "pregunta": "¿Álex Sola ya volvió a entrenar con el Almería?", "categoria": "regreso_alta", "en_corpus": true, "docs_relevantes": ["4c0c5a5a606024f6"]},
+  {"dev_id": "DEV-06", "pregunta": "¿Yuri tiene que cumplir sanción con el Athletic?", "categoria": "sancion_suspension", "en_corpus": true, "docs_relevantes": ["5842ae0f9f63c13b"]},
+  {"dev_id": "DEV-07", "pregunta": "¿Está lesionado Pedri?", "categoria": "irrelevante", "en_corpus": false, "docs_relevantes": []},
+  {"dev_id": "DEV-08", "pregunta": "¿Julián Alvarez juega el próximo partido del Atlético?", "categoria": "irrelevante", "en_corpus": false, "docs_relevantes": []},
+  {"dev_id": "DEV-09", "pregunta": "¿Cuenta el Burgos con Lizancos?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["7c44fd3a047d7e56"]},
+  {"dev_id": "DEV-10", "pregunta": "¿Podrá jugar Ely con el Almería?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["e3472916af19749b"]},
+  {"dev_id": "DEV-11", "pregunta": "¿Puede jugar Sergio Álvarez el próximo partido?", "categoria": "baja_confirmada", "en_corpus": true, "docs_relevantes": ["217d8345989756a5"]},
+  {"dev_id": "DEV-12", "pregunta": "¿Haaland se lesionó en el último partido del City?", "categoria": "irrelevante", "en_corpus": false, "docs_relevantes": []},
+  {"dev_id": "DEV-13", "pregunta": "¿Podrá jugar Sergio Álvarez el 30 de octubre?", "categoria": "duda_fisica", "en_corpus": true, "docs_relevantes": ["217d8345989756a5"]},
+  {"dev_id": "DEV-14", "pregunta": "¿Estará Lizancos disponible para el 1 de diciembre?", "categoria": "duda_fisica", "en_corpus": true, "docs_relevantes": ["7c44fd3a047d7e56"]}
+]
