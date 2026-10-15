@@ -1,0 +1,4 @@
+modelo,recall@1,recall@2,recall@4,recall@10,mrr,no_llega_en_50
+intfloat/multilingual-e5-small,0.8261,0.9565,0.9565,0.9565,0.8953,0
+sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2,0.4783,0.4783,0.6087,0.6522,0.5259,4
+intfloat/multilingual-e5-base,0.913,0.9565,0.9565,0.9565,0.9387,0

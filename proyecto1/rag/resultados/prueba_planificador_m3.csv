@@ -1,0 +1,17 @@
+modo,pregunta,necesita,llama,llamada_valida,pasos,argumentos,lectura,respuesta_sin_fecha,usa_resultado_sin_fecha,respuesta_con_fecha,usa_resultado_con_fecha
+llm,¿Podrá jugar Lunar el 20 de octubre?,True,False,False,1,[],[],,,,
+llm,¿Cuenta el Atlético Ribera con Ferro para el 1 de septiembre?,True,False,False,1,[],[],,,,
+llm,¿Estará Quintana disponible el 15 de marzo?,True,False,False,1,[],[],,,,
+llm,¿Puede jugar Medrano el 25 de septiembre?,True,False,False,1,[],[],,,,
+llm,¿Qué lesión tiene Lunar?,False,False,False,1,[],[],,,,
+llm,¿Ferro está sancionado?,False,False,False,1,[],[],,,,
+llm,¿Volverá Quintana esta temporada?,False,False,False,1,[],[],,,,
+llm,¿Quién es el portero titular del Real Valle?,False,False,False,1,[],[],,,,
+regla,¿Podrá jugar Lunar el 20 de octubre?,True,True,True,1,"[{'fecha_inicio': '2026-09-02', 'cantidad': 6, 'unidad': 'semanas', 'fecha_objetivo': '2026-10-20'}]","['El 2026-10-20 es 6 dias DESPUES del fin del plazo (2026-10-14): para esa fecha el plazo de baja YA se habra cumplido, aunque no hay alta confirmada.']",El extremo del Deportivo Sauce está baja por una rotura de fibras y no ha sido confirmado que pueda volver a jugar.,False,El extremo del Deportivo Sauce está baja por una rotura de fibras y no ha sido confirmado que pueda volver a jugar.,False
+regla,¿Cuenta el Atlético Ribera con Ferro para el 1 de septiembre?,True,True,True,1,"[{'fecha_inicio': '2026-08-15', 'cantidad': 2, 'unidad': 'meses', 'fecha_objetivo': '2026-09-01'}]",['El 2026-09-01 es 44 dias ANTES del fin del plazo (2026-10-15): para esa fecha el jugador TODAVIA estara de baja.'],[1] Ferro se perderá entre uno y dos meses por una lesión de rodilla.,False,"El 2026-09-01 es 44 días antes del final del plazo (2026-10-15), por lo tanto, Ferro aún está de baja.",True
+regla,¿Estará Quintana disponible el 15 de marzo?,True,True,False,3,"[{'fecha_inicio': '2026-10-01', 'cantidad': 4, 'unidad': 'meses', 'fecha_objetivo': '2026-03-15'}, {'fecha_inicio': '2026-10-01', 'cantidad': 4, 'unidad': 'meses', 'fecha_objetivo': '2026-03-15'}, {'fecha_inicio': '2026-10-01', 'cantidad': 4, 'unidad': 'meses', 'fecha_objetivo': '2026-03-15'}]","['fecha_objetivo 2026-03-15 es anterior a la noticia (2026-10-01); revisa el año', 'fecha_objetivo 2026-03-15 es anterior a la noticia (2026-10-01); revisa el año', 'fecha_objetivo 2026-03-15 es anterior a la noticia (2026-10-01); revisa el año']",[1] El jugador está fuera del equipo durante cuatro meses debido a una lesión.,False,[1] El jugador está fuera del equipo durante cuatro meses debido a una lesión.,False
+regla,¿Puede jugar Medrano el 25 de septiembre?,True,True,True,1,"[{'fecha_inicio': '2026-09-20', 'cantidad': 10, 'unidad': 'dias', 'fecha_objetivo': '2026-09-25'}]",['El 2026-09-25 es 5 dias ANTES del fin del plazo (2026-09-30): para esa fecha el jugador TODAVIA estara de baja.'],[1] Medrano estará diez días de baja por una sobrecarga.,False,[1] Medrano estará diez días de baja por una sobrecarga,False
+regla,¿Qué lesión tiene Lunar?,False,False,False,0,[],[],,,,
+regla,¿Ferro está sancionado?,False,False,False,0,[],[],,,,
+regla,¿Volverá Quintana esta temporada?,False,False,False,0,[],[],,,,
+regla,¿Quién es el portero titular del Real Valle?,False,False,False,0,[],[],,,,

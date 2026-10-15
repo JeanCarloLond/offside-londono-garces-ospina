@@ -1,0 +1,4 @@
+sistema,n_casos,faithfulness,n_faithfulness,answer_relevancy,context_precision,context_recall,context_precision_ids,juez
+rag_ingenuo,23,0.6812,23,0.8547,0.8152,0.8841,0.8696,Qwen/Qwen2.5-1.5B-Instruct
+rag_avanzado,23,0.7746,19,0.7118,0.8261,0.7428,0.8261,Qwen/Qwen2.5-1.5B-Instruct
+sistema_final,23,0.8272,19,0.7114,0.8261,0.7536,0.8261,Qwen/Qwen2.5-1.5B-Instruct

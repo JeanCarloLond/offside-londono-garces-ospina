@@ -1,0 +1,15 @@
+dev_id,en_corpus,cross_encoder_max,verificador_max,verificador_abre,mejor_doc
+DEV-01,True,6.63,1.0,True,"Courtois regresa antes de tiempo y ya habla de Mourinho: ""Me gusta su "
+DEV-02,True,4.69,1.0,True,"Lizancos, operado con éxito de una rotura parcial del menisco interno."
+DEV-03,True,9.248,1.0,True,Sergio Álvarez sufre una rotura muscular y estará varias semanas de ba
+DEV-04,True,2.741,0.992,True,Ely pasa por el quirófano para seguir tratando su compleja lesión. El 
+DEV-05,True,10.932,1.0,True,Álex Sola regresa al grupo tras cumplir una semana de sanción discipli
+DEV-06,True,6.269,0.997,True,"Terzic y el lío con Yuri: ""Espero que todo el mundo aprenda de esto"". "
+DEV-07,False,-4.27,0.019,False,El Getafe comunica “una grave lesión” en la rodilla derecha de Uche. E
+DEV-08,False,2.193,0.975,True,Las portadas del día. Bernardo Silva y Julián Alvarez son los nombres 
+DEV-09,True,5.395,0.997,True,"Lizancos, operado con éxito de una rotura parcial del menisco interno."
+DEV-10,True,1.158,0.998,True,Ely pasa por el quirófano para seguir tratando su compleja lesión. El 
+DEV-11,True,-1.194,0.956,True,Sergio Álvarez sufre una rotura muscular y estará varias semanas de ba
+DEV-12,False,1.505,0.047,False,"Haaland y su mensaje tras la culpabilidad del City: ""Manteneos positiv"
+DEV-13,True,-4.246,0.923,True,Sergio Álvarez sufre una rotura muscular y estará varias semanas de ba
+DEV-14,True,-4.426,0.556,True,La preocupación de Giráldez hasta el martes. El club sigue pendiente d

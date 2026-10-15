@@ -378,7 +378,7 @@ def contexto_herramientas(llamadas: list[dict], fechado: bool = True) -> list[st
     herramienta calculó bien y la respuesta repitió "entre dos y tres meses". Con
     fecha, la regla del prompt base "si dos noticias se contradicen, manda la más
     reciente" juega a su favor. Medido en prueba_planificador.py (casos ficticios):
-    el generador usa el resultado en 0 de 4 casos sin fecha y en 2 de 4 con fecha.
+    el generador usa el resultado en 0 de 4 casos sin fecha y en 1 de 4 con fecha.
     """
     cabecera = (
         f"({config.FECHA_CONSULTA} · cálculo de Offside)"
