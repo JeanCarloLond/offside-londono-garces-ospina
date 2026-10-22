@@ -21,14 +21,14 @@
         "tipo": "signo invertido",
         "afirmacion": "Lunar jugará el derbi.",
         "esperado": false,
-        "p_si": 0.166,
+        "p_si": 0.238,
         "acierta": true
       },
       {
         "tipo": "categoría cambiada",
         "afirmacion": "Lunar está sancionado.",
         "esperado": false,
-        "p_si": 0.014,
+        "p_si": 0.016,
         "acierta": true
       },
       {
@@ -49,14 +49,14 @@
         "tipo": "negación mal leída",
         "afirmacion": "Ferro sufre una lesión grave.",
         "esperado": false,
-        "p_si": 0.043,
+        "p_si": 0.05,
         "acierta": true
       },
       {
         "tipo": "otro jugador",
         "afirmacion": "Quintana está lesionado.",
         "esperado": false,
-        "p_si": 0.077,
+        "p_si": 0.082,
         "acierta": true
       }
     ]
@@ -66,38 +66,30 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-01",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.5,
       "faithfulness_detalle": [
         [
-          "Vinicius no puede jugar.",
+          "El Comité de Disciplina le ha impuesto una sanción de cuatro partidos.",
           1.0
         ],
         [
-          "Vinicius está bajo sanción.",
-          1.0
+          "Por favor, no me hagas caso del Comité de Disciplina.",
+          0.206
         ],
         [
-          "Sanción es para cuatro partidos.",
-          1.0
+          "Esta sanción es por un partido contra el Villarreal.",
+          0.98
         ],
         [
-          "Vinicius perdió contra el Villarreal.",
-          0.947
-        ],
-        [
-          "Vinicius fue expulsado.",
-          0.999
-        ],
-        [
-          "Expulsa por roja.",
-          0.997
+          "No te preocupes, solo fue una sanción leve.",
+          0.004
         ]
       ],
-      "answer_relevancy": 0.8014665444691976,
+      "answer_relevancy": 0.7996798555056254,
       "preguntas_generadas": [
         "¿Qué tipo de penalización se le impuso al equipo en cuestión?",
-        "¿Cuál fue el resultado del partido donde se le impuso esta sanción?",
-        "¿Cómo afectó esta sanción a los planes futuros del equipo?"
+        "¿Cuántos partidos fue castigado el equipo con esta sanción?",
+        "¿En qué partido específico fue aplicada esta sanción?"
       ],
       "context_precision": 0.75,
       "chunks_utiles": [
@@ -127,38 +119,26 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-02",
       "valvula": false,
-      "faithfulness": 0.3333333333333333,
+      "faithfulness": 0.6666666666666666,
       "faithfulness_detalle": [
         [
-          "Vinicius jugará contra la Roma.",
-          0.44
+          "Vinicius regresará al equipo del Manchester United.",
+          0.001
         ],
         [
-          "Vinicius jugará en el Olímpico.",
-          0.971
+          "El partido será en el estadio Olímpico.",
+          0.998
         ],
         [
-          "Vinicius jugará contra la Roma en la Champions.",
-          0.271
-        ],
-        [
-          "Vinicius jugará contra la Roma en la Champions League.",
-          0.533
-        ],
-        [
-          "Vinicius jugará contra la Roma en la Champions 2023-2024.",
-          0.068
-        ],
-        [
-          "Vinicius jugará contra la Roma en la Champions 2023-2024.",
-          0.068
+          "Vinicius no jugará en cuatro partidos de la Liga debido a una sanción.",
+          1.0
         ]
       ],
-      "answer_relevancy": 0.8806574543317159,
+      "answer_relevancy": 0.8836372892061869,
       "preguntas_generadas": [
-        "¿Cuál será el equipo que Vinicius juegue con en su regreso al once de Mourinho?",
-        "¿Por qué Vinicius tendrá que ausentarse de los cuatro partidos restantes de la Liga debido a una sanción?",
-        "¿Cómo afectará esta situación para el rendimiento del equipo y las expectativas futuras de Vinicius?"
+        "¿Cuál será el equipo que Vinicius juegue con en su regreso?",
+        "¿Por qué Vinicius no podrá jugar en los próximos cuatro partidos?",
+        "¿Qué evento deportivo determinó la sanción de Vinicius?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -191,19 +171,27 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Isaac Romero fue expulsado.",
-          0.999
+          "Isaac Romero marcó el 2-3.",
+          0.998
         ],
         [
-          "Con qué equipo juega Isaac Romero?",
-          0.533
+          "Mandó callar a la grada.",
+          0.998
+        ],
+        [
+          "Terminó expulsado.",
+          1.0
+        ],
+        [
+          "El delantero vio dos amarillas en cuatro minutos.",
+          0.998
         ]
       ],
-      "answer_relevancy": 0.8226014574368795,
+      "answer_relevancy": 0.8647754192352295,
       "preguntas_generadas": [
-        "Aquí tienes las tres preguntas correspondientes:",
-        "¿Quién marcó el 2-3 en el partido?",
-        "¿Qué acción tomó Isaac Romero después de marcar el gol?"
+        "¿Quién marcó el 2-3 en el partido mencionado?",
+        "¿Cuántos amarillos recibió Isaac Romero durante el encuentro?",
+        "¿Por qué fue expulsado Isaac Romero?"
       ],
       "context_precision": 0.8055555555555555,
       "chunks_utiles": [
@@ -220,7 +208,7 @@
         ],
         [
           "Isaac Romero juega en el Sevilla.",
-          0.992
+          0.991
         ],
         [
           "Vio dos amarillas en cuatro minutos.",
@@ -236,20 +224,16 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Quique abre el casting.",
-          0.995
+          "Quique organiza un casting para la banda derecha.",
+          0.997
         ],
         [
-          "Recambio necesario.",
-          0.992
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
+          0.996
         ],
         [
-          "Sancionado Ángel Pérez ausente.",
-          0.958
-        ],
-        [
-          "Sector derecho dominado por Quique desde marzo.",
-          0.989
+          "Ángel Pérez es crucial en el sector derecho desde marzo.",
+          0.891
         ]
       ],
       "answer_relevancy": 0.8040237228075663,
@@ -273,11 +257,11 @@
         ],
         [
           "Ángel Pérez juega en la banda derecha.",
-          0.915
+          0.896
         ],
         [
           "El técnico debe buscarle un recambio.",
-          0.988
+          0.989
         ]
       ],
       "context_precision_ids": 1.0
@@ -286,18 +270,38 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-05",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.5,
       "faithfulness_detalle": [
         [
-          "El jugador del Tottenham fue expulsado.",
-          0.988
+          "El equipo de Tottenham fue descalificado después del primer minuto.",
+          0.04
+        ],
+        [
+          "Tottenham fue expulsado al iniciar el partido.",
+          0.365
+        ],
+        [
+          "El Tottenham fue sancionado con expulsión a los tres minutos.",
+          0.707
+        ],
+        [
+          "El equipo de Tottenham fue desafiliado tras las tres primeras jugadas.",
+          0.007
+        ],
+        [
+          "El Tottenham fue castigado con expulsión a los tres minutos del juego.",
+          0.941
+        ],
+        [
+          "El equipo de Tottenham fue sancionado con expulsión a los tres minutos del encuentro.",
+          0.912
         ]
       ],
-      "answer_relevancy": 0.8804538051287333,
+      "answer_relevancy": 0.8784918189048767,
       "preguntas_generadas": [
         "¿Cuál es el nombre del equipo que fue expulsado en la primera parte de un partido?",
         "¿En qué momento exacto ocurrió la expulsión del equipo mencionado?",
-        "¿Qué resultado obtuvo el equipo expulsado en esa jugada?"
+        "¿Qué resultado obtuvo el equipo expulsado en esa acción?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -310,7 +314,7 @@
       "recall_detalle": [
         [
           "Bentancur fue expulsado con tarjeta roja.",
-          0.915
+          0.917
         ],
         [
           "El Tottenham acabó con diez jugadores.",
@@ -326,20 +330,16 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Sevilla no cuenta con Guridi para jugar en el Bernabéu.",
-          1.0
+          "El Sevilla planea visitar al Bernabéu.",
+          0.992
         ],
         [
-          "Guridi sufrió una lesión en el aductor largo del muslo izquierdo.",
+          "Un jugador importante, Guridi, está lesionado.",
+          0.98
+        ],
+        [
+          "El problema es un daño en el aductor largo de su muslo izquierdo.",
           0.998
-        ],
-        [
-          "El Sevilla está preparando la visita al Bernabéu sin Guridi.",
-          1.0
-        ],
-        [
-          "No hay información sobre si Guridi jugará o no en el Bernabéu.",
-          0.881
         ]
       ],
       "answer_relevancy": 0.8166079123814901,
@@ -363,7 +363,7 @@
         ],
         [
           "Guridi sufre una lesión en el aductor largo del muslo izquierdo.",
-          0.996
+          0.997
         ]
       ],
       "context_precision_ids": 1.0
@@ -372,26 +372,30 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-07",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 0.25,
       "faithfulness_detalle": [
         [
-          "Nico Williams no estará con el Athletic.",
-          0.894
+          "Nico Williams no participará en el partido de Mestalla.",
+          0.944
         ],
         [
-          "Nico Williams no estará en Mestalla.",
-          0.963
+          "Williams ha sufrido una lesión que le impide jugar.",
+          0.109
         ],
         [
-          "Nico Williams tiene una lesión.",
-          0.471
+          "El equipo ha tomado esta decisión para proteger al jugador.",
+          0.036
+        ],
+        [
+          "Mestalla será el escenario donde se realizará el encuentro futbolístico.",
+          0.329
         ]
       ],
-      "answer_relevancy": 0.9024851322174072,
+      "answer_relevancy": 0.8996971845626831,
       "preguntas_generadas": [
         "¿Por qué no se podrá jugar el futbolista Nico Williams en Mestalla?",
         "¿Cuál es el motivo principal para que Nico Williams no pueda participar en las competiciones de Mestalla?",
-        "¿Qué tipo de lesión ha sufrido Nico Williams y cómo afecta esto al equipo?"
+        "¿Qué tipo de lesión ha afectado a Nico Williams y cómo afecta su ausencia?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -404,11 +408,11 @@
       "recall_detalle": [
         [
           "Nico no jugará en Mestalla.",
-          0.984
+          0.982
         ],
         [
           "Nico está de baja por lesión.",
-          0.988
+          0.989
         ]
       ],
       "context_precision_ids": 1.0
@@ -420,27 +424,19 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Marco Asensio juega con el Fenerbahçe.",
-          0.998
+          "Marco Asensio baja de última hora.",
+          1.0
         ],
         [
-          "Fenerbahçe enfrenta al Aston Villa.",
-          0.999
-        ],
-        [
-          "Marco Asensio juega contra el Aston Villa.",
-          0.989
-        ],
-        [
-          "Marco Asensio baja de última hora para jugar.",
-          0.999
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.991
         ]
       ],
-      "answer_relevancy": 0.8240414261817932,
+      "answer_relevancy": 0.8602912227312723,
       "preguntas_generadas": [
         "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
-        "¿En qué equipo se encuentra Marco Asensio?",
-        "¿Qué partido específico se refiere a en la respuesta?"
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
       ],
       "context_precision": 0.8055555555555555,
       "chunks_utiles": [
@@ -473,31 +469,35 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Uche no volverá a jugar con el Getafe.",
-          0.933
+          "El Getafe informó sobre un daño serio en la pierna del jugador Uche.",
+          0.986
         ],
         [
-          "Uche tiene una grave lesión en su rodilla.",
+          "Uche, un jugador nigeriano, sufrió un golpe grave en su rodilla.",
+          0.9
+        ],
+        [
+          "El Getafe confirmó que Uche estará ausente durante todo el próximo torneo.",
           1.0
         ],
         [
-          "El Getafe comunicó esto.",
-          0.984
+          "Uche, quien juega para el Getafe, ha experimentado un accidente en su rodilla.",
+          0.993
         ],
         [
-          "El club confirmó la lesión.",
-          0.996
-        ],
-        [
-          "Uche se perderá toda la temporada debido a la lesión.",
+          "El Getafe comunicó que Uche tiene una lesión significativa en su pierna derecha.",
           0.999
+        ],
+        [
+          "El club aseguró que Uche no podrá jugar durante toda la temporada",
+          1.0
         ]
       ],
-      "answer_relevancy": 0.859839121500651,
+      "answer_relevancy": 0.9215906858444214,
       "preguntas_generadas": [
-        "Aquí tienes las tres preguntas correspondientes:",
-        "¿Qué ha ocurrido con Uche en el Getafe?",
-        "¿Cuál es el estado actual del jugador Uche en el equipo gijonés?"
+        "¿Qué ha ocurrido con Uche en el equipo del Getafe?",
+        "¿Cuál es el estado actual de Uche después de su lesión?",
+        "¿Por qué el Getafe ha confirmado que Uche no jugará durante todo el próximo torneo?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -523,38 +523,30 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-10",
       "valvula": false,
-      "faithfulness": 0.16666666666666666,
+      "faithfulness": 0.5,
       "faithfulness_detalle": [
         [
-          "El Córdoba tiene un agujero negro.",
-          0.061
+          "El agujero negro es un fenómeno natural.",
+          0.066
         ],
         [
-          "El Córdoba tiene un agujero negro en su extremo izquierdo.",
-          0.799
+          "Kevin Medina sufrió una lesión.",
+          0.983
         ],
         [
-          "El Córdoba tiene un agujero negro debido a una lesión.",
-          0.166
+          "Las semanas son períodos temporales.",
+          0.999
         ],
         [
-          "El Córdoba tiene un agujero negro provocado por Kevin Medina.",
-          0.023
-        ],
-        [
-          "Kevin Medina lesionó al Córdoba con un agujero negro.",
-          0.001
-        ],
-        [
-          "El Córdoba tiene un agujero negro debido a una lesión de Kevin Medina.",
-          0.224
+          "El agujero negro se formó debido a su lesión.",
+          0.004
         ]
       ],
-      "answer_relevancy": 0.879587709903717,
+      "answer_relevancy": 0.8178038001060486,
       "preguntas_generadas": [
         "¿Qué es el increíble agujero negro del extremo izquierdo del Córdoba?",
-        "¿Por qué Kevin Medina sufrió una lesión en el Córdoba durante varios días?",
-        "¿Cómo afectó esta lesión a las actividades habituales en el Córdoba?"
+        "¿Por qué Kevin Medina sufrió una lesión en su trabajo como periodista?",
+        "¿Cuántas semanas duró la lesión de Kevin Medina?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -567,7 +559,7 @@
       "recall_detalle": [
         [
           "Kevin Medina está lesionado.",
-          0.993
+          0.994
         ],
         [
           "La lesión es para varias semanas.",
@@ -575,7 +567,7 @@
         ],
         [
           "Kevin Medina juega de extremo izquierdo en el Córdoba.",
-          0.953
+          0.956
         ]
       ],
       "context_precision_ids": 1.0
@@ -587,15 +579,15 @@
       "faithfulness": 0.0,
       "faithfulness_detalle": [
         [
-          "Bernardo Silva será el portero de la Roma ante el Real Madrid.",
-          0.001
+          "El portero del partido entre Roma y Real Madrid será Bernardo Silva.",
+          0.041
         ]
       ],
-      "answer_relevancy": 0.9249939521153768,
+      "answer_relevancy": 0.9277584751447042,
       "preguntas_generadas": [
         "¿Quién será el portero del equipo italiano en su próximo partido contra el Real Madrid?",
-        "¿Cuál es el nombre del jugador que jugará como portero en el próximo encuentro entre las dos grandes clubes?",
-        "¿Qué jugador portero estará al mando para enfrentarse al Real Madrid en el próximo torneo?"
+        "¿Cuál es el nombre del jugador que jugará como portero en el próximo encuentro entre las dos selecciones europeas?",
+        "¿Qué jugador de la Roma se enfrentará al Real Madrid en el próximo torneo?"
       ],
       "context_precision": 0.0,
       "chunks_utiles": [
@@ -608,11 +600,11 @@
       "recall_detalle": [
         [
           "Svilar está lesionado.",
-          0.026
+          0.031
         ],
         [
           "Gollini será el portero de la Roma ante el Real Madrid.",
-          0.166
+          0.191
         ]
       ],
       "context_precision_ids": 0.0
@@ -621,31 +613,23 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-12",
       "valvula": false,
-      "faithfulness": 0.5,
+      "faithfulness": 0.25,
       "faithfulness_detalle": [
         [
-          "Marco Garcés es un jugador lesionado del Celta.",
-          0.184
+          "El Celta busca a Marco Garcés.",
+          0.436
         ],
         [
-          "El Celta busca a Marco Garcés como nuevo jugador.",
-          0.296
+          "Marco Garcés es de interés para el Celta.",
+          0.999
         ],
         [
-          "Marco Garcés tiene una lesión que impide su fichaje actualmente.",
-          0.149
+          "El Celta no ha formalizado su interés en Marco Garcés.",
+          0.224
         ],
         [
-          "El Celta está buscando reforzar su plantilla con nuevos jugadores.",
-          0.947
-        ],
-        [
-          "No se ha confirmado oficialmente si Marco Garcés firmará para el Celta.",
-          0.594
-        ],
-        [
-          "El Celta necesita mejorar su equipo para competir en la próxima temporada.",
-          0.989
+          "No hay firma oficial entre el Celta y Marco Garcés.",
+          0.181
         ]
       ],
       "answer_relevancy": 0.8141780296961466,
@@ -665,15 +649,15 @@
       "recall_detalle": [
         [
           "Pablo Durán está lesionado.",
-          0.707
+          0.671
         ],
         [
           "Borja Iglesias está lesionado.",
-          0.624
+          0.628
         ],
         [
           "Ninguno de los dos está en la convocatoria del Celta.",
-          0.134
+          0.132
         ]
       ],
       "context_precision_ids": 0.5
@@ -682,26 +666,34 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-13",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Ana María Guzmán experimentó un daño severo.",
+          "Ana María Guzmán sufrió una grave lesión.",
+          0.999
+        ],
+        [
+          "Sufrió una grave lesión durante un amistoso.",
+          0.999
+        ],
+        [
+          "Durante un amistoso, sufrió una grave lesión.",
+          0.989
+        ],
+        [
+          "Amistoso de la Selección Colombia contra Venezuela causó sufrimiento.",
           0.997
         ],
         [
-          "El incidente ocurrió en un partido amistoso.",
-          0.994
-        ],
-        [
-          "La derrota fue significativa para ella.",
-          0.184
+          "Selección Colombia perdió el amistoso debido a la lesión de Ana María Guzmán.",
+          0.62
         ]
       ],
-      "answer_relevancy": 0.881917675336202,
+      "answer_relevancy": 0.8970946868260702,
       "preguntas_generadas": [
         "¿Quién es Ana María Guzmán y qué tipo de lesión sufrió?",
-        "¿Cuál fue el nombre del equipo colombiano que enfrentó a Venezuela en ese amistoso?",
-        "¿Qué consecuencias tuvo esta lesión para Ana María Guzmán?"
+        "¿Cuál fue el nombre del equipo colombiano al que pertenecía Ana María Guzmán en ese amistoso?",
+        "¿Qué resultado obtuvo la selección colombiana en esa partida?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -718,7 +710,7 @@
         ],
         [
           "La lesión fue en el amistoso contra Venezuela.",
-          0.967
+          0.97
         ],
         [
           "Será operada.",
@@ -735,14 +727,14 @@
       "faithfulness_detalle": [
         [
           "Laporte no viaja a Vallecas porque está enfermo.",
-          0.653
+          0.642
         ]
       ],
-      "answer_relevancy": 0.8890049258867899,
+      "answer_relevancy": 0.8816138108571371,
       "preguntas_generadas": [
         "¿Por qué Laporte no puede viajar a Vallecas?",
-        "¿Qué motivo tiene Laporte para no ir a Vallecas?",
-        "¿Cuál es el problema de Laporte que le impide visitar Vallecas?"
+        "¿Qué motivo específico ha impedido a Laporte su viaje a Vallecas?",
+        "¿Cuál es el motivo principal por el cual Laporte no puede asistir en Vallecas?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -755,7 +747,7 @@
       "recall_detalle": [
         [
           "Laporte no viajó a Vallecas por una indisposición.",
-          0.853
+          0.857
         ],
         [
           "Laporte sigue sin entrenar con el grupo.",
@@ -768,19 +760,23 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-15",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Beitia tiene un esguince de tobillo.",
-          0.998
+          "Beitia experimentó un esguince en su tobillo izquierdo.",
+          0.999
         ],
         [
-          "El entrenador temía una lesión grave.",
-          0.564
+          "El central de Elgoibar tuvo un susto durante el entrenamiento después de un partido.",
+          0.999
         ],
         [
-          "Finalmente, Beitia no sufrió una lesión grave.",
-          0.471
+          "Se temía que pudiese sufrir una lesión grave.",
+          0.999
+        ],
+        [
+          "Afortunadamente, no ocurrió lo peor.",
+          0.936
         ]
       ],
       "answer_relevancy": 0.81956547498703,
@@ -804,7 +800,7 @@
         ],
         [
           "La lesión no es grave.",
-          0.977
+          0.981
         ]
       ],
       "context_precision_ids": 1.0
@@ -813,31 +809,31 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-16",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Sadiq ya ha vuelto al Valencia.",
-          0.707
+          "Sadiq acelera su regreso.",
+          0.997
         ],
         [
-          "El Valencia necesita a Sadiq para ser fuerte.",
-          0.967
-        ],
-        [
-          "Giroud espera que Sadiq esté listo.",
-          0.27
-        ],
-        [
-          "Sadiq se siente bien después de las lesiones.",
-          0.107
-        ],
-        [
-          "Aguirre confía en Sadiq para ayudar al equipo.",
+          "Aguirre le da respaldo.",
           0.995
         ],
         [
-          "Sadiq tiene que pasar algunas pruebas antes de volver.",
+          "Sadiq sabe lo que puede dar al equipo.",
           0.999
+        ],
+        [
+          "El delantero nigeriano está pendiente de pruebas.",
+          0.999
+        ],
+        [
+          "Pruebas se celebrarán este jueves.",
+          0.998
+        ],
+        [
+          "Las pruebas determinarán su evolución.",
+          0.992
         ]
       ],
       "answer_relevancy": 0.9046573241551717,
@@ -865,7 +861,7 @@
         ],
         [
           "Su recuperación no está confirmada.",
-          0.27
+          0.276
         ]
       ],
       "context_precision_ids": 1.0
@@ -877,16 +873,8 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Jens Cajuste ha vuelto.",
+          "Jens Cajuste ha regresado al equipo tras una lesión de un mes.",
           0.999
-        ],
-        [
-          "Después de una lesión de un mes.",
-          0.963
-        ],
-        [
-          "Ahora puede jugar.",
-          0.992
         ]
       ],
       "answer_relevancy": 0.8442191084225973,
@@ -895,12 +883,12 @@
         "¿Qué sucedió con Jens Cajuste antes de volver al equipo?",
         "¿Por cuánto tiempo se le había lesionado y cómo fue su recuperación?"
       ],
-      "context_precision": 0.75,
+      "context_precision": 1.0,
       "chunks_utiles": [
         1,
         0,
         0,
-        1
+        0
       ],
       "context_recall": 1.0,
       "recall_detalle": [
@@ -914,7 +902,7 @@
         ],
         [
           "Estuvo un mes lesionado.",
-          0.988
+          0.987
         ]
       ],
       "context_precision_ids": 1.0
@@ -926,31 +914,27 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Bayern no descarta a Musiala.",
-          0.999
+          "El Bayern no elimina a Musiala para la Supercopa.",
+          0.914
         ],
         [
-          "La Supercopa del sábado se programó.",
-          0.836
+          "Sabían sobre Musiala antes de la fecha.",
+          0.997
         ],
         [
-          "El Bayern ya lo conocía antes de la temporada.",
-          0.94
+          "Preocupan sus problemas físicos.",
+          0.65
         ],
         [
-          "Su recaída es preocupante.",
-          0.986
-        ],
-        [
-          "Su patología neurológica no le impide jugar físicamente.",
+          "Su condición neurológica no lo impide jugar.",
           0.998
         ]
       ],
-      "answer_relevancy": 0.8099243640899658,
+      "answer_relevancy": 0.8467802007993063,
       "preguntas_generadas": [
         "¿Qué afirmación sobre el Bayern Munich es correcta según la respuesta?",
         "Según la información proporcionada en la respuesta, ¿cuál es el problema principal que preocuparía al equipo?",
-        "¿Cuáles son las dos principales declaraciones de la respuesta?"
+        "¿Cómo se refiere la respuesta a las expectativas de los fanáticos respecto a la posible participación de Musiala en la Supercopa?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -967,7 +951,7 @@
         ],
         [
           "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
-          0.947
+          0.957
         ],
         [
           "El Bayern no correrá riesgos con él.",
@@ -980,30 +964,26 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-19",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.6666666666666666,
       "faithfulness_detalle": [
         [
-          "Erik Lira aún no ha fichado por el Valencia.",
-          0.624
+          "El agente de Erik Lira se reúne con Braulio Vázquez en Paterna.",
+          0.995
         ],
         [
-          "El agente de Erik Lira está trabajando para Braulio Vázquez.",
-          0.732
+          "Erik Lira alimenta rumores sobre su futuro.",
+          0.999
         ],
         [
-          "En Paterna, se están discutiendo sobre el futuro de Erik Lira.",
-          0.99
-        ],
-        [
-          "Los rumores sugieren que Erik Lira podría estar considerando un nuevo club.",
-          0.997
+          "Braulio Vázquez es conocido como un agente.",
+          0.145
         ]
       ],
-      "answer_relevancy": 0.869979719320933,
+      "answer_relevancy": 0.829509417215983,
       "preguntas_generadas": [
         "[1] ¿Qué ciudad es donde se celebra el encuentro entre Erik Lira y Braulio Vázquez?",
-        "[2] ¿Cuál es el nombre del agente que interviene en el rumor sobre Erik Lira?",
-        "[3] ¿En qué localidad se produce este evento importante para Erik Lira?"
+        "[2] ¿Cuál es el nombre del agente que interactúa con Erik Lira según la información proporcionada?",
+        "[3] ¿En qué lugar se encuentra la ciudad donde se realiza el encuentro mencionado en la respuesta?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1016,7 +996,7 @@
       "recall_detalle": [
         [
           "El fichaje de Erik Lira no está confirmado.",
-          0.653
+          0.687
         ],
         [
           "Su agente se reunió con Braulio Vázquez en Paterna.",
@@ -1036,15 +1016,19 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Arrasate dice que Osasuna necesita él y que puede ayudarla.",
+          "Arrasate dice que siente que Osasuna necesita él.",
+          0.999
+        ],
+        [
+          "Arrasate cree que él puede ayudar a Osasuna.",
           0.999
         ]
       ],
-      "answer_relevancy": 0.8885365525881449,
+      "answer_relevancy": 0.9117516477902731,
       "preguntas_generadas": [
-        "¿Qué sentimiento arrasa expresó sobre Osasuna?",
-        "¿Cuál es el propósito de arrasa en relación con Osasuna?",
-        "¿Cómo se relaciona el mensaje de arrasa con su situación actual?"
+        "¿Qué sentimiento arrasate expresa sobre su relación con Osasuna?",
+        "¿Por qué arrasate cree que Osasuna necesita ayuda?",
+        "¿Cuál es el propósito de arrasate en colaborar con Osasuna?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1061,7 +1045,7 @@
         ],
         [
           "Arrasate cree que puede ayudar a Osasuna.",
-          0.999
+          1.0
         ],
         [
           "El objetivo es la permanencia.",
@@ -1074,11 +1058,11 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-21",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Aaron Ochoa NO estará disponible para un partido el 1 de noviembre.",
-          0.439
+          "Aaron Ochoa será ausente durante aproximadamente tres meses.",
+          0.779
         ]
       ],
       "answer_relevancy": 0.8729549646377563,
@@ -1102,15 +1086,15 @@
         ],
         [
           "La noticia se publicó el 27 de agosto de 2026.",
-          0.35
+          0.316
         ],
         [
           "El regreso estimado es hacia el 27 de noviembre de 2026.",
-          0.594
+          0.598
         ],
         [
           "El 1 de noviembre es anterior al regreso estimado.",
-          0.707
+          0.704
         ]
       ],
       "context_precision_ids": 0.5
@@ -1119,18 +1103,38 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-22",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "No, [Aaron Ochoa] no podrá jugar el 15 de diciembre.",
-          0.033
+          "Aaron Ochoa está de baja.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa ha estado de baja.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa tiene un tiempo de baja.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa se encuentra bajo sus responsabilidades.",
+          0.668
+        ],
+        [
+          "Aaron Ochoa está ausente temporalmente.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa está fuera del trabajo durante unos meses.",
+          0.998
         ]
       ],
-      "answer_relevancy": 0.8918646772702535,
+      "answer_relevancy": 0.8739248315493265,
       "preguntas_generadas": [
         "¿Cuánto tiempo ha estado Aaron Ochoa de baja?",
-        "¿Qué tipo de lesión le ha afectado Aaron Ochoa?",
-        "¿Por qué se espera que Aaron Ochoa vuelva pronto?"
+        "¿Por qué motivo Aaron Ochoa se encuentra en baja?",
+        "¿Cómo afectará esta baja temporal a los planes o actividades programadas para Aaron?"
       ],
       "context_precision": 0.0,
       "chunks_utiles": [
@@ -1147,15 +1151,15 @@
         ],
         [
           "El regreso estimado es hacia el 27 de noviembre de 2026.",
-          0.351
+          0.372
         ],
         [
           "El 15 de diciembre es posterior al regreso estimado.",
-          0.271
+          0.277
         ],
         [
           "No hay un alta médica confirmada.",
-          0.033
+          0.034
         ]
       ],
       "context_precision_ids": 1.0
@@ -1164,18 +1168,18 @@
       "sistema": "rag_ingenuo",
       "eval_id": "M3-23",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Oviedo puede contar con Chaira para el 29 de noviembre.",
-          0.471
+          "El marroquí perderá entre dos y tres meses de competición.",
+          0.982
         ]
       ],
-      "answer_relevancy": 0.7734447518984476,
+      "answer_relevancy": 0.7710249026616415,
       "preguntas_generadas": [
         "[1] ¿Cuánto tiempo dura una competencia en el marroquí?",
         "[2] ¿Qué es lo más probable para un marroquí durante su participación en el marroquí?",
-        "[3] ¿Cómo se comparan las duraciones de los diferentes tipos de competiciones del marroquí?"
+        "[3] ¿Cómo se clasifica generalmente un marroquí en el marroquí?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1192,7 +1196,7 @@
         ],
         [
           "La noticia se publicó el 8 de agosto de 2026.",
-          0.99
+          0.991
         ],
         [
           "El regreso estimado es como tarde el 8 de noviembre de 2026.",
@@ -1200,43 +1204,45 @@
         ],
         [
           "El 29 de noviembre es posterior al regreso estimado.",
-          0.707
+          0.732
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_hibrido",
       "eval_id": "M3-01",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Vinicius no puede jugar.",
-          0.992
+          "Vinicius pierde cuatro partidos.",
+          0.988
         ],
         [
-          "Vinicius no puede jugar el Clásico.",
-          0.998
+          "Vinicius está suspendido.",
+          0.997
         ],
         [
-          "Vinicius no puede jugar contra el Villarreal.",
-          0.984
+          "Vinicius debe esperar cuatro partidos.",
+          0.982
         ],
         [
-          "Vinicius no puede jugar contra el Villarreal porque se le impuso una sanción.",
-          0.996
+          "Vinicius no puede jugar durante cuatro partidos.",
+          0.999
         ]
       ],
-      "answer_relevancy": 0.7915322383244833,
+      "answer_relevancy": 0.9038757681846619,
       "preguntas_generadas": [
-        "¿Qué tipo de penalización se le impuso al equipo en cuestión?",
-        "¿Cuál fue el nombre del rival con el que tuvo lugar esta situación?",
-        "¿En qué competición deportiva se produjo este incidente?"
+        "¿Cuál es el resultado del partido en el que Vinicius perdió su libertad?",
+        "¿Por cuántos partidos de sanción fue condenado Vinicius debido al Clásico?",
+        "¿Qué tipo de sanción recibió Vinicius después del Clásico?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
         1,
+        0,
+        0,
         0
       ],
       "context_recall": 1.0,
@@ -1251,36 +1257,2261 @@
         ],
         [
           "La sanción es por la tarjeta roja ante el Villarreal.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-02",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Vinicius regresará al equipo del entrenador Mourinho en el estadio Olímpico.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.877371629079183,
+      "preguntas_generadas": [
+        "¿Cuál será el equipo que Vinicius Júnior jugará con su nuevo club?",
+        "¿En qué estadio se realizará la primera aparición oficial de Vinicius como jugador del nuevo club?",
+        "¿Cómo afectará la incorporación de Vinicius Júnior al once inicial de Mourinho?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Vinicius aparece en el posible once del Real Madrid ante la Roma.",
+          1.0
+        ],
+        [
+          "El partido contra la Roma es de Champions League.",
+          0.991
+        ],
+        [
+          "La sanción de Vinicius es de cuatro partidos de Liga.",
+          0.994
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-03",
+      "valvula": false,
+      "faithfulness": 0.8,
+      "faithfulness_detalle": [
+        [
+          "Isaac Romero anota un gol.",
+          0.781
+        ],
+        [
+          "Romero se queda callado.",
+          0.99
+        ],
+        [
+          "Romero es expulsado.",
+          0.998
+        ],
+        [
+          "Romero recibe dos tarjetas amarillas.",
+          0.992
+        ],
+        [
+          "El delantero comete falta repetida.",
+          0.365
+        ]
+      ],
+      "answer_relevancy": 0.8085329929987589,
+      "preguntas_generadas": [
+        "¿Quién marcó el 2-3 en el partido mencionado?",
+        "¿Cuántos amarillas recibió el delantero en los últimos cuatro minutos del juego?",
+        "¿Qué consecuencia tuvo para el jugador cuando se le notificó con dos amarillas?"
+      ],
+      "context_precision": 0.8333333333333333,
+      "chunks_utiles": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Isaac Romero fue expulsado.",
+          0.999
+        ],
+        [
+          "Isaac Romero juega en el Sevilla.",
+          0.986
+        ],
+        [
+          "Vio dos amarillas en cuatro minutos.",
+          0.997
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-04",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Quique organiza un casting.",
+          0.984
+        ],
+        [
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
+          0.998
+        ],
+        [
+          "Ángel Pérez está sancionado.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.7906140883763632,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
+        "¿Quién es Quique y qué hace en este contexto?",
+        "¿Qué ocurre con Ángel Pérez en este escenario?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ángel Pérez está sancionado.",
+          0.999
+        ],
+        [
+          "Ángel Pérez juega en la banda derecha.",
+          0.88
+        ],
+        [
+          "El técnico debe buscarle un recambio.",
           0.993
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-05",
+      "valvula": false,
+      "faithfulness": 0.0,
+      "faithfulness_detalle": [
+        [
+          "El Tottenham fue expulsado por Gayà.",
+          0.252
+        ]
+      ],
+      "answer_relevancy": 0.8618343075116476,
+      "preguntas_generadas": [
+        "¿Quién es el entrenador del Tottenham en este caso?",
+        "¿Qué partido específico se refiere a esta situación de expulsión?",
+        "¿Cuál es el nombre del jugador que fue expulsado por Gayà?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Bentancur fue expulsado con tarjeta roja.",
+          0.892
+        ],
+        [
+          "El Tottenham acabó con diez jugadores.",
+          0.996
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-06",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Sevilla planea visitar al Bernabéu.",
+          0.998
+        ],
+        [
+          "Un jugador importante, Guridi, está lesionado.",
+          0.97
+        ],
+        [
+          "El problema es un daño en el aductor largo de su muslo izquierdo.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.8166079123814901,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
+        "¿Qué equipo visitará el Sevilla este fin de semana?",
+        "¿Quién es el jugador central que no podrá jugar esta temporada debido a una lesión?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Guridi no estará en la visita del Sevilla al Bernabéu.",
+          0.998
+        ],
+        [
+          "Guridi sufre una lesión en el aductor largo del muslo izquierdo.",
+          0.972
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-07",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El central no viajó a Vallecas porque estaba enfermo.",
+          0.707
+        ],
+        [
+          "El extremo sigue siendo baja debido a un problema muscular.",
+          0.365
+        ]
+      ],
+      "answer_relevancy": 0.7806963920593262,
+      "preguntas_generadas": [
+        "¿Por qué el central no pudo viajar a Vallecas?",
+        "¿Qué motivo tiene el extremo para seguir en baja?",
+        "¿Cuál es la situación del central respecto al viaje?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Nico no jugará en Mestalla.",
+          0.989
+        ],
+        [
+          "Nico está de baja por lesión.",
+          0.992
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-08",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Marco Asensio baja de última hora.",
+          1.0
+        ],
+        [
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.932
+        ]
+      ],
+      "answer_relevancy": 0.8602912227312723,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Marco Asensio no jugará contra el Aston Villa.",
+          0.993
+        ],
+        [
+          "Es una baja de última hora.",
+          0.999
+        ],
+        [
+          "El partido es de Champions League.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-09",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Getafe informó sobre un daño serio en la pierna del jugador Uche.",
+          0.997
+        ],
+        [
+          "Uche, un jugador nigeriano, sufrió un golpe grave en su rodilla.",
+          0.898
+        ],
+        [
+          "El Getafe confirmó que Uche estará ausente durante todo el próximo torneo.",
+          0.999
+        ],
+        [
+          "Uche, quien juega para el Getafe, ha experimentado un accidente en su rodilla.",
+          0.995
+        ],
+        [
+          "El Getafe comunicó que Uche tiene una lesión significativa en su pierna derecha.",
+          1.0
+        ],
+        [
+          "El club aseguró que Uche no podrá jugar durante toda la temporada",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.9215906858444214,
+      "preguntas_generadas": [
+        "¿Qué ha ocurrido con Uche en el equipo del Getafe?",
+        "¿Cuál es el estado actual de Uche después de su lesión?",
+        "¿Por qué el Getafe ha confirmado que Uche no jugará durante todo el próximo torneo?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Uche sufre una grave lesión en la rodilla derecha.",
+          1.0
+        ],
+        [
+          "Uche se perderá toda la temporada.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-10",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El agujero negro es un fenómeno natural.",
+          0.057
+        ],
+        [
+          "Kevin Medina sufrió una lesión.",
+          0.985
+        ],
+        [
+          "Las semanas son períodos temporales.",
+          0.999
+        ],
+        [
+          "El agujero negro se formó debido a su lesión.",
+          0.004
+        ]
+      ],
+      "answer_relevancy": 0.8178038001060486,
+      "preguntas_generadas": [
+        "¿Qué es el increíble agujero negro del extremo izquierdo del Córdoba?",
+        "¿Por qué Kevin Medina sufrió una lesión en su trabajo como periodista?",
+        "¿Cuántas semanas duró la lesión de Kevin Medina?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Kevin Medina está lesionado.",
+          0.995
+        ],
+        [
+          "La lesión es para varias semanas.",
+          0.999
+        ],
+        [
+          "Kevin Medina juega de extremo izquierdo en el Córdoba.",
+          0.946
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-11",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Vinicius regresa al equipo de Mourinho en el estadio Olímpico.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.8063143690427145,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del jugador que regresa al equipo de Mourinho?",
+        "¿En qué estadio se realizará la reapertura del once inicial de Mourinho?",
+        "¿Qué entrenador anterior dirigía el equipo antes de Mourinho?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.0,
+      "recall_detalle": [
+        [
+          "Svilar está lesionado.",
+          0.011
+        ],
+        [
+          "Gollini será el portero de la Roma ante el Real Madrid.",
+          0.085
+        ]
+      ],
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-12",
+      "valvula": false,
+      "faithfulness": 0.0,
+      "faithfulness_detalle": [
+        [
+          "El Celta tiene a Pablo Durán lesionado.",
+          0.025
+        ],
+        [
+          "El Celta tiene a Borja Iglesias lesionado.",
+          0.034
+        ]
+      ],
+      "answer_relevancy": 0.9223651885986328,
+      "preguntas_generadas": [
+        "¿Cuáles son los jugadores del Celta que están lesionados?",
+        "¿Qué equipos tienen a Pablo Durán y Borja Iglesias como jugadores?",
+        "¿Cómo afectan las lesiones de estos dos jugadores al equipo del Celta?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Pablo Durán está lesionado.",
+          0.773
+        ],
+        [
+          "Borja Iglesias está lesionado.",
+          0.576
+        ],
+        [
+          "Ninguno de los dos está en la convocatoria del Celta.",
+          0.093
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-13",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Ana María Guzmán sufrió una grave lesión.",
+          1.0
+        ],
+        [
+          "Sufrió una grave lesión durante un amistoso.",
+          0.999
+        ],
+        [
+          "Durante un amistoso, sufrió una grave lesión.",
+          0.979
+        ],
+        [
+          "Amistoso de la Selección Colombia contra Venezuela causó sufrimiento.",
+          0.996
+        ],
+        [
+          "Selección Colombia perdió el amistoso debido a la lesión de Ana María Guzmán.",
+          0.594
+        ]
+      ],
+      "answer_relevancy": 0.8970946868260702,
+      "preguntas_generadas": [
+        "¿Quién es Ana María Guzmán y qué tipo de lesión sufrió?",
+        "¿Cuál fue el nombre del equipo colombiano al que pertenecía Ana María Guzmán en ese amistoso?",
+        "¿Qué resultado obtuvo la selección colombiana en esa partida?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ana María Guzmán sufrió una grave lesión.",
+          1.0
+        ],
+        [
+          "La lesión fue en el amistoso contra Venezuela.",
+          0.968
+        ],
+        [
+          "Será operada.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-14",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Laporte está enfermo.",
+          0.522
+        ],
+        [
+          "Laporte no puede viajar a Vallecas.",
+          0.981
+        ],
+        [
+          "La razón es su indisposición.",
+          0.956
+        ]
+      ],
+      "answer_relevancy": 0.8783977627754211,
+      "preguntas_generadas": [
+        "¿Por qué Laporte no puede viajar a Vallecas?",
+        "¿Qué motivo específico ha impedido a Laporte su viaje al lugar indicado?",
+        "¿Cuál es el problema o razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Laporte no viajó a Vallecas por una indisposición.",
+          0.925
+        ],
+        [
+          "Laporte sigue sin entrenar con el grupo.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-15",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Beitia experimentó un esguince en su tobillo izquierdo.",
+          0.997
+        ],
+        [
+          "El central de Elgoibar tuvo un susto durante el entrenamiento después de un partido.",
+          0.997
+        ],
+        [
+          "Se temía que pudiese sufrir una lesión grave.",
+          0.998
+        ],
+        [
+          "Afortunadamente, no ocurrió lo peor.",
+          0.966
+        ]
+      ],
+      "answer_relevancy": 0.81956547498703,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas que la respuesta contesta:",
+        "¿Qué le ocurrió al jugador de Beitia durante el entrenamiento después del partido?",
+        "¿Cuál fue el problema que temían los jugadores de Elgoibar?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Beitia sufre un esguince de tobillo izquierdo.",
+          0.972
+        ],
+        [
+          "La lesión no es grave.",
+          0.914
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-16",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Sadiq acelera su regreso.",
+          0.998
+        ],
+        [
+          "Aguirre le da respaldo.",
+          0.997
+        ],
+        [
+          "Sadiq sabe lo que puede dar al equipo.",
+          0.999
+        ],
+        [
+          "El delantero nigeriano está pendiente de pruebas.",
+          0.999
+        ],
+        [
+          "Pruebas se celebrarán este jueves.",
+          0.997
+        ],
+        [
+          "Las pruebas determinarán su evolución.",
+          0.993
+        ]
+      ],
+      "answer_relevancy": 0.9046573241551717,
+      "preguntas_generadas": [
+        "¿Quién es Sadiq y qué papel desempeña en el equipo?",
+        "¿Qué ha ocurrido con Sadiq después de su regreso?",
+        "¿Cuáles son las expectativas para Sadiq tras estas nuevas pruebas?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Sadiq acelera su regreso.",
+          0.998
+        ],
+        [
+          "Sadiq está pendiente de nuevas pruebas.",
+          1.0
+        ],
+        [
+          "Su recuperación no está confirmada.",
+          0.292
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-17",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Jens Cajuste regresa al equipo.",
+          0.998
+        ],
+        [
+          "Regresará al equipo después de un mes de baja.",
+          0.998
+        ],
+        [
+          "Podrá jugar con el equipo.",
+          0.996
+        ],
+        [
+          "Podrás jugar con el equipo ahora mismo.",
+          0.754
+        ]
+      ],
+      "answer_relevancy": 0.8247154752413431,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del jugador que regresa al equipo?",
+        "¿En qué tiempo se espera que pueda volver a jugar el jugador mencionado?",
+        "¿Qué tipo de lesión tuvo el jugador antes de su retiro?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Cajuste vuelve al grupo.",
+          0.999
+        ],
+        [
+          "Cajuste podrá jugar.",
+          0.999
+        ],
+        [
+          "Estuvo un mes lesionado.",
+          0.992
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-18",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Bayern no descarta a Musiala para la Supercopa.",
+          0.997
+        ],
+        [
+          "Musiala tiene una patología neurológica.",
+          1.0
+        ],
+        [
+          "Esta patología no afecta a su estado físico.",
+          0.999
+        ],
+        [
+          "La Supercopa está programada para el sábado.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.9031707247098287,
+      "preguntas_generadas": [
+        "¿Qué decisión parece tomar el Bayern Munich en relación con el jugador Musiala?",
+        "¿Cuál es la situación actual de Musiala en términos físicos y patológica?",
+        "¿Cómo se relaciona la patología neurológica de Musiala con su condición general de juego?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Musiala vuelve a ejercitarse.",
+          0.99
+        ],
+        [
+          "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
+          0.876
+        ],
+        [
+          "El Bayern no correrá riesgos con él.",
+          0.995
+        ]
+      ],
+      "context_precision_ids": 0.5
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-19",
+      "valvula": false,
+      "faithfulness": 0.6666666666666666,
+      "faithfulness_detalle": [
+        [
+          "El agente Erik Lira se reúne con Braulio Vázquez en Paterna.",
+          0.957
+        ],
+        [
+          "Erik Lira alimenta rumores sobre su futuro.",
+          0.999
+        ],
+        [
+          "Braulio Vázquez es conocido como un agente.",
+          0.462
+        ]
+      ],
+      "answer_relevancy": 0.876570483048757,
+      "preguntas_generadas": [
+        "¿Quién es Erik Lira?",
+        "¿Qué relación tiene Erik Lira con Braulio Vázquez?",
+        "¿Dónde se reúnen Erik Lira y Braulio Vázquez?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "El fichaje de Erik Lira no está confirmado.",
+          0.871
+        ],
+        [
+          "Su agente se reunió con Braulio Vázquez en Paterna.",
+          0.999
+        ],
+        [
+          "La reunión alimenta rumores sobre su futuro.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-20",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Arrasate dice que siente que Osasuna necesita él.",
+          0.999
+        ],
+        [
+          "Arrasate cree que él puede ayudar a Osasuna a mantenerse en la liga.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.9471648136774699,
+      "preguntas_generadas": [
+        "¿Qué afirmación hizo Arrasate sobre su relación con Osasuna?",
+        "¿Cuál es el objetivo de Arrasate para Osasuna según lo mencionado en la respuesta?",
+        "¿Cómo se refirió Arrasate a su papel dentro de Osasuna?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Arrasate siente que Osasuna lo necesita.",
+          1.0
+        ],
+        [
+          "Arrasate cree que puede ayudar a Osasuna.",
+          1.0
+        ],
+        [
+          "El objetivo es la permanencia.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-21",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Aaron Ochoa será ausente durante aproximadamente tres meses.",
+          0.9
+        ]
+      ],
+      "answer_relevancy": 0.8729549646377563,
+      "preguntas_generadas": [
+        "¿Cuánto tiempo se espera que Aaron Ochoa esté de baja?",
+        "¿Qué tipo de problema afectará a Aaron durante su ausencia?",
+        "¿Cómo afectará la baja de Aaron a los planes del equipo?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "La baja de Aaron Ochoa es de alrededor de tres meses.",
+          0.999
+        ],
+        [
+          "La noticia se publicó el 27 de agosto de 2026.",
+          0.723
+        ],
+        [
+          "El regreso estimado es hacia el 27 de noviembre de 2026.",
+          0.688
+        ],
+        [
+          "El 1 de noviembre es anterior al regreso estimado.",
+          0.807
+        ]
+      ],
+      "context_precision_ids": 0.5
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-22",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Aaron Ochoa está de baja.",
+          1.0
+        ],
+        [
+          "Aaron Ochoa ha estado de baja.",
+          1.0
+        ],
+        [
+          "Aaron Ochoa tiene un tiempo de baja.",
+          1.0
+        ],
+        [
+          "Aaron Ochoa se encuentra bajo sus responsabilidades.",
+          0.587
+        ],
+        [
+          "Aaron Ochoa está ausente temporalmente.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa está fuera del trabajo durante unos meses.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.8739248315493265,
+      "preguntas_generadas": [
+        "¿Cuánto tiempo ha estado Aaron Ochoa de baja?",
+        "¿Por qué motivo Aaron Ochoa se encuentra en baja?",
+        "¿Cómo afectará esta baja temporal a los planes o actividades programadas para Aaron?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.25,
+      "recall_detalle": [
+        [
+          "La baja de Aaron Ochoa es de alrededor de tres meses.",
+          1.0
+        ],
+        [
+          "El regreso estimado es hacia el 27 de noviembre de 2026.",
+          0.313
+        ],
+        [
+          "El 15 de diciembre es posterior al regreso estimado.",
+          0.482
+        ],
+        [
+          "No hay un alta médica confirmada.",
+          0.045
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_hibrido",
+      "eval_id": "M3-23",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El marroquí perderá entre dos y tres meses de competición.",
+          0.994
+        ]
+      ],
+      "answer_relevancy": 0.7710249026616415,
+      "preguntas_generadas": [
+        "[1] ¿Cuánto tiempo dura una competencia en el marroquí?",
+        "[2] ¿Qué es lo más probable para un marroquí durante su participación en el marroquí?",
+        "[3] ¿Cómo se clasifica generalmente un marroquí en el marroquí?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "La baja de Chaira es de entre dos y tres meses.",
+          0.999
+        ],
+        [
+          "La noticia se publicó el 8 de agosto de 2026.",
+          0.995
+        ],
+        [
+          "El regreso estimado es como tarde el 8 de noviembre de 2026.",
+          0.81
+        ],
+        [
+          "El 29 de noviembre es posterior al regreso estimado.",
+          0.809
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-01",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El Comité de Disciplina le ha impuesto una sanción de cuatro partidos.",
+          1.0
+        ],
+        [
+          "Por favor, no me hagas caso del Comité de Disciplina.",
+          0.166
+        ],
+        [
+          "Esta sanción es por un partido contra el Villarreal.",
+          0.98
+        ],
+        [
+          "No te preocupes, solo fue una sanción leve.",
+          0.014
+        ]
+      ],
+      "answer_relevancy": 0.7996798555056254,
+      "preguntas_generadas": [
+        "¿Qué tipo de penalización se le impuso al equipo en cuestión?",
+        "¿Cuántos partidos fue castigado el equipo con esta sanción?",
+        "¿En qué partido específico fue aplicada esta sanción?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Vinicius no puede jugar el Clásico.",
+          0.998
+        ],
+        [
+          "Vinicius fue sancionado con cuatro partidos.",
+          0.999
+        ],
+        [
+          "La sanción es por la tarjeta roja ante el Villarreal.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
       "eval_id": "M3-02",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Vinicius jugará.",
-          0.998
-        ],
-        [
-          "Juega contra la Roma.",
-          0.681
-        ],
-        [
-          "En la Champions.",
-          0.988
-        ],
-        [
-          "Volverá al once de Mourinho.",
+          "El Comité de Disciplina ha sancionado a Vinicius con cuatro partidos.",
           1.0
         ],
         [
-          "Jugará en el Olímpico.",
+          "Vinicius recibe una sanción de roja amarilla.",
+          0.997
+        ],
+        [
+          "Vinicius no jugará contra la Roma en la Champions League.",
+          1.0
+        ],
+        [
+          "No juega Vinicius ante el Villarreal.",
           0.999
+        ]
+      ],
+      "answer_relevancy": 0.8593811194101969,
+      "preguntas_generadas": [
+        "¿Qué tipo de penalidad se le aplicó al jugador Vinicius?",
+        "¿En qué partido y equipo fue aplicada esta sanción?",
+        "¿Cuál es el resultado para Vinicius después de esta sanción?"
+      ],
+      "context_precision": 0.8333333333333333,
+      "chunks_utiles": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Vinicius aparece en el posible once del Real Madrid ante la Roma.",
+          1.0
+        ],
+        [
+          "El partido contra la Roma es de Champions League.",
+          0.995
+        ],
+        [
+          "La sanción de Vinicius es de cuatro partidos de Liga.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 0.8333333333333333
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-03",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Isaac Romero fue expulsado.",
+          0.999
+        ],
+        [
+          "El delantero vio dos amarillas en cuatro minutos.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.8171513875325521,
+      "preguntas_generadas": [
+        "¿Quién es el delantero mencionado en la respuesta?",
+        "¿Cuántos minutos pasaron antes de que el delantero fuera expulsado?",
+        "¿Por qué se le dio dos tarjetas amarillas?"
+      ],
+      "context_precision": 0.9166666666666666,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Isaac Romero fue expulsado.",
+          0.999
+        ],
+        [
+          "Isaac Romero juega en el Sevilla.",
+          0.974
+        ],
+        [
+          "Vio dos amarillas en cuatro minutos.",
+          0.997
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-04",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Quique organiza un casting para la banda derecha.",
+          0.977
+        ],
+        [
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
+          0.999
+        ],
+        [
+          "Ángel Pérez es crucial en el sector derecho desde marzo.",
+          0.975
+        ]
+      ],
+      "answer_relevancy": 0.8040237228075663,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
+        "¿Quién es el nuevo jugador que se busca para sustituir al sancionado Ángel Pérez?",
+        "¿En qué área del equipo se encuentra el jugador que ha sido sancionado y cuándo llegó a la franquicia?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ángel Pérez está sancionado.",
+          0.999
+        ],
+        [
+          "Ángel Pérez juega en la banda derecha.",
+          0.974
+        ],
+        [
+          "El técnico debe buscarle un recambio.",
+          0.995
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-05",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El partido fue entre Tottenham y Manchester United.",
+          0.993
+        ],
+        [
+          "Jhon Vásquez fue expulsado.",
+          0.888
+        ],
+        [
+          "La expulsión fue por roja directa.",
+          0.657
+        ]
+      ],
+      "answer_relevancy": 0.8715933958689371,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del jugador de Tottenham que fue expulsado en el partido contra Manchester United?",
+        "¿Qué tipo de expulsión recibió Jhon Vásquez en ese encuentro?",
+        "¿En qué equipo jugaba Jhon Vásquez antes de este partido?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Bentancur fue expulsado con tarjeta roja.",
+          0.678
+        ],
+        [
+          "El Tottenham acabó con diez jugadores.",
+          0.996
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-06",
+      "valvula": false,
+      "faithfulness": 0.6666666666666666,
+      "faithfulness_detalle": [
+        [
+          "El Sevilla planea enfrentarse al Real Madrid.",
+          0.809
+        ],
+        [
+          "Guridi, el central, experimentó un daño muscular en su pierna izquierda.",
+          0.14
+        ],
+        [
+          "No habrá Guridi en la formación de este partido contra el Bernabéu.",
+          0.995
+        ]
+      ],
+      "answer_relevancy": 0.8501860499382019,
+      "preguntas_generadas": [
+        "¿Qué equipo visitará el Sevilla este fin de semana?",
+        "¿Quién es el jugador central que está lesionado para esta partido?",
+        "¿Por qué no podrá jugar el jugador central del Sevilla?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Guridi no estará en la visita del Sevilla al Bernabéu.",
+          0.998
+        ],
+        [
+          "Guridi sufre una lesión en el aductor largo del muslo izquierdo.",
+          0.997
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-07",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El central no viajó a Vallecas porque estaba enfermo.",
+          0.789
+        ],
+        [
+          "El extremo sigue siendo baja debido a un problema muscular.",
+          0.387
+        ]
+      ],
+      "answer_relevancy": 0.7806963920593262,
+      "preguntas_generadas": [
+        "¿Por qué el central no pudo viajar a Vallecas?",
+        "¿Qué motivo tiene el extremo para seguir en baja?",
+        "¿Cuál es la situación del central respecto al viaje?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Nico no jugará en Mestalla.",
+          0.99
+        ],
+        [
+          "Nico está de baja por lesión.",
+          0.992
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-08",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Marco Asensio baja de última hora.",
+          1.0
+        ],
+        [
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.992
+        ]
+      ],
+      "answer_relevancy": 0.8602912227312723,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
+      ],
+      "context_precision": 0.75,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Marco Asensio no jugará contra el Aston Villa.",
+          0.995
+        ],
+        [
+          "Es una baja de última hora.",
+          0.999
+        ],
+        [
+          "El partido es de Champions League.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-09",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Getafe informó sobre un daño serio en la pierna del jugador Uche.",
+          0.996
+        ],
+        [
+          "Uche, un jugador nigeriano, sufrió un golpe grave en su rodilla.",
+          0.909
+        ],
+        [
+          "El Getafe confirmó que Uche estará ausente durante todo el próximo torneo.",
+          0.999
+        ],
+        [
+          "Uche, quien juega para el Getafe, ha experimentado un accidente en su rodilla.",
+          0.996
+        ],
+        [
+          "El Getafe comunicó que Uche tiene una lesión significativa en su pierna derecha.",
+          1.0
+        ],
+        [
+          "El club aseguró que Uche no podrá jugar durante toda la temporada",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.9215906858444214,
+      "preguntas_generadas": [
+        "¿Qué ha ocurrido con Uche en el equipo del Getafe?",
+        "¿Cuál es el estado actual de Uche después de su lesión?",
+        "¿Por qué el Getafe ha confirmado que Uche no jugará durante todo el próximo torneo?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Uche sufre una grave lesión en la rodilla derecha.",
+          1.0
+        ],
+        [
+          "Uche se perderá toda la temporada.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-10",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El agujero negro es un fenómeno natural.",
+          0.198
+        ],
+        [
+          "Kevin Medina sufrió una lesión.",
+          0.992
+        ],
+        [
+          "Las semanas son períodos temporales.",
+          0.999
+        ],
+        [
+          "El agujero negro se formó debido a su lesión.",
+          0.008
+        ]
+      ],
+      "answer_relevancy": 0.8178038001060486,
+      "preguntas_generadas": [
+        "¿Qué es el increíble agujero negro del extremo izquierdo del Córdoba?",
+        "¿Por qué Kevin Medina sufrió una lesión en su trabajo como periodista?",
+        "¿Cuántas semanas duró la lesión de Kevin Medina?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Kevin Medina está lesionado.",
+          0.997
+        ],
+        [
+          "La lesión es para varias semanas.",
+          0.999
+        ],
+        [
+          "Kevin Medina juega de extremo izquierdo en el Córdoba.",
+          0.994
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-11",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El capitán blanco marcó el gol en la segunda mitad.",
+          0.999
+        ],
+        [
+          "El partido fue equilibrado.",
+          0.932
+        ],
+        [
+          "La jugada ayudó a los de Álvaro López a ganar.",
+          0.922
+        ],
+        [
+          "Los equipos tenían seis puntos después de esa victoria.",
+          0.962
+        ]
+      ],
+      "answer_relevancy": 0.7844480673472086,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes:",
+        "¿Qué partido se refiere a esta respuesta?",
+        "¿Quién marcó el gol crucial en este encuentro?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.0,
+      "recall_detalle": [
+        [
+          "Svilar está lesionado.",
+          0.003
+        ],
+        [
+          "Gollini será el portero de la Roma ante el Real Madrid.",
+          0.015
+        ]
+      ],
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-12",
+      "valvula": false,
+      "faithfulness": 0.5,
+      "faithfulness_detalle": [
+        [
+          "El Celta ha perdido a Ángel Arcos.",
+          0.432
+        ],
+        [
+          "El Celta ha perdido a Javi Rueda.",
+          0.552
+        ]
+      ],
+      "answer_relevancy": 0.9500288963317871,
+      "preguntas_generadas": [
+        "¿Cuáles son los jugadores del Celta que están lesionados?",
+        "¿Qué equipos tienen estos dos jugadores lesionados?",
+        "¿Cómo afectan estas lesiones al rendimiento de los Celta en las últimas partidos?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Pablo Durán está lesionado.",
+          0.946
+        ],
+        [
+          "Borja Iglesias está lesionado.",
+          0.701
+        ],
+        [
+          "Ninguno de los dos está en la convocatoria del Celta.",
+          0.095
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-13",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Ana María Guzmán sufrió una grave lesión.",
+          0.996
+        ],
+        [
+          "Se espera que sea operada.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.9324434399604797,
+      "preguntas_generadas": [
+        "¿Qué sucedió con Ana María Guzmán en el amistoso entre la Selección Colombia y Venezuela?",
+        "¿Cuál es el estado actual de Ana María Guzmán después del accidente ocurrido en el amistoso?",
+        "¿Cómo se prevé que afectará la lesión de Ana María Guzmán al equipo nacional colombiano?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ana María Guzmán sufrió una grave lesión.",
+          0.996
+        ],
+        [
+          "La lesión fue en el amistoso contra Venezuela.",
+          0.975
+        ],
+        [
+          "Será operada.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-14",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Laporte no viaja a Vallecas porque está enfermo.",
+          0.733
+        ]
+      ],
+      "answer_relevancy": 0.8816138108571371,
+      "preguntas_generadas": [
+        "¿Por qué Laporte no puede viajar a Vallecas?",
+        "¿Qué motivo específico ha impedido a Laporte su viaje a Vallecas?",
+        "¿Cuál es el motivo principal por el cual Laporte no puede asistir en Vallecas?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Laporte no viajó a Vallecas por una indisposición.",
+          0.962
+        ],
+        [
+          "Laporte sigue sin entrenar con el grupo.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-15",
+      "valvula": false,
+      "faithfulness": 0.75,
+      "faithfulness_detalle": [
+        [
+          "El central de Elgoibar tuvo un susto durante el entrenamiento después del partido del domingo.",
+          0.996
+        ],
+        [
+          "El central de Elgoibar temía que sufriera una lesión grave.",
+          0.986
+        ],
+        [
+          "El central de Elgoibar no experimentó una lesión grave.",
+          0.881
+        ],
+        [
+          "No hay informes de lesión para el central de Elgoibar.",
+          0.04
+        ]
+      ],
+      "answer_relevancy": 0.8074354330698649,
+      "preguntas_generadas": [
+        "¿Qué ocurrió durante el entrenamiento post-partido en Elgoibar?",
+        "¿Cuál fue el estado actual del jugador después del entrenamiento?",
+        "¿Cómo se evitó un posible riesgo de lesión para el jugador?"
+      ],
+      "context_precision": 0.8333333333333333,
+      "chunks_utiles": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Beitia sufre un esguince de tobillo izquierdo.",
+          0.998
+        ],
+        [
+          "La lesión no es grave.",
+          0.969
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-16",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Sadiq acelera su regreso.",
+          0.999
+        ],
+        [
+          "Aguirre le da respaldo.",
+          0.996
+        ],
+        [
+          "Sadiq sabe lo que puede dar al equipo.",
+          0.999
+        ],
+        [
+          "El delantero nigeriano está pendiente de pruebas.",
+          0.996
+        ],
+        [
+          "Pruebas se celebrarán este jueves.",
+          0.995
+        ],
+        [
+          "Las pruebas determinarán su evolución.",
+          0.991
+        ]
+      ],
+      "answer_relevancy": 0.9046573241551717,
+      "preguntas_generadas": [
+        "¿Quién es Sadiq y qué papel desempeña en el equipo?",
+        "¿Qué ha ocurrido con Sadiq después de su regreso?",
+        "¿Cuáles son las expectativas para Sadiq tras estas nuevas pruebas?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Sadiq acelera su regreso.",
+          0.999
+        ],
+        [
+          "Sadiq está pendiente de nuevas pruebas.",
+          0.999
+        ],
+        [
+          "Su recuperación no está confirmada.",
+          0.159
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-17",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Jens Cajuste ha regresado al equipo tras una lesión de un mes.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.8442191084225973,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del jugador mencionado en la respuesta?",
+        "¿Qué sucedió con Jens Cajuste antes de volver al equipo?",
+        "¿Por cuánto tiempo se le había lesionado y cómo fue su recuperación?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Cajuste vuelve al grupo.",
+          0.999
+        ],
+        [
+          "Cajuste podrá jugar.",
+          0.997
+        ],
+        [
+          "Estuvo un mes lesionado.",
+          0.991
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-18",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Kompany proporcionó información sobre el estado de salud de Musiala.",
+          0.999
+        ],
+        [
+          "La situación está mejorando según Kompany.",
+          1.0
+        ],
+        [
+          "El entrenador del Bayern Múnich afirma que Musiala no ha vuelto a desmayarse.",
+          1.0
+        ],
+        [
+          "El técnico menciona que es probable que si ocurra nuevamente, será controlado adecuadamente.",
+          0.998
+        ]
+      ],
+      "answer_relevancy": 0.9011621475219727,
+      "preguntas_generadas": [
+        "¿Qué ha dicho el entrenador del Bayern Munich sobre el estado de salud de Musiala?",
+        "¿Cómo evalúa el entrenador del Bayern Munich el progreso de Musiala en cuanto a su condición física?",
+        "¿Cuál es la perspectiva del entrenador sobre las posibles recaídas de Musiala?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Musiala vuelve a ejercitarse.",
+          0.999
+        ],
+        [
+          "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
+          0.978
+        ],
+        [
+          "El Bayern no correrá riesgos con él.",
+          0.998
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-19",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El agente de Erik Lira se reúne con Braulio Vázquez en Paterna.",
+          0.985
+        ],
+        [
+          "Braulio Vázquez alimenta rumores sobre su futuro.",
+          0.998
+        ],
+        [
+          "Mónaco está dispuesto a pagar 12 millones.",
+          0.993
+        ],
+        [
+          "No cerraron la operación porque falta ficha libre extracomunitaria.",
+          0.977
+        ]
+      ],
+      "answer_relevancy": 0.8347743153572083,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
+        "¿Qué ciudad es donde se reúnen Erik Lira y Braulio Vázquez?",
+        "¿Cuál fue el precio inicial ofrecido por el Mónaco para contratar a Erik Lira?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "El fichaje de Erik Lira no está confirmado.",
+          0.115
+        ],
+        [
+          "Su agente se reunió con Braulio Vázquez en Paterna.",
+          0.995
+        ],
+        [
+          "La reunión alimenta rumores sobre su futuro.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-20",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Arrasate dice que siente que Osasuna necesita él.",
+          0.999
+        ],
+        [
+          "Arrasate cree que él puede ayudar a Osasuna.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.9117516477902731,
+      "preguntas_generadas": [
+        "¿Qué sentimiento arrasate expresa sobre su relación con Osasuna?",
+        "¿Por qué arrasate cree que Osasuna necesita ayuda?",
+        "¿Cuál es el propósito de arrasate en colaborar con Osasuna?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Arrasate siente que Osasuna lo necesita.",
+          1.0
+        ],
+        [
+          "Arrasate cree que puede ayudar a Osasuna.",
+          1.0
+        ],
+        [
+          "El objetivo es la permanencia.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-21",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Aaron Ochoa será ausente durante aproximadamente tres meses.",
+          0.995
+        ]
+      ],
+      "answer_relevancy": 0.8984084526697794,
+      "preguntas_generadas": [
+        "¿Cuánto tiempo se espera que esté Aaron Ochoa de baja?",
+        "¿Qué tipo de trabajo está Aaron Ochoa involucrado en su posición actual?",
+        "¿Cómo afectará la baja de Aaron Ochoa a los planes del equipo?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "La baja de Aaron Ochoa es de alrededor de tres meses.",
+          1.0
+        ],
+        [
+          "La noticia se publicó el 27 de agosto de 2026.",
+          0.993
+        ],
+        [
+          "El regreso estimado es hacia el 27 de noviembre de 2026.",
+          0.621
+        ],
+        [
+          "El 1 de noviembre es anterior al regreso estimado.",
+          0.784
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-22",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Aaron Ochoa está de baja.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa ha estado de baja.",
+          1.0
+        ],
+        [
+          "Aaron Ochoa tiene un tiempo de baja.",
+          1.0
+        ],
+        [
+          "Aaron Ochoa se encuentra bajo sus responsabilidades.",
+          0.599
+        ],
+        [
+          "Aaron Ochoa está ausente temporalmente.",
+          0.999
+        ],
+        [
+          "Aaron Ochoa está fuera del trabajo durante unos meses.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.8739248315493265,
+      "preguntas_generadas": [
+        "¿Cuánto tiempo ha estado Aaron Ochoa de baja?",
+        "¿Por qué motivo Aaron Ochoa se encuentra en baja?",
+        "¿Cómo afectará esta baja temporal a los planes o actividades programadas para Aaron?"
+      ],
+      "context_precision": 0.0,
+      "chunks_utiles": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 0.25,
+      "recall_detalle": [
+        [
+          "La baja de Aaron Ochoa es de alrededor de tres meses.",
+          1.0
+        ],
+        [
+          "El regreso estimado es hacia el 27 de noviembre de 2026.",
+          0.131
+        ],
+        [
+          "El 15 de diciembre es posterior al regreso estimado.",
+          0.33
+        ],
+        [
+          "No hay un alta médica confirmada.",
+          0.021
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_rerank",
+      "eval_id": "M3-23",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El marroquí perderá entre dos y tres meses de competición.",
+          0.991
+        ]
+      ],
+      "answer_relevancy": 0.7710249026616415,
+      "preguntas_generadas": [
+        "[1] ¿Cuánto tiempo dura una competencia en el marroquí?",
+        "[2] ¿Qué es lo más probable para un marroquí durante su participación en el marroquí?",
+        "[3] ¿Cómo se clasifica generalmente un marroquí en el marroquí?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "La baja de Chaira es de entre dos y tres meses.",
+          0.999
+        ],
+        [
+          "La noticia se publicó el 8 de agosto de 2026.",
+          0.992
+        ],
+        [
+          "El regreso estimado es como tarde el 8 de noviembre de 2026.",
+          0.711
+        ],
+        [
+          "El 29 de noviembre es posterior al regreso estimado.",
+          0.681
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_verificado",
+      "eval_id": "M3-01",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Comité de Disciplina ha sancionado a Vinicius con cuatro partidos de suspensión.",
+          1.0
+        ],
+        [
+          "Vinicius fue sancionado por su roja ante el Villarreal.",
+          1.0
+        ],
+        [
+          "La sanción se aplicó al jugador Vinicius.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.8477205832799276,
+      "preguntas_generadas": [
+        "¿Qué tipo de sanción fue impuesta al jugador Vinicius?",
+        "¿En qué partido y contra quién fue aplicada esta sanción?",
+        "¿Cuántos partidos de suspensión tiene Vinicius ahora?"
+      ],
+      "context_precision": 0.8333333333333333,
+      "chunks_utiles": [
+        1,
+        0,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Vinicius no puede jugar el Clásico.",
+          1.0
+        ],
+        [
+          "Vinicius fue sancionado con cuatro partidos.",
+          1.0
+        ],
+        [
+          "La sanción es por la tarjeta roja ante el Villarreal.",
+          0.998
+        ]
+      ],
+      "context_precision_ids": 0.8333333333333333
+    },
+    {
+      "sistema": "rag_verificado",
+      "eval_id": "M3-02",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Vinicius regresará al equipo del entrenador Mourinho en el estadio Olímpico.",
+          1.0
         ]
       ],
       "answer_relevancy": 0.877371629079183,
@@ -1301,31 +3532,39 @@
         ],
         [
           "El partido contra la Roma es de Champions League.",
-          0.971
+          0.976
         ],
         [
           "La sanción de Vinicius es de cuatro partidos de Liga.",
-          0.134
+          0.142
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-03",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Isaac Romero juega con el Atlético Madrid.",
-          0.0
+          "El delantero vio dos amarillas.",
+          0.999
+        ],
+        [
+          "En cuatro minutos, el delantero recibió dos amarillas.",
+          0.999
+        ],
+        [
+          "El delantero fue expulsado.",
+          0.999
         ]
       ],
-      "answer_relevancy": 0.8653910954793295,
+      "answer_relevancy": 0.8254554073015848,
       "preguntas_generadas": [
-        "¿Quién es Isaac Romero y qué ha ocurrido con él?",
-        "¿Qué sucedió con Isaac Romero en relación a alguna situación específica mencionada en la respuesta?",
-        "¿Cómo se refiere la respuesta al tema de las expulsiones?"
+        "¿Cuántos amarillos recibió el delantero en un tiempo limitado?",
+        "¿Qué consecuencia tuvo para el delantero después de recibir los amarillos?",
+        "¿En qué momento ocurrió la expulsión del delantero?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1341,43 +3580,39 @@
         ],
         [
           "Isaac Romero juega en el Sevilla.",
-          0.94
+          0.976
         ],
         [
           "Vio dos amarillas en cuatro minutos.",
           0.999
         ]
       ],
-      "context_precision_ids": 1.0
+      "context_precision_ids": 0.8333333333333333
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-04",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Quique abre el casting.",
+          "Quique organiza un casting.",
           0.999
         ],
         [
-          "Para la banda derecha.",
-          0.999
-        ],
-        [
-          "El técnico busca un recambio.",
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
           1.0
         ],
         [
-          "Sancionado Ángel Pérez.",
+          "Ángel Pérez está sancionado.",
           0.999
         ]
       ],
-      "answer_relevancy": 0.8030206163724264,
+      "answer_relevancy": 0.7906140883763632,
       "preguntas_generadas": [
         "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
-        "¿Quién es responsable de abrir el casting para la banda derecha?",
-        "¿Qué situación ocurre con el músico Ángel Pérez en este contexto?"
+        "¿Quién es Quique y qué hace en este contexto?",
+        "¿Qué ocurre con Ángel Pérez en este escenario?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1391,7 +3626,7 @@
         ],
         [
           "Ángel Pérez juega en la banda derecha.",
-          0.993
+          0.994
         ],
         [
           "El técnico debe buscarle un recambio.",
@@ -1401,14 +3636,14 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-05",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Bentancur fue expulsado en el partido entre Tottenham y Manchester United.",
-          0.756
+          "El jugador expulsado en el partido entre Tottenham y Manchester United fue Bentancur.",
+          0.802
         ]
       ],
       "answer_relevancy": 0.9451764027277628,
@@ -1425,7 +3660,7 @@
       "recall_detalle": [
         [
           "Bentancur fue expulsado con tarjeta roja.",
-          0.993
+          0.995
         ],
         [
           "El Tottenham acabó con diez jugadores.",
@@ -1435,21 +3670,21 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-06",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.6666666666666666,
       "faithfulness_detalle": [
         [
-          "El Sevilla no cuenta con Guridi para jugar en el Bernabéu.",
-          1.0
+          "El Sevilla planea enfrentarse al Real Madrid.",
+          0.904
         ],
         [
-          "Guridi sufrió una lesión en el aductor largo del muslo izquierdo.",
-          1.0
+          "Guridi, el central, experimentó un daño muscular en su pierna izquierda.",
+          0.03
         ],
         [
-          "El Sevilla está preparando la visita al Bernabéu sin Guridi.",
+          "No habrá Guridi en la formación de este partido contra el Bernabéu.",
           1.0
         ]
       ],
@@ -1477,29 +3712,25 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-07",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Nico Williams no viajó.",
-          0.963
+          "El central Nico Williams no viajó a Vallecas debido a una indisposición.",
+          0.961
         ],
         [
-          "No viajó a Vallecas.",
-          0.996
-        ],
-        [
-          "Está de baja por lesión.",
-          0.991
+          "Nico Williams sigue de baja por una lesión.",
+          0.873
         ]
       ],
-      "answer_relevancy": 0.8086653153101603,
+      "answer_relevancy": 0.8336132367451986,
       "preguntas_generadas": [
         "¿Por qué el central Nico Williams no pudo viajar a Vallecas?",
         "¿Qué motivo específico le impidió viajar a Vallecas?",
-        "¿Cómo afectó esta indisposición o lesión a los planes del equipo?"
+        "¿Cómo afectará esta ausencia temporal para Nico Williams?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1510,7 +3741,7 @@
       "recall_detalle": [
         [
           "Nico no jugará en Mestalla.",
-          0.974
+          0.975
         ],
         [
           "Nico está de baja por lesión.",
@@ -1520,33 +3751,25 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-08",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Marco Asensio juega con el Fenerbahçe.",
-          0.732
+          "Marco Asensio baja de última hora.",
+          1.0
         ],
         [
-          "Fenerbahçe enfrenta al Aston Villa.",
-          0.999
-        ],
-        [
-          "Marco Asensio juega contra el Aston Villa.",
-          0.533
-        ],
-        [
-          "Marco Asensio baja de última hora para jugar.",
-          0.984
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.974
         ]
       ],
-      "answer_relevancy": 0.8240414261817932,
+      "answer_relevancy": 0.8602912227312723,
       "preguntas_generadas": [
         "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
-        "¿En qué equipo se encuentra Marco Asensio?",
-        "¿Qué partido específico se refiere a en la respuesta?"
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1570,37 +3793,33 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-09",
       "valvula": false,
-      "faithfulness": 0.8,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Uche no volverá.",
-          0.99
+          "Uche no jugará con el Getafe este año.",
+          1.0
         ],
         [
-          "A jugar con el Getafe.",
-          0.184
+          "No volverá al equipo de fútbol.",
+          0.997
         ],
         [
-          "Esta temporada.",
-          0.993
-        ],
-        [
-          "Debido a una grave lesión.",
+          "La lesión es grave en su pierna derecha.",
           0.999
         ],
         [
-          "En la rodilla derecha.",
-          0.999
+          "Es un problema para su participación futbolística.",
+          1.0
         ]
       ],
-      "answer_relevancy": 0.9103244344393412,
+      "answer_relevancy": 0.912525455156962,
       "preguntas_generadas": [
         "¿Qué ha ocurrido con Uche durante este verano?",
         "¿Por qué motivo se ha decidido que Uche no volverá a jugar con el Getafe esta temporada?",
-        "¿Cuál es el impacto de esta lesión para Uche y su equipo?"
+        "¿Cuál es el impacto de esta decisión para Uche y su equipo?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1620,34 +3839,22 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-10",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Córdoba tiene un problema en su extremo izquierdo.",
-          0.998
+          "El Córdoba lucha en su extremo izquierdo.",
+          0.958
         ],
         [
-          "El Córdoba está afectado por una lesión de Kevin Medina.",
-          0.977
-        ],
-        [
-          "Kevin Medina ha sufrido una lesión que le impide jugar durante varios días.",
-          0.999
-        ],
-        [
-          "Kevin Medina es un jugador importante para el equipo.",
-          0.947
-        ],
-        [
-          "El equipo necesita tiempo para recuperarse de la lesión.",
+          "Kevin Medina está lesionado.",
           0.991
         ],
         [
-          "La lesión de Kevin Medina puede llevar al descenso del equipo si no se trata bien.",
-          0.681
+          "Kevin Medina podría estar ausente durante varias semanas.",
+          0.993
         ]
       ],
       "answer_relevancy": 0.8076105117797852,
@@ -1665,7 +3872,7 @@
       "recall_detalle": [
         [
           "Kevin Medina está lesionado.",
-          0.992
+          0.991
         ],
         [
           "La lesión es para varias semanas.",
@@ -1673,38 +3880,81 @@
         ],
         [
           "Kevin Medina juega de extremo izquierdo en el Córdoba.",
-          0.853
+          0.863
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-11",
-      "valvula": true,
-      "faithfulness": null,
-      "answer_relevancy": 0.0,
-      "preguntas_generadas": [],
+      "valvula": false,
+      "faithfulness": 0.3333333333333333,
+      "faithfulness_detalle": [
+        [
+          "El portero del equipo italiano Roma enfrentará al equipo español Real Madrid.",
+          0.704
+        ],
+        [
+          "El portero de la Roma jugará contra el Real Madrid.",
+          0.368
+        ],
+        [
+          "Gianluigi Donnarumma será el portero de la Roma.",
+          0.208
+        ],
+        [
+          "La Roma tiene un portero llamado Gianluigi Donnarumma.",
+          0.07
+        ],
+        [
+          "Donnarumma es el portero de la Roma ante el Real Madrid.",
+          0.289
+        ],
+        [
+          "El portero de la Roma será Gianluigi Donnarumma.",
+          0.605
+        ]
+      ],
+      "answer_relevancy": 0.9226801594098409,
+      "preguntas_generadas": [
+        "¿Quién será el portero del equipo italiano en la final de la Champions League?",
+        "¿Cuál es el nombre del portero que jugará para la Roma en la final de la Champions League?",
+        "¿Qué jugador portero representará a Italia en la final de la Champions League?"
+      ],
       "context_precision": 0.0,
+      "chunks_utiles": [
+        0
+      ],
       "context_recall": 0.0,
+      "recall_detalle": [
+        [
+          "Svilar está lesionado.",
+          0.003
+        ],
+        [
+          "Gollini será el portero de la Roma ante el Real Madrid.",
+          0.022
+        ]
+      ],
       "context_precision_ids": 0.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-12",
       "valvula": false,
       "faithfulness": 0.0,
       "faithfulness_detalle": [
         [
-          "El Celta tiene lesionados a Pablo Durán y Borja Iglesias.",
-          0.006
+          "El Celta ha tenido lesiones en Pablo Durán y Borja Iglesias.",
+          0.013
         ]
       ],
-      "answer_relevancy": 0.9561566114425659,
+      "answer_relevancy": 0.9040486812591553,
       "preguntas_generadas": [
         "¿Cuáles son los jugadores del Celta que están lesionados?",
-        "¿Qué equipos de la liga española tienen jugadores lesionados en este momento?",
-        "¿Cómo afectan las lesiones de estos jugadores al rendimiento del equipo del Celta?"
+        "¿Qué equipos tienen afectaciones en sus plantillas debido a lesiones?",
+        "¿Cómo se ven las posibilidades de reemplazos para estos jugadores?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1714,36 +3964,36 @@
       "recall_detalle": [
         [
           "Pablo Durán está lesionado.",
-          0.47
+          0.409
         ],
         [
           "Borja Iglesias está lesionado.",
-          0.47
+          0.409
         ],
         [
           "Ninguno de los dos está en la convocatoria del Celta.",
-          0.096
+          0.106
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-13",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Ana María Guzmán sufrió una grave lesión.",
-          0.999
-        ],
-        [
-          "Ella será operada después del amistoso.",
+          "Ana María Guzmán sufre una grave lesión.",
           1.0
         ],
         [
-          "El amistoso fue entre la Selección Colombia y Venezuela.",
-          0.999
+          "Se realizará una operación para ella.",
+          1.0
+        ],
+        [
+          "El amistoso entre Colombia y Venezuela fue el evento anterior.",
+          0.986
         ]
       ],
       "answer_relevancy": 0.8586215972900391,
@@ -1760,7 +4010,7 @@
       "recall_detalle": [
         [
           "Ana María Guzmán sufrió una grave lesión.",
-          0.999
+          1.0
         ],
         [
           "La lesión fue en el amistoso contra Venezuela.",
@@ -1774,21 +4024,29 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-14",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Laporte no viaja a Vallecas porque está enfermo.",
-          0.707
+          "Laporte está enfermo.",
+          0.685
+        ],
+        [
+          "Laporte no puede viajar a Vallecas.",
+          0.987
+        ],
+        [
+          "La razón es su indisposición.",
+          0.891
         ]
       ],
-      "answer_relevancy": 0.8789243896802267,
+      "answer_relevancy": 0.8783977627754211,
       "preguntas_generadas": [
         "¿Por qué Laporte no puede viajar a Vallecas?",
         "¿Qué motivo específico ha impedido a Laporte su viaje al lugar indicado?",
-        "¿Cuál es el problema o la razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
+        "¿Cuál es el problema o razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -1799,7 +4057,7 @@
       "recall_detalle": [
         [
           "Laporte no viajó a Vallecas por una indisposición.",
-          0.653
+          0.684
         ],
         [
           "Laporte sigue sin entrenar con el grupo.",
@@ -1809,64 +4067,69 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-15",
       "valvula": false,
       "faithfulness": 0.75,
       "faithfulness_detalle": [
         [
-          "Beitia sufrió un esguince de tobillo.",
-          1.0
+          "El central de Elgoibar tuvo un susto durante el entrenamiento después del partido del domingo.",
+          0.998
         ],
         [
-          "Esguince de tobillo es leve.",
-          0.166
+          "El central de Elgoibar temía que sufriera una lesión grave.",
+          0.992
         ],
         [
-          "Central de Elgoibar temía mayor lesión.",
-          0.997
+          "El central de Elgoibar no experimentó una lesión grave.",
+          0.977
         ],
         [
-          "No fue grave la lesión.",
-          0.989
+          "No hay informes de lesión para el central de Elgoibar.",
+          0.095
         ]
       ],
-      "answer_relevancy": 0.9094306230545044,
+      "answer_relevancy": 0.8074354330698649,
       "preguntas_generadas": [
-        "¿Qué tipo de lesión sufrió Beitia durante el entrenamiento después del partido?",
-        "¿Cuál fue el nombre del jugador que tuvo un susto debido al entrenamiento?",
-        "¿Cómo se presentó la situación de Beitia en términos de lesión?"
+        "¿Qué ocurrió durante el entrenamiento post-partido en Elgoibar?",
+        "¿Cuál fue el estado actual del jugador después del entrenamiento?",
+        "¿Cómo se evitó un posible riesgo de lesión para el jugador?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
-        1
+        1,
+        0
       ],
       "context_recall": 1.0,
       "recall_detalle": [
         [
           "Beitia sufre un esguince de tobillo izquierdo.",
-          1.0
+          0.999
         ],
         [
           "La lesión no es grave.",
-          0.995
+          0.971
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-16",
       "valvula": false,
-      "faithfulness": 0.5,
+      "faithfulness": 0.3333333333333333,
       "faithfulness_detalle": [
         [
-          "Sadiq ya está recuperado.",
-          0.042
+          "Sadiq se encuentra mejor.",
+          0.224
         ],
         [
-          "El club espera sus nuevas pruebas.",
-          0.99
+          "Sadiq ha vuelto a estar bien.",
+          0.086
+        ],
+        [
+          "El club espera nuevos resultados de Sadiq.",
+          0.998
         ]
       ],
       "answer_relevancy": 0.9124240279197693,
@@ -1891,40 +4154,43 @@
         ],
         [
           "Su recuperación no está confirmada.",
-          0.018
+          0.019
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-17",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Sí, Jens Cajuste ha vuelto al grupo.",
+          "Jens Cajuste regresa al equipo.",
+          1.0
+        ],
+        [
+          "Regresará al equipo después de un mes de baja.",
+          1.0
+        ],
+        [
+          "Podrá jugar con el equipo.",
           0.999
         ],
         [
-          "Ha estado recuperándose durante un mes.",
-          0.868
-        ],
-        [
-          "Ya puede participar en las actividades grupales.",
-          0.061
+          "Podrás jugar con el equipo ahora mismo.",
+          0.945
         ]
       ],
-      "answer_relevancy": 0.8448198239008585,
+      "answer_relevancy": 0.8247154752413431,
       "preguntas_generadas": [
-        "¿Cuál es el nombre del jugador que ha regresado al equipo tras una lesión?",
-        "¿En qué tiempo se le permitió volver al equipo debido a su lesión?",
-        "¿Qué tipo de lesión tuvo Jens Cajuste y cuánto tiempo duró?"
+        "¿Cuál es el nombre del jugador que regresa al equipo?",
+        "¿En qué tiempo se espera que pueda volver a jugar el jugador mencionado?",
+        "¿Qué tipo de lesión tuvo el jugador antes de su retiro?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
-        1,
-        0
+        1
       ],
       "context_recall": 1.0,
       "recall_detalle": [
@@ -1934,70 +4200,70 @@
         ],
         [
           "Cajuste podrá jugar.",
-          0.998
+          1.0
         ],
         [
           "Estuvo un mes lesionado.",
-          0.992
+          0.999
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-18",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Musiala está mejorando.",
-          1.0
+          "El Bayern no elimina a Musiala para la Supercopa.",
+          0.914
         ],
         [
-          "Musiala no se ha desmayado.",
-          0.999
+          "Sabían sobre Musiala antes de la fecha.",
+          0.997
         ],
         [
-          "Musiala no se ha vuelto a desmayar.",
-          0.999
+          "Preocupan sus problemas físicos.",
+          0.65
         ],
         [
-          "Musiala puede volver a jugar con el Bayern.",
+          "Su condición neurológica no lo impide jugar.",
           0.998
         ]
       ],
-      "answer_relevancy": 0.8666121164957682,
+      "answer_relevancy": 0.8467802007993063,
       "preguntas_generadas": [
-        "¿Qué ha dicho el entrenador del Bayern Munich sobre el estado de salud de Musiala?",
-        "¿Cómo se encuentra actualmente el jugador Musiala en términos de su estado de salud después de un posible incidente anterior?",
-        "¿Cuál es la perspectiva del entrenador sobre cualquier eventualidad futura relacionada con los incidentes anteriores?"
+        "¿Qué afirmación sobre el Bayern Munich es correcta según la respuesta?",
+        "Según la información proporcionada en la respuesta, ¿cuál es el problema principal que preocuparía al equipo?",
+        "¿Cómo se refiere la respuesta a las expectativas de los fanáticos respecto a la posible participación de Musiala en la Supercopa?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
         1,
         1,
         1,
-        1
+        0
       ],
       "context_recall": 1.0,
       "recall_detalle": [
         [
           "Musiala vuelve a ejercitarse.",
-          0.999
+          0.998
         ],
         [
           "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
-          0.971
+          0.957
         ],
         [
           "El Bayern no correrá riesgos con él.",
-          0.998
+          0.997
         ]
       ],
-      "context_precision_ids": 1.0
+      "context_precision_ids": 0.5
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-19",
       "valvula": true,
       "faithfulness": null,
@@ -2008,18 +4274,18 @@
       "context_precision_ids": 0.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-20",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Arrasate es el técnico de Osasuna.",
-          0.881
+          "El técnico es Arrasate.",
+          0.999
         ],
         [
-          "Arrasate ha dicho que siente que Osasuna necesita él.",
-          1.0
+          "Arrasate dice que Osasuna necesita él.",
+          0.999
         ],
         [
           "Arrasate puede ayudar a Osasuna.",
@@ -2027,14 +4293,14 @@
         ],
         [
           "Su primer contacto con los medios fue en su vuelta al cuadro rojillo.",
-          0.963
+          0.973
         ]
       ],
-      "answer_relevancy": 0.8879169225692749,
+      "answer_relevancy": 0.8441740473111471,
       "preguntas_generadas": [
         "¿Quién es el técnico de Osasuna mencionado en la respuesta?",
         "Según la respuesta, qué mensaje envió el técnico a los medios tras su regreso al equipo?",
-        "¿Cuál es el nombre del jugador de Osasuna referido como \"Arrasate\" en la respuesta?"
+        "¿Cuál es el nombre del técnico que se refiere en la respuesta?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2058,7 +4324,7 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-21",
       "valvula": true,
       "faithfulness": null,
@@ -2069,7 +4335,7 @@
       "context_precision_ids": 0.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-22",
       "valvula": true,
       "faithfulness": null,
@@ -2080,21 +4346,21 @@
       "context_precision_ids": 0.0
     },
     {
-      "sistema": "rag_avanzado",
+      "sistema": "rag_verificado",
       "eval_id": "M3-23",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Oviedo puede contar con Chaira para el 29 de noviembre.",
-          0.03
+          "El marroquí perderá entre dos y tres meses de competición.",
+          1.0
         ]
       ],
-      "answer_relevancy": 0.7734447518984476,
+      "answer_relevancy": 0.7710249026616415,
       "preguntas_generadas": [
         "[1] ¿Cuánto tiempo dura una competencia en el marroquí?",
         "[2] ¿Qué es lo más probable para un marroquí durante su participación en el marroquí?",
-        "[3] ¿Cómo se comparan las duraciones de los diferentes tipos de competiciones del marroquí?"
+        "[3] ¿Cómo se clasifica generalmente un marroquí en el marroquí?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2108,47 +4374,55 @@
         ],
         [
           "La noticia se publicó el 8 de agosto de 2026.",
-          0.982
+          0.983
         ],
         [
           "El regreso estimado es como tarde el 8 de noviembre de 2026.",
-          0.565
+          0.557
         ],
         [
           "El 29 de noviembre es posterior al regreso estimado.",
-          0.096
+          0.109
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "sistema_final",
+      "sistema": "rag_avanzado",
       "eval_id": "M3-01",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.6666666666666666,
       "faithfulness_detalle": [
         [
-          "Vinicius no puede jugar.",
-          0.992
+          "El Comité de Disciplina ha sancionado al equipo con cuatro partidos.",
+          0.436
         ],
         [
-          "Vinicius no puede jugar el Clásico.",
+          "El Comité de Disciplina ha sancionado a un jugador con cuatro partidos.",
           0.998
         ],
         [
-          "Vinicius no puede jugar contra el Villarreal.",
-          0.984
+          "El Comité de Disciplina ha sancionado a un partido con cuatro partidos.",
+          0.991
         ],
         [
-          "Vinicius no puede jugar contra el Villarreal porque se le impuso una sanción.",
-          0.996
+          "El Comité de Disciplina ha sancionado a un club con cuatro partidos.",
+          0.518
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un equipo con cuatro partidos.",
+          0.44
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un jugador con cuatro partidos.",
+          0.998
         ]
       ],
-      "answer_relevancy": 0.7915322383244833,
+      "answer_relevancy": 0.7846805055936178,
       "preguntas_generadas": [
-        "¿Qué tipo de penalización se le impuso al equipo en cuestión?",
-        "¿Cuál fue el nombre del rival con el que tuvo lugar esta situación?",
-        "¿En qué competición deportiva se produjo este incidente?"
+        "¿Qué tipo de penalización se aplicó al equipo del Real Madrid en la última jornada?",
+        "¿Cuál fue la causa principal de la sanción impuesta por el Comité de Disciplina?",
+        "¿Cómo afectará esta sanción a los planes futuros del Real Madrid?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2167,36 +4441,20 @@
         ],
         [
           "La sanción es por la tarjeta roja ante el Villarreal.",
-          0.993
+          0.994
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "sistema_final",
+      "sistema": "rag_avanzado",
       "eval_id": "M3-02",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Vinicius jugará.",
-          0.998
-        ],
-        [
-          "Juega contra la Roma.",
-          0.681
-        ],
-        [
-          "En la Champions.",
-          0.988
-        ],
-        [
-          "Volverá al once de Mourinho.",
+          "Vinicius regresará al equipo del entrenador Mourinho en el estadio Olímpico.",
           1.0
-        ],
-        [
-          "Jugará en el Olímpico.",
-          0.999
         ]
       ],
       "answer_relevancy": 0.877371629079183,
@@ -2217,31 +4475,31 @@
         ],
         [
           "El partido contra la Roma es de Champions League.",
-          0.971
+          0.976
         ],
         [
           "La sanción de Vinicius es de cuatro partidos de Liga.",
-          0.134
+          0.142
         ]
       ],
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "sistema_final",
+      "sistema": "rag_avanzado",
       "eval_id": "M3-03",
       "valvula": false,
-      "faithfulness": 0.0,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Isaac Romero juega con el Atlético Madrid.",
-          0.0
+          "Isaac Romero fue expulsado.",
+          0.999
         ]
       ],
-      "answer_relevancy": 0.8653910954793295,
+      "answer_relevancy": 0.892118513584137,
       "preguntas_generadas": [
-        "¿Quién es Isaac Romero y qué ha ocurrido con él?",
-        "¿Qué sucedió con Isaac Romero en relación a alguna situación específica mencionada en la respuesta?",
-        "¿Cómo se refiere la respuesta al tema de las expulsiones?"
+        "¿Quién fue expulsado en el contexto mencionado?",
+        "¿Qué sucedió con Isaac Romero después de ser expulsado?",
+        "¿Cuál es la relación entre Isaac Romero y el tema principal de esta respuesta?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2257,7 +4515,7 @@
         ],
         [
           "Isaac Romero juega en el Sevilla.",
-          0.94
+          0.949
         ],
         [
           "Vio dos amarillas en cuatro minutos.",
@@ -2267,33 +4525,29 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "sistema_final",
+      "sistema": "rag_avanzado",
       "eval_id": "M3-04",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Quique abre el casting.",
+          "Quique organiza un casting.",
           0.999
         ],
         [
-          "Para la banda derecha.",
-          0.999
-        ],
-        [
-          "El técnico busca un recambio.",
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
           1.0
         ],
         [
-          "Sancionado Ángel Pérez.",
+          "Ángel Pérez está sancionado.",
           0.999
         ]
       ],
-      "answer_relevancy": 0.8030206163724264,
+      "answer_relevancy": 0.7906140883763632,
       "preguntas_generadas": [
         "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
-        "¿Quién es responsable de abrir el casting para la banda derecha?",
-        "¿Qué situación ocurre con el músico Ángel Pérez en este contexto?"
+        "¿Quién es Quique y qué hace en este contexto?",
+        "¿Qué ocurre con Ángel Pérez en este escenario?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2307,7 +4561,7 @@
         ],
         [
           "Ángel Pérez juega en la banda derecha.",
-          0.993
+          0.994
         ],
         [
           "El técnico debe buscarle un recambio.",
@@ -2317,14 +4571,14 @@
       "context_precision_ids": 1.0
     },
     {
-      "sistema": "sistema_final",
+      "sistema": "rag_avanzado",
       "eval_id": "M3-05",
       "valvula": false,
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Bentancur fue expulsado en el partido entre Tottenham y Manchester United.",
-          0.756
+          "El jugador expulsado en el partido entre Tottenham y Manchester United fue Bentancur.",
+          0.802
         ]
       ],
       "answer_relevancy": 0.9451764027277628,
@@ -2341,7 +4595,891 @@
       "recall_detalle": [
         [
           "Bentancur fue expulsado con tarjeta roja.",
+          0.995
+        ],
+        [
+          "El Tottenham acabó con diez jugadores.",
+          0.997
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-06",
+      "valvula": false,
+      "faithfulness": 0.6666666666666666,
+      "faithfulness_detalle": [
+        [
+          "El Sevilla planea enfrentarse al Real Madrid.",
+          0.904
+        ],
+        [
+          "Guridi, el central, experimentó un daño muscular en su pierna izquierda.",
+          0.03
+        ],
+        [
+          "No habrá Guridi en la formación de este partido contra el Bernabéu.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.8501860499382019,
+      "preguntas_generadas": [
+        "¿Qué equipo visitará el Sevilla este fin de semana?",
+        "¿Quién es el jugador central que está lesionado para esta partido?",
+        "¿Por qué no podrá jugar el jugador central del Sevilla?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Guridi no estará en la visita del Sevilla al Bernabéu.",
+          1.0
+        ],
+        [
+          "Guridi sufre una lesión en el aductor largo del muslo izquierdo.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-07",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El central Nico Williams no viajó a Vallecas debido a una indisposición.",
+          0.961
+        ],
+        [
+          "Nico Williams sigue de baja por una lesión.",
+          0.873
+        ]
+      ],
+      "answer_relevancy": 0.8336132367451986,
+      "preguntas_generadas": [
+        "¿Por qué el central Nico Williams no pudo viajar a Vallecas?",
+        "¿Qué motivo específico le impidió viajar a Vallecas?",
+        "¿Cómo afectará esta ausencia temporal para Nico Williams?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Nico no jugará en Mestalla.",
+          0.975
+        ],
+        [
+          "Nico está de baja por lesión.",
+          0.988
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-08",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Marco Asensio baja de última hora.",
+          1.0
+        ],
+        [
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.974
+        ]
+      ],
+      "answer_relevancy": 0.8602912227312723,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Marco Asensio no jugará contra el Aston Villa.",
+          0.999
+        ],
+        [
+          "Es una baja de última hora.",
+          1.0
+        ],
+        [
+          "El partido es de Champions League.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-09",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Uche no jugará con el Getafe este año.",
+          1.0
+        ],
+        [
+          "No volverá al equipo de fútbol.",
+          0.997
+        ],
+        [
+          "La lesión es grave en su pierna derecha.",
+          0.999
+        ],
+        [
+          "Es un problema para su participación futbolística.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.912525455156962,
+      "preguntas_generadas": [
+        "¿Qué ha ocurrido con Uche durante este verano?",
+        "¿Por qué motivo se ha decidido que Uche no volverá a jugar con el Getafe esta temporada?",
+        "¿Cuál es el impacto de esta decisión para Uche y su equipo?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Uche sufre una grave lesión en la rodilla derecha.",
+          1.0
+        ],
+        [
+          "Uche se perderá toda la temporada.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-10",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El Córdoba lucha en su extremo izquierdo.",
+          0.958
+        ],
+        [
+          "Kevin Medina está lesionado.",
+          0.991
+        ],
+        [
+          "Kevin Medina podría estar ausente durante varias semanas.",
           0.993
+        ]
+      ],
+      "answer_relevancy": 0.8076105117797852,
+      "preguntas_generadas": [
+        "¿Qué problema está afectando al equipo del Córdoba?",
+        "¿Quién es Kevin Medina y cuál es su importancia para el equipo?",
+        "¿Cuánto tiempo puede durar la ausencia de Kevin Medina?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Kevin Medina está lesionado.",
+          0.991
+        ],
+        [
+          "La lesión es para varias semanas.",
+          0.999
+        ],
+        [
+          "Kevin Medina juega de extremo izquierdo en el Córdoba.",
+          0.863
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-11",
+      "valvula": true,
+      "faithfulness": null,
+      "answer_relevancy": 0.0,
+      "preguntas_generadas": [],
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-12",
+      "valvula": false,
+      "faithfulness": 0.0,
+      "faithfulness_detalle": [
+        [
+          "El Celta ha tenido lesiones en Pablo Durán y Borja Iglesias.",
+          0.013
+        ]
+      ],
+      "answer_relevancy": 0.9040486812591553,
+      "preguntas_generadas": [
+        "¿Cuáles son los jugadores del Celta que están lesionados?",
+        "¿Qué equipos tienen afectaciones en sus plantillas debido a lesiones?",
+        "¿Cómo se ven las posibilidades de reemplazos para estos jugadores?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 0.0,
+      "recall_detalle": [
+        [
+          "Pablo Durán está lesionado.",
+          0.409
+        ],
+        [
+          "Borja Iglesias está lesionado.",
+          0.409
+        ],
+        [
+          "Ninguno de los dos está en la convocatoria del Celta.",
+          0.106
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-13",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Ana María Guzmán sufre una grave lesión.",
+          1.0
+        ],
+        [
+          "Se realizará una operación para ella.",
+          1.0
+        ],
+        [
+          "El amistoso entre Colombia y Venezuela fue el evento anterior.",
+          0.986
+        ]
+      ],
+      "answer_relevancy": 0.8586215972900391,
+      "preguntas_generadas": [
+        "¿Qué sucedió en el amistoso entre la Selección Colombia y Venezuela?",
+        "¿Quién es Ana María Guzmán y qué tipo de lesión sufrió?",
+        "¿Cuál fue el resultado del amistoso entre Colombia y Venezuela?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ana María Guzmán sufrió una grave lesión.",
+          1.0
+        ],
+        [
+          "La lesión fue en el amistoso contra Venezuela.",
+          0.991
+        ],
+        [
+          "Será operada.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-14",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Laporte está enfermo.",
+          0.685
+        ],
+        [
+          "Laporte no puede viajar a Vallecas.",
+          0.987
+        ],
+        [
+          "La razón es su indisposición.",
+          0.891
+        ]
+      ],
+      "answer_relevancy": 0.8783977627754211,
+      "preguntas_generadas": [
+        "¿Por qué Laporte no puede viajar a Vallecas?",
+        "¿Qué motivo específico ha impedido a Laporte su viaje al lugar indicado?",
+        "¿Cuál es el problema o razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Laporte no viajó a Vallecas por una indisposición.",
+          0.684
+        ],
+        [
+          "Laporte sigue sin entrenar con el grupo.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-15",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Beitia experimentó un esguince en su tobillo izquierdo.",
+          1.0
+        ],
+        [
+          "El central de Elgoibar tuvo miedo de una lesión grave.",
+          0.999
+        ],
+        [
+          "Afortunadamente, Beitia no sufrió una lesión grave.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.9094306230545044,
+      "preguntas_generadas": [
+        "¿Qué tipo de lesión sufrió Beitia durante el entrenamiento después del partido?",
+        "¿Cuál fue el nombre del jugador que tuvo un susto debido al entrenamiento?",
+        "¿Cómo se presentó la situación de Beitia en términos de lesión?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Beitia sufre un esguince de tobillo izquierdo.",
+          1.0
+        ],
+        [
+          "La lesión no es grave.",
+          0.996
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-16",
+      "valvula": false,
+      "faithfulness": 0.3333333333333333,
+      "faithfulness_detalle": [
+        [
+          "Sadiq se encuentra mejor.",
+          0.224
+        ],
+        [
+          "Sadiq ha vuelto a estar bien.",
+          0.086
+        ],
+        [
+          "El club espera nuevos resultados de Sadiq.",
+          0.998
+        ]
+      ],
+      "answer_relevancy": 0.9124240279197693,
+      "preguntas_generadas": [
+        "¿Qué sucedió con Sadiq en este contexto?",
+        "¿Cuáles son las expectativas del club para Sadiq después de su recuperación?",
+        "¿Cómo se siente Sadiq tras haber sido diagnosticado y luego recuperado?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Sadiq acelera su regreso.",
+          0.999
+        ],
+        [
+          "Sadiq está pendiente de nuevas pruebas.",
+          1.0
+        ],
+        [
+          "Su recuperación no está confirmada.",
+          0.019
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-17",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Jens Cajuste ha vuelto al grupo.",
+          1.0
+        ],
+        [
+          "Ha estado fuera durante un mes.",
+          0.917
+        ],
+        [
+          "Ha regresado después de su lesión.",
+          0.996
+        ]
+      ],
+      "answer_relevancy": 0.8425940076510111,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del miembro del equipo que ha regresado tras una lesión?",
+        "¿En qué tiempo se le permitió volver al equipo después de su lesión?",
+        "¿Qué tipo de lesión tuvo Jens Cajuste y cuánto tiempo duró?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Cajuste vuelve al grupo.",
+          1.0
+        ],
+        [
+          "Cajuste podrá jugar.",
+          0.998
+        ],
+        [
+          "Estuvo un mes lesionado.",
+          0.991
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-18",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Kompany proporcionó información sobre el estado de salud de Musiala.",
+          0.999
+        ],
+        [
+          "La situación está mejorando según Kompany.",
+          1.0
+        ],
+        [
+          "El entrenador del Bayern Múnich afirma que Musiala no ha vuelto a desmayarse.",
+          1.0
+        ],
+        [
+          "El técnico menciona que es probable que si ocurra nuevamente, será controlado adecuadamente.",
+          0.998
+        ]
+      ],
+      "answer_relevancy": 0.9011621475219727,
+      "preguntas_generadas": [
+        "¿Qué ha dicho el entrenador del Bayern Munich sobre el estado de salud de Musiala?",
+        "¿Cómo evalúa el entrenador del Bayern Munich el progreso de Musiala en cuanto a su condición física?",
+        "¿Cuál es la perspectiva del entrenador sobre las posibles recaídas de Musiala?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Musiala vuelve a ejercitarse.",
+          0.999
+        ],
+        [
+          "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
+          0.978
+        ],
+        [
+          "El Bayern no correrá riesgos con él.",
+          0.998
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-19",
+      "valvula": true,
+      "faithfulness": null,
+      "answer_relevancy": 0.0,
+      "preguntas_generadas": [],
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-20",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El técnico es Arrasate.",
+          0.999
+        ],
+        [
+          "Arrasate dice que Osasuna necesita él.",
+          0.999
+        ],
+        [
+          "Arrasate puede ayudar a Osasuna.",
+          1.0
+        ],
+        [
+          "Su primer contacto con los medios fue en su vuelta al cuadro rojillo.",
+          0.973
+        ]
+      ],
+      "answer_relevancy": 0.8441740473111471,
+      "preguntas_generadas": [
+        "¿Quién es el técnico de Osasuna mencionado en la respuesta?",
+        "Según la respuesta, qué mensaje envió el técnico a los medios tras su regreso al equipo?",
+        "¿Cuál es el nombre del técnico que se refiere en la respuesta?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Arrasate siente que Osasuna lo necesita.",
+          1.0
+        ],
+        [
+          "Arrasate cree que puede ayudar a Osasuna.",
+          1.0
+        ],
+        [
+          "El objetivo es la permanencia.",
+          1.0
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-21",
+      "valvula": true,
+      "faithfulness": null,
+      "answer_relevancy": 0.0,
+      "preguntas_generadas": [],
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-22",
+      "valvula": true,
+      "faithfulness": null,
+      "answer_relevancy": 0.0,
+      "preguntas_generadas": [],
+      "context_precision": 0.0,
+      "context_recall": 0.0,
+      "context_precision_ids": 0.0
+    },
+    {
+      "sistema": "rag_avanzado",
+      "eval_id": "M3-23",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El marroquí perderá entre dos y tres meses de competición.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.7710249026616415,
+      "preguntas_generadas": [
+        "[1] ¿Cuánto tiempo dura una competencia en el marroquí?",
+        "[2] ¿Qué es lo más probable para un marroquí durante su participación en el marroquí?",
+        "[3] ¿Cómo se clasifica generalmente un marroquí en el marroquí?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 0.75,
+      "recall_detalle": [
+        [
+          "La baja de Chaira es de entre dos y tres meses.",
+          1.0
+        ],
+        [
+          "La noticia se publicó el 8 de agosto de 2026.",
+          0.983
+        ],
+        [
+          "El regreso estimado es como tarde el 8 de noviembre de 2026.",
+          0.557
+        ],
+        [
+          "El 29 de noviembre es posterior al regreso estimado.",
+          0.109
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "sistema_final",
+      "eval_id": "M3-01",
+      "valvula": false,
+      "faithfulness": 0.6666666666666666,
+      "faithfulness_detalle": [
+        [
+          "El Comité de Disciplina ha sancionado al equipo con cuatro partidos.",
+          0.436
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un jugador con cuatro partidos.",
+          0.998
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un partido con cuatro partidos.",
+          0.991
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un club con cuatro partidos.",
+          0.518
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un equipo con cuatro partidos.",
+          0.44
+        ],
+        [
+          "El Comité de Disciplina ha sancionado a un jugador con cuatro partidos.",
+          0.998
+        ]
+      ],
+      "answer_relevancy": 0.7846805055936178,
+      "preguntas_generadas": [
+        "¿Qué tipo de penalización se aplicó al equipo del Real Madrid en la última jornada?",
+        "¿Cuál fue la causa principal de la sanción impuesta por el Comité de Disciplina?",
+        "¿Cómo afectará esta sanción a los planes futuros del Real Madrid?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        0
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Vinicius no puede jugar el Clásico.",
+          0.998
+        ],
+        [
+          "Vinicius fue sancionado con cuatro partidos.",
+          0.999
+        ],
+        [
+          "La sanción es por la tarjeta roja ante el Villarreal.",
+          0.994
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "sistema_final",
+      "eval_id": "M3-02",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Vinicius regresará al equipo del entrenador Mourinho en el estadio Olímpico.",
+          1.0
+        ]
+      ],
+      "answer_relevancy": 0.877371629079183,
+      "preguntas_generadas": [
+        "¿Cuál será el equipo que Vinicius Júnior jugará con su nuevo club?",
+        "¿En qué estadio se realizará la primera aparición oficial de Vinicius como jugador del nuevo club?",
+        "¿Cómo afectará la incorporación de Vinicius Júnior al once inicial de Mourinho?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 0.6666666666666666,
+      "recall_detalle": [
+        [
+          "Vinicius aparece en el posible once del Real Madrid ante la Roma.",
+          1.0
+        ],
+        [
+          "El partido contra la Roma es de Champions League.",
+          0.976
+        ],
+        [
+          "La sanción de Vinicius es de cuatro partidos de Liga.",
+          0.142
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "sistema_final",
+      "eval_id": "M3-03",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Isaac Romero fue expulsado.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.892118513584137,
+      "preguntas_generadas": [
+        "¿Quién fue expulsado en el contexto mencionado?",
+        "¿Qué sucedió con Isaac Romero después de ser expulsado?",
+        "¿Cuál es la relación entre Isaac Romero y el tema principal de esta respuesta?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1,
+        1,
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Isaac Romero fue expulsado.",
+          0.999
+        ],
+        [
+          "Isaac Romero juega en el Sevilla.",
+          0.949
+        ],
+        [
+          "Vio dos amarillas en cuatro minutos.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "sistema_final",
+      "eval_id": "M3-04",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "Quique organiza un casting.",
+          0.999
+        ],
+        [
+          "El técnico debe encontrar un sustituto para Ángel Pérez.",
+          1.0
+        ],
+        [
+          "Ángel Pérez está sancionado.",
+          0.999
+        ]
+      ],
+      "answer_relevancy": 0.7906140883763632,
+      "preguntas_generadas": [
+        "Aquí tienes las tres preguntas correspondientes a la respuesta dada:",
+        "¿Quién es Quique y qué hace en este contexto?",
+        "¿Qué ocurre con Ángel Pérez en este escenario?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Ángel Pérez está sancionado.",
+          0.999
+        ],
+        [
+          "Ángel Pérez juega en la banda derecha.",
+          0.994
+        ],
+        [
+          "El técnico debe buscarle un recambio.",
+          0.999
+        ]
+      ],
+      "context_precision_ids": 1.0
+    },
+    {
+      "sistema": "sistema_final",
+      "eval_id": "M3-05",
+      "valvula": false,
+      "faithfulness": 1.0,
+      "faithfulness_detalle": [
+        [
+          "El jugador expulsado en el partido entre Tottenham y Manchester United fue Bentancur.",
+          0.802
+        ]
+      ],
+      "answer_relevancy": 0.9451764027277628,
+      "preguntas_generadas": [
+        "¿Cuál es el nombre del jugador que fue expulsado en el partido entre Tottenham y Manchester United?",
+        "¿Qué jugador de Tottenham fue expulsado en su último encuentro contra el Manchester United?",
+        "¿En qué partido se produjo el expulsión del jugador Bentancur?"
+      ],
+      "context_precision": 1.0,
+      "chunks_utiles": [
+        1
+      ],
+      "context_recall": 1.0,
+      "recall_detalle": [
+        [
+          "Bentancur fue expulsado con tarjeta roja.",
+          0.995
         ],
         [
           "El Tottenham acabó con diez jugadores.",
@@ -2354,18 +5492,18 @@
       "sistema": "sistema_final",
       "eval_id": "M3-06",
       "valvula": false,
-      "faithfulness": 1.0,
+      "faithfulness": 0.6666666666666666,
       "faithfulness_detalle": [
         [
-          "El Sevilla no cuenta con Guridi para jugar en el Bernabéu.",
-          1.0
+          "El Sevilla planea enfrentarse al Real Madrid.",
+          0.904
         ],
         [
-          "Guridi sufrió una lesión en el aductor largo del muslo izquierdo.",
-          1.0
+          "Guridi, el central, experimentó un daño muscular en su pierna izquierda.",
+          0.03
         ],
         [
-          "El Sevilla está preparando la visita al Bernabéu sin Guridi.",
+          "No habrá Guridi en la formación de este partido contra el Bernabéu.",
           1.0
         ]
       ],
@@ -2399,23 +5537,19 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Nico Williams no viajó.",
-          0.963
+          "El central Nico Williams no viajó a Vallecas debido a una indisposición.",
+          0.961
         ],
         [
-          "No viajó a Vallecas.",
-          0.996
-        ],
-        [
-          "Está de baja por lesión.",
-          0.991
+          "Nico Williams sigue de baja por una lesión.",
+          0.873
         ]
       ],
-      "answer_relevancy": 0.8086653153101603,
+      "answer_relevancy": 0.8336132367451986,
       "preguntas_generadas": [
         "¿Por qué el central Nico Williams no pudo viajar a Vallecas?",
         "¿Qué motivo específico le impidió viajar a Vallecas?",
-        "¿Cómo afectó esta indisposición o lesión a los planes del equipo?"
+        "¿Cómo afectará esta ausencia temporal para Nico Williams?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2426,7 +5560,7 @@
       "recall_detalle": [
         [
           "Nico no jugará en Mestalla.",
-          0.974
+          0.975
         ],
         [
           "Nico está de baja por lesión.",
@@ -2442,27 +5576,19 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Marco Asensio juega con el Fenerbahçe.",
-          0.732
+          "Marco Asensio baja de última hora.",
+          1.0
         ],
         [
-          "Fenerbahçe enfrenta al Aston Villa.",
-          0.999
-        ],
-        [
-          "Marco Asensio juega contra el Aston Villa.",
-          0.533
-        ],
-        [
-          "Marco Asensio baja de última hora para jugar.",
-          0.984
+          "Marco Asensio enfrentará al Aston Villa.",
+          0.974
         ]
       ],
-      "answer_relevancy": 0.8240414261817932,
+      "answer_relevancy": 0.8602912227312723,
       "preguntas_generadas": [
         "¿Cuál es el nombre del futbolista mencionado en la respuesta?",
-        "¿En qué equipo se encuentra Marco Asensio?",
-        "¿Qué partido específico se refiere a en la respuesta?"
+        "¿Qué equipo visitará Marco Asensio en su próximo partido?",
+        "¿Por qué se ha informado que Marco Asensio baja de última hora?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2489,34 +5615,30 @@
       "sistema": "sistema_final",
       "eval_id": "M3-09",
       "valvula": false,
-      "faithfulness": 0.8,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Uche no volverá.",
-          0.99
+          "Uche no jugará con el Getafe este año.",
+          1.0
         ],
         [
-          "A jugar con el Getafe.",
-          0.184
+          "No volverá al equipo de fútbol.",
+          0.997
         ],
         [
-          "Esta temporada.",
-          0.993
-        ],
-        [
-          "Debido a una grave lesión.",
+          "La lesión es grave en su pierna derecha.",
           0.999
         ],
         [
-          "En la rodilla derecha.",
-          0.999
+          "Es un problema para su participación futbolística.",
+          1.0
         ]
       ],
-      "answer_relevancy": 0.9103244344393412,
+      "answer_relevancy": 0.912525455156962,
       "preguntas_generadas": [
         "¿Qué ha ocurrido con Uche durante este verano?",
         "¿Por qué motivo se ha decidido que Uche no volverá a jugar con el Getafe esta temporada?",
-        "¿Cuál es el impacto de esta lesión para Uche y su equipo?"
+        "¿Cuál es el impacto de esta decisión para Uche y su equipo?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2542,28 +5664,16 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Córdoba tiene un problema en su extremo izquierdo.",
-          0.998
+          "El Córdoba lucha en su extremo izquierdo.",
+          0.958
         ],
         [
-          "El Córdoba está afectado por una lesión de Kevin Medina.",
-          0.977
-        ],
-        [
-          "Kevin Medina ha sufrido una lesión que le impide jugar durante varios días.",
-          0.999
-        ],
-        [
-          "Kevin Medina es un jugador importante para el equipo.",
-          0.947
-        ],
-        [
-          "El equipo necesita tiempo para recuperarse de la lesión.",
+          "Kevin Medina está lesionado.",
           0.991
         ],
         [
-          "La lesión de Kevin Medina puede llevar al descenso del equipo si no se trata bien.",
-          0.681
+          "Kevin Medina podría estar ausente durante varias semanas.",
+          0.993
         ]
       ],
       "answer_relevancy": 0.8076105117797852,
@@ -2581,7 +5691,7 @@
       "recall_detalle": [
         [
           "Kevin Medina está lesionado.",
-          0.992
+          0.991
         ],
         [
           "La lesión es para varias semanas.",
@@ -2589,7 +5699,7 @@
         ],
         [
           "Kevin Medina juega de extremo izquierdo en el Córdoba.",
-          0.853
+          0.863
         ]
       ],
       "context_precision_ids": 1.0
@@ -2612,15 +5722,15 @@
       "faithfulness": 0.0,
       "faithfulness_detalle": [
         [
-          "El Celta tiene lesionados a Pablo Durán y Borja Iglesias.",
-          0.006
+          "El Celta ha tenido lesiones en Pablo Durán y Borja Iglesias.",
+          0.013
         ]
       ],
-      "answer_relevancy": 0.9561566114425659,
+      "answer_relevancy": 0.9040486812591553,
       "preguntas_generadas": [
         "¿Cuáles son los jugadores del Celta que están lesionados?",
-        "¿Qué equipos de la liga española tienen jugadores lesionados en este momento?",
-        "¿Cómo afectan las lesiones de estos jugadores al rendimiento del equipo del Celta?"
+        "¿Qué equipos tienen afectaciones en sus plantillas debido a lesiones?",
+        "¿Cómo se ven las posibilidades de reemplazos para estos jugadores?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2630,15 +5740,15 @@
       "recall_detalle": [
         [
           "Pablo Durán está lesionado.",
-          0.47
+          0.409
         ],
         [
           "Borja Iglesias está lesionado.",
-          0.47
+          0.409
         ],
         [
           "Ninguno de los dos está en la convocatoria del Celta.",
-          0.096
+          0.106
         ]
       ],
       "context_precision_ids": 1.0
@@ -2650,16 +5760,16 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Ana María Guzmán sufrió una grave lesión.",
-          0.999
-        ],
-        [
-          "Ella será operada después del amistoso.",
+          "Ana María Guzmán sufre una grave lesión.",
           1.0
         ],
         [
-          "El amistoso fue entre la Selección Colombia y Venezuela.",
-          0.999
+          "Se realizará una operación para ella.",
+          1.0
+        ],
+        [
+          "El amistoso entre Colombia y Venezuela fue el evento anterior.",
+          0.986
         ]
       ],
       "answer_relevancy": 0.8586215972900391,
@@ -2676,7 +5786,7 @@
       "recall_detalle": [
         [
           "Ana María Guzmán sufrió una grave lesión.",
-          0.999
+          1.0
         ],
         [
           "La lesión fue en el amistoso contra Venezuela.",
@@ -2696,15 +5806,23 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Laporte no viaja a Vallecas porque está enfermo.",
-          0.707
+          "Laporte está enfermo.",
+          0.685
+        ],
+        [
+          "Laporte no puede viajar a Vallecas.",
+          0.987
+        ],
+        [
+          "La razón es su indisposición.",
+          0.891
         ]
       ],
-      "answer_relevancy": 0.8789243896802267,
+      "answer_relevancy": 0.8783977627754211,
       "preguntas_generadas": [
         "¿Por qué Laporte no puede viajar a Vallecas?",
         "¿Qué motivo específico ha impedido a Laporte su viaje al lugar indicado?",
-        "¿Cuál es el problema o la razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
+        "¿Cuál es el problema o razón principal que ha llevado a Laporte a no poder visitar Vallecas?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2715,7 +5833,7 @@
       "recall_detalle": [
         [
           "Laporte no viajó a Vallecas por una indisposición.",
-          0.653
+          0.684
         ],
         [
           "Laporte sigue sin entrenar con el grupo.",
@@ -2728,23 +5846,19 @@
       "sistema": "sistema_final",
       "eval_id": "M3-15",
       "valvula": false,
-      "faithfulness": 0.75,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Beitia sufrió un esguince de tobillo.",
+          "Beitia experimentó un esguince en su tobillo izquierdo.",
           1.0
         ],
         [
-          "Esguince de tobillo es leve.",
-          0.166
+          "El central de Elgoibar tuvo miedo de una lesión grave.",
+          0.999
         ],
         [
-          "Central de Elgoibar temía mayor lesión.",
-          0.997
-        ],
-        [
-          "No fue grave la lesión.",
-          0.989
+          "Afortunadamente, Beitia no sufrió una lesión grave.",
+          0.996
         ]
       ],
       "answer_relevancy": 0.9094306230545044,
@@ -2765,7 +5879,7 @@
         ],
         [
           "La lesión no es grave.",
-          0.995
+          0.996
         ]
       ],
       "context_precision_ids": 1.0
@@ -2774,15 +5888,19 @@
       "sistema": "sistema_final",
       "eval_id": "M3-16",
       "valvula": false,
-      "faithfulness": 0.5,
+      "faithfulness": 0.3333333333333333,
       "faithfulness_detalle": [
         [
-          "Sadiq ya está recuperado.",
-          0.042
+          "Sadiq se encuentra mejor.",
+          0.224
         ],
         [
-          "El club espera sus nuevas pruebas.",
-          0.99
+          "Sadiq ha vuelto a estar bien.",
+          0.086
+        ],
+        [
+          "El club espera nuevos resultados de Sadiq.",
+          0.998
         ]
       ],
       "answer_relevancy": 0.9124240279197693,
@@ -2807,7 +5925,7 @@
         ],
         [
           "Su recuperación no está confirmada.",
-          0.018
+          0.019
         ]
       ],
       "context_precision_ids": 1.0
@@ -2816,25 +5934,25 @@
       "sistema": "sistema_final",
       "eval_id": "M3-17",
       "valvula": false,
-      "faithfulness": 0.6666666666666666,
+      "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Sí, Jens Cajuste ha vuelto al grupo.",
-          0.999
+          "Jens Cajuste ha vuelto al grupo.",
+          1.0
         ],
         [
-          "Ha estado recuperándose durante un mes.",
-          0.868
+          "Ha estado fuera durante un mes.",
+          0.917
         ],
         [
-          "Ya puede participar en las actividades grupales.",
-          0.061
+          "Ha regresado después de su lesión.",
+          0.996
         ]
       ],
-      "answer_relevancy": 0.8448198239008585,
+      "answer_relevancy": 0.8425940076510111,
       "preguntas_generadas": [
-        "¿Cuál es el nombre del jugador que ha regresado al equipo tras una lesión?",
-        "¿En qué tiempo se le permitió volver al equipo debido a su lesión?",
+        "¿Cuál es el nombre del miembro del equipo que ha regresado tras una lesión?",
+        "¿En qué tiempo se le permitió volver al equipo después de su lesión?",
         "¿Qué tipo de lesión tuvo Jens Cajuste y cuánto tiempo duró?"
       ],
       "context_precision": 1.0,
@@ -2854,7 +5972,7 @@
         ],
         [
           "Estuvo un mes lesionado.",
-          0.992
+          0.991
         ]
       ],
       "context_precision_ids": 1.0
@@ -2866,27 +5984,27 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Musiala está mejorando.",
+          "Kompany proporcionó información sobre el estado de salud de Musiala.",
+          0.999
+        ],
+        [
+          "La situación está mejorando según Kompany.",
           1.0
         ],
         [
-          "Musiala no se ha desmayado.",
-          0.999
+          "El entrenador del Bayern Múnich afirma que Musiala no ha vuelto a desmayarse.",
+          1.0
         ],
         [
-          "Musiala no se ha vuelto a desmayar.",
-          0.999
-        ],
-        [
-          "Musiala puede volver a jugar con el Bayern.",
+          "El técnico menciona que es probable que si ocurra nuevamente, será controlado adecuadamente.",
           0.998
         ]
       ],
-      "answer_relevancy": 0.8666121164957682,
+      "answer_relevancy": 0.9011621475219727,
       "preguntas_generadas": [
         "¿Qué ha dicho el entrenador del Bayern Munich sobre el estado de salud de Musiala?",
-        "¿Cómo se encuentra actualmente el jugador Musiala en términos de su estado de salud después de un posible incidente anterior?",
-        "¿Cuál es la perspectiva del entrenador sobre cualquier eventualidad futura relacionada con los incidentes anteriores?"
+        "¿Cómo evalúa el entrenador del Bayern Munich el progreso de Musiala en cuanto a su condición física?",
+        "¿Cuál es la perspectiva del entrenador sobre las posibles recaídas de Musiala?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -2903,7 +6021,7 @@
         ],
         [
           "Musiala sufrió un desgarro en la Nations League ante Países Bajos.",
-          0.971
+          0.978
         ],
         [
           "El Bayern no correrá riesgos con él.",
@@ -2930,12 +6048,12 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "Arrasate es el técnico de Osasuna.",
-          0.881
+          "El técnico es Arrasate.",
+          0.999
         ],
         [
-          "Arrasate ha dicho que siente que Osasuna necesita él.",
-          1.0
+          "Arrasate dice que Osasuna necesita él.",
+          0.999
         ],
         [
           "Arrasate puede ayudar a Osasuna.",
@@ -2943,14 +6061,14 @@
         ],
         [
           "Su primer contacto con los medios fue en su vuelta al cuadro rojillo.",
-          0.963
+          0.973
         ]
       ],
-      "answer_relevancy": 0.8879169225692749,
+      "answer_relevancy": 0.8441740473111471,
       "preguntas_generadas": [
         "¿Quién es el técnico de Osasuna mencionado en la respuesta?",
         "Según la respuesta, qué mensaje envió el técnico a los medios tras su regreso al equipo?",
-        "¿Cuál es el nombre del jugador de Osasuna referido como \"Arrasate\" en la respuesta?"
+        "¿Cuál es el nombre del técnico que se refiere en la respuesta?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -3002,15 +6120,15 @@
       "faithfulness": 1.0,
       "faithfulness_detalle": [
         [
-          "El Oviedo puede contar con Chaira para el 29 de noviembre.",
-          0.989
+          "El marroquí perderá entre dos y tres meses de competición.",
+          0.995
         ]
       ],
-      "answer_relevancy": 0.7650607029596964,
+      "answer_relevancy": 0.7615450024604797,
       "preguntas_generadas": [
         "¿Cuánto tiempo promedio dura una competencia en el marroquí?",
         "¿En qué rango de tiempo puede durar un torneo del marroquí?",
-        "¿Qué es lo más probable para un atleta marroquí durante su participación?"
+        "¿Qué tipo de eventos deportivos son los marroquís conocidos por organizar?"
       ],
       "context_precision": 1.0,
       "chunks_utiles": [
@@ -3024,15 +6142,15 @@
         ],
         [
           "La noticia se publicó el 8 de agosto de 2026.",
-          0.982
+          0.984
         ],
         [
           "El regreso estimado es como tarde el 8 de noviembre de 2026.",
-          0.934
+          0.935
         ],
         [
           "El 29 de noviembre es posterior al regreso estimado.",
-          0.906
+          0.901
         ]
       ],
       "context_precision_ids": 1.0

@@ -9,3 +9,5 @@ peft==0.21.2
 accelerate==1.15.0
 scikit-learn==1.9.1
 pyyaml==6.0.3
+# Solo para el juez v2 de 3B cuantizado a 4 bits en GPUs de 4 GB (en una T4 no hace falta).
+bitsandbytes==0.50.2

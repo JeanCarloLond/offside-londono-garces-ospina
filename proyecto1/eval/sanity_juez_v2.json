@@ -1,0 +1,250 @@
+{
+  "Qwen2.5-1.5B-Instruct razona": {
+    "juez": "Qwen2.5-1.5B-Instruct razona",
+    "niveles_esperados": {
+      "correcta": 5,
+      "equipo_incorrecto": 4,
+      "categoria_vecina": 3,
+      "sin_senal": 3,
+      "signo_invertido": 1
+    },
+    "completo": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 2,
+        "sin_senal": 2,
+        "signo_invertido": 2
+      },
+      "confianza": {
+        "correcta": 0.99,
+        "equipo_incorrecto": 0.837,
+        "categoria_vecina": 0.44,
+        "sin_senal": 0.968,
+        "signo_invertido": 0.667
+      },
+      "analisis": {
+        "correcta": "El criterio dice que debe leer el hecho para saber que es una baja confirmada. La señal dice baja confirmada y el texto dice lo mismo, sin añadir nada más. Todo coincide.",
+        "equipo_incorrecto": "El criterio dice que debe leer el hecho para saber que es una baja confirmada de impacto negativo alto. La señal dice baja confirmada, impacto negativo alto, pero el texto afirma que se perderá toda la temporada, lo que es incorrecto según el criterio. Además, el equipo mencionado es diferente al que se espera.",
+        "categoria_vecina": "El criterio dice que debe leer el hecho para saber que es una baja confirmada. La señal dice baja confirmada, pero no lee el hecho completo. La dirección es correcta, pero falta el impacto y el equipo.",
+        "sin_senal": "El criterio pide una baja confirmada de impacto negativo alto. La señal dice irrelávnte, no da ninguna señal y el texto afirma que se pierde toda la temporada, lo que es falso.",
+        "signo_invertido": "El criterio pide una baja negativa alta. La señal dice regreso, positivo alto, Getafe, y el texto afirma que se perderá toda la temporada, lo que es falso. Además, la dirección del impacto es incorrecta."
+      },
+      "aciertos_exactos": 1,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": true
+    },
+    "ciego": {
+      "niveles_obtenidos": {
+        "correcta": 1,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 1,
+        "sin_senal": 1,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 0.794,
+        "equipo_incorrecto": 0.865,
+        "categoria_vecina": 0.795,
+        "sin_senal": 0.935,
+        "signo_invertido": 0.761
+      },
+      "analisis": {
+        "correcta": "El criterio pide una baja confirmada y impacto negativo alto. La señal dice baja confirmada y impacto negativo alto, pero el equipo es Getafe, no el Real Madrid como el criterio indica. Además, el texto no menciona que Uche será el portero del Getafe, sino que se perderá toda la temporada debido a una lesión en la rodilla derecha. Esto es incorrecto según el criterio.",
+        "equipo_incorrecto": "El criterio pide una baja confirmada y impacto negativo alto. La señal dice baja confirmada y impacto negativo alto, pero cambia el equipo a Rayo Vallecano, lo que es incorrecto. Además, el texto afirma que se perderá toda la temporada, lo que no corresponde con la información del criterio.",
+        "categoria_vecina": "El criterio pide una baja confirmada de impacto negativo alto. La señal dice baja, negativo alto, Getafe, pero no menciona que Uche será suspendido ni que se perderá toda la temporada. La señal es incorrecta.",
+        "sin_senal": "El criterio pide una confirmación de una lesión y el impacto debe ser negativo. La señal dice neutral y el texto no menciona ni lesión ni pérdida de tiempo. No cumple con el criterio.",
+        "signo_invertido": "El criterio pide una baja de impacto negativo alto. La señal dice alta y el texto dice que se perderá toda la temporada, lo que es incorrecto. Además, la dirección del impacto es incorrecta."
+      },
+      "aciertos_exactos": 1,
+      "separa_util_de_inutil": false,
+      "detecta_signo_invertido": true
+    }
+  },
+  "Qwen2.5-1.5B-Instruct directo": {
+    "juez": "Qwen2.5-1.5B-Instruct directo",
+    "niveles_esperados": {
+      "correcta": 5,
+      "equipo_incorrecto": 4,
+      "categoria_vecina": 3,
+      "sin_senal": 3,
+      "signo_invertido": 1
+    },
+    "completo": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 1,
+        "sin_senal": 1,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 0.858,
+        "equipo_incorrecto": 0.834,
+        "categoria_vecina": 0.91,
+        "sin_senal": 0.555,
+        "signo_invertido": 0.908
+      },
+      "analisis": {
+        "correcta": "",
+        "equipo_incorrecto": "",
+        "categoria_vecina": "",
+        "sin_senal": "",
+        "signo_invertido": ""
+      },
+      "aciertos_exactos": 2,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": true
+    },
+    "ciego": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 1,
+        "sin_senal": 1,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 0.318,
+        "equipo_incorrecto": 0.793,
+        "categoria_vecina": 0.902,
+        "sin_senal": 0.671,
+        "signo_invertido": 0.621
+      },
+      "analisis": {
+        "correcta": "",
+        "equipo_incorrecto": "",
+        "categoria_vecina": "",
+        "sin_senal": "",
+        "signo_invertido": ""
+      },
+      "aciertos_exactos": 2,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": true
+    }
+  },
+  "Qwen2.5-3B-Instruct 4bit razona": {
+    "juez": "Qwen2.5-3B-Instruct 4bit razona",
+    "niveles_esperados": {
+      "correcta": 5,
+      "equipo_incorrecto": 4,
+      "categoria_vecina": 3,
+      "sin_senal": 3,
+      "signo_invertido": 1
+    },
+    "completo": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 2,
+        "categoria_vecina": 5,
+        "sin_senal": 4,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 1.0,
+        "equipo_incorrecto": 0.475,
+        "categoria_vecina": 1.0,
+        "sin_senal": 0.617,
+        "signo_invertido": 0.994
+      },
+      "analisis": {
+        "correcta": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto afirma que se pierde toda la temporada. Todo coincide.",
+        "equipo_incorrecto": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto afirma que el jugador se perderá toda la temporada. El sistema usa el nombre del club incorrecto.",
+        "categoria_vecina": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto afirma que se pierde toda la temporada. Todo coincide.",
+        "sin_senal": "El criterio pide una baja confirmada de impacto negativo alto. La señal inventa un impacto neutro y el sistema no da ninguna señal. El texto afirma que se pierde toda la temporada, lo que es cierto.",
+        "signo_invertido": "El criterio pide baja confirmada de impacto negativo alto. La señal dice baja, negativo alto, y el texto afirma que el jugador se perderá toda la temporada. El sistema inventa que es una baja positiva."
+      },
+      "aciertos_exactos": 2,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": true
+    },
+    "ciego": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 5,
+        "categoria_vecina": 5,
+        "sin_senal": 1,
+        "signo_invertido": 4
+      },
+      "confianza": {
+        "correcta": 1.0,
+        "equipo_incorrecto": 0.999,
+        "categoria_vecina": 1.0,
+        "sin_senal": 1.0,
+        "signo_invertido": 0.995
+      },
+      "analisis": {
+        "correcta": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto dice que se perderá toda la temporada. Todo coincide.",
+        "equipo_incorrecto": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto dice que el club confirma que el jugador se perderá toda la temporada por una lesión en la rodilla derecha. Todo coincide.",
+        "categoria_vecina": "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, y el texto afirma que se perderá toda la temporada. Todo coincide.",
+        "sin_senal": "El criterio pide una respuesta que refleje lo que el club confirma sobre Uche y su impacto para el Getafe. La señal dice \"irrelevant\" y el texto afirma que Uche se perderá toda la temporada por una lesión en la rodilla derecha. Ambas cosas están incorrectas.",
+        "signo_invertido": "El criterio pide un regreso de impacto positivo bajo. La señal dice regreso, impacto positivo, y el texto dice que se perderá toda la temporada. La intensidad está mal, pero el impacto está cerca."
+      },
+      "aciertos_exactos": 1,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": false
+    }
+  },
+  "Qwen2.5-3B-Instruct 4bit directo": {
+    "juez": "Qwen2.5-3B-Instruct 4bit directo",
+    "niveles_esperados": {
+      "correcta": 5,
+      "equipo_incorrecto": 4,
+      "categoria_vecina": 3,
+      "sin_senal": 3,
+      "signo_invertido": 1
+    },
+    "completo": {
+      "niveles_obtenidos": {
+        "correcta": 5,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 1,
+        "sin_senal": 1,
+        "signo_invertido": 1
+      },
+      "confianza": {
+        "correcta": 1.0,
+        "equipo_incorrecto": 0.981,
+        "categoria_vecina": 0.979,
+        "sin_senal": 0.826,
+        "signo_invertido": 1.0
+      },
+      "analisis": {
+        "correcta": "",
+        "equipo_incorrecto": "",
+        "categoria_vecina": "",
+        "sin_senal": "",
+        "signo_invertido": ""
+      },
+      "aciertos_exactos": 2,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": true
+    },
+    "ciego": {
+      "niveles_obtenidos": {
+        "correcta": 4,
+        "equipo_incorrecto": 1,
+        "categoria_vecina": 2,
+        "sin_senal": 1,
+        "signo_invertido": 4
+      },
+      "confianza": {
+        "correcta": 0.97,
+        "equipo_incorrecto": 0.723,
+        "categoria_vecina": 0.751,
+        "sin_senal": 0.69,
+        "signo_invertido": 0.888
+      },
+      "analisis": {
+        "correcta": "",
+        "equipo_incorrecto": "",
+        "categoria_vecina": "",
+        "sin_senal": "",
+        "signo_invertido": ""
+      },
+      "aciertos_exactos": 0,
+      "separa_util_de_inutil": true,
+      "detecta_signo_invertido": false
+    }
+  }
+}

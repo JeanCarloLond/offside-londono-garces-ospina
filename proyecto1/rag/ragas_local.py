@@ -145,11 +145,16 @@ class JuezRagas:
 
     # ------------------------------------------------------------------ métricas
     def afirmaciones(self, pregunta: str, respuesta: str) -> list[str]:
+        # La pregunta NO se le pasa al juez, aunque ragas sí lo hace. Con ella, el
+        # 1.5B mezclaba la pregunta en las afirmaciones: de «Isaac Romero fue
+        # expulsado» sacaba «Isaac Romero juega con el Atlético Madrid», y de la
+        # respuesta de Chaira, «el Oviedo puede contar con Chaira el 29 de
+        # noviembre». Ninguna de las dos la dice la respuesta.
         salida = self._generar(
             "Divide la RESPUESTA en afirmaciones simples, cada una comprensible por sí sola "
             "(cambia los pronombres por los nombres). Una por línea, sin numerar y sin añadir "
             "nada que la respuesta no diga.\n\n"
-            f"PREGUNTA: {pregunta}\nRESPUESTA: {respuesta}"
+            f"RESPUESTA: {respuesta}"
         )
         return limpiar_lineas(salida) or [respuesta]
 

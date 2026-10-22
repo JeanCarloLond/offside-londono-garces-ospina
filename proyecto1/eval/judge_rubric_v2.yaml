@@ -1,0 +1,112 @@
+# Rúbrica del juez, versión 2 · Offside (M3)
+#
+# Sale del feedback del M2. La v1 (judge_rubric.yaml) sigue siendo la vara de M2 y
+# se reporta en M3 tal cual; la v2 se aplica igual a todas las filas de M3 como una
+# columna más. Cambios respecto a la v1:
+#
+#   1. El juez razona antes de puntuar. Genera un análisis corto y solo después se
+#      leen los logits de "1".."5" (judge_razonado.py). En la v1 un 1.5B tenía que
+#      ejecutar la comparación de la rúbrica en un solo forward pass, y no lo hacía.
+#   2. El juez ve la respuesta en texto, no solo la etiqueta. El RAG escribe prosa y
+#      puede inventar en ella aunque la etiqueta sea correcta. Por eso vuelve el
+#      riesgo de verbosidad que la v1 neutralizaba con la plantilla fija: la prosa
+#      se recorta a un máximo de caracteres (render_senal_y_texto en harness.py) y
+#      el sesgo se mide con bias_check_texto.py.
+#   3. Los ejemplos de cada nivel traen un razonamiento breve, además del puntaje.
+#
+# Lo que NO cambia: las cinco anclas y su orden por daño, y el criterio que recibe
+# el juez. El criterio dice cuál es la respuesta correcta: es un juez con
+# referencia. Cuánto depende de esa referencia se mide en el sanity check, con el
+# criterio completo y con uno que no nombra la categoría.
+
+version: 2
+escala: [1, 2, 3, 4, 5]
+max_chars_respuesta: 240
+
+principio: >
+  Una respuesta es buena si el usuario, actuando solo con ella, decide mejor
+  que si hubiera leído el titular por su cuenta. Fallar sin engañar (no dar señal)
+  puntúa por encima de engañar (dar una señal falsa o afirmar algo que no es
+  cierto). Un error que hace ACTUAR sobre información falsa es peor que uno que
+  simplemente no aporta nada.
+
+anclas:
+  - nivel: 5
+    nombre: "Señal correcta y accionable"
+    descripcion: >
+      Acierta el tipo de hecho, la dirección del impacto (negativo / neutro /
+      positivo) y su intensidad, apunta al equipo correcto y el texto no afirma
+      nada falso.
+    demo:
+      fragmento: "¿Juega el portero del Real Cauca el domingo?"
+      criterio: "El club confirma que su portero se pierde el resto de la temporada: es una baja confirmada de impacto negativo alto para el Real Cauca."
+      senal: "baja_confirmada | impacto: negativo_alto | equipo: Real Cauca"
+      respuesta: "No. El Real Cauca confirmó que su portero se pierde el resto de la temporada por una rotura del cruzado."
+      razonamiento: "El criterio pide una baja de impacto negativo alto. La señal dice baja, negativo alto, Real Cauca, y el texto cuenta lo mismo sin añadir nada. Todo coincide."
+  - nivel: 4
+    nombre: "Correcta con un matiz menor"
+    descripcion: >
+      El tipo de hecho y la DIRECCIÓN del impacto son correctos, pero falla la
+      intensidad o el equipo afectado.
+    demo:
+      fragmento: "¿Ya están disponibles los jugadores del Union Norte que estaban lesionados?"
+      criterio: "Volvieron a entrenar, pero entrenar no es estar disponible: es un regreso de impacto positivo BAJO."
+      senal: "regreso_alta | impacto: positivo_alto | equipo: Union Norte"
+      respuesta: "Tres jugadores del Union Norte adelantaron su vuelta a los entrenamientos."
+      razonamiento: "El criterio pide regreso positivo bajo. La señal acierta el regreso y la dirección positiva, pero exagera la intensidad a alto. El texto es correcto. Matiz menor."
+  - nivel: 3
+    nombre: "No engaña, pero tampoco sirve"
+    descripcion: >
+      Deja al usuario como estaba sin empujarlo a un error: no emite señal
+      habiendo una, o acierta el signo con una categoría vecina (baja frente a
+      sanción).
+    demo:
+      fragmento: "¿Cuenta el Atletico Pena con su delantero?"
+      criterio: "El delantero estará de baja unos tres meses: baja de impacto negativo alto para el Atletico Pena."
+      senal: "irrelevante | impacto: neutro | equipo: ninguno"
+      respuesta: "No encuentro esa información en las noticias recolectadas."
+      razonamiento: "El criterio pide una baja negativa alta. El sistema no da ninguna señal y dice que no encuentra la información. Se pierde la noticia pero no inventa nada."
+  - nivel: 2
+    nombre: "Señal engañosa"
+    descripcion: >
+      Emite una señal donde no la había, infla el impacto a ALTO cuando no lo era,
+      o el texto afirma un hecho que el criterio no sostiene.
+    demo:
+      fragmento: "¿Está sancionado el lateral del Sporting Bahia?"
+      criterio: "La roja fue en un amistoso y no arrastra sanción: no hay señal que dar."
+      senal: "sancion_suspension | impacto: negativo_alto | equipo: Sporting Bahia"
+      respuesta: "Sí, el lateral está sancionado y se perderá el próximo partido de liga."
+      razonamiento: "El criterio dice que no hay sanción. La señal inventa una sanción de impacto alto y el texto afirma que se pierde el próximo partido, lo que es falso."
+  - nivel: 1
+    nombre: "Señal dañina"
+    descripcion: >
+      INVIERTE EL SIGNO del impacto, o presenta un RUMOR COMO HECHO confirmado.
+    demo:
+      fragmento: "¿Vuelve el capitán del Club Andino a la convocatoria?"
+      criterio: "El jugador VUELVE tras cumplir una sanción antigua: impacto positivo alto para el Club Andino."
+      senal: "sancion_suspension | impacto: negativo_alto | equipo: Club Andino"
+      respuesta: "El capitán del Club Andino está sancionado."
+      razonamiento: "El criterio dice positivo, porque el jugador vuelve. La señal dice negativo y el texto dice que está sancionado: la dirección está invertida."
+
+instrucciones_al_juez:
+  - "REGLA DURA: si la dirección del impacto de la señal es opuesta a la del criterio, el puntaje es 1."
+  - "Si el texto de la respuesta afirma un hecho que el criterio contradice, el puntaje es como máximo 2."
+  - "No premies la longitud: una respuesta corta y correcta vale lo mismo que una larga y correcta."
+  - "Si dudas entre dos niveles, elige el MÁS BAJO."
+  - "Primero escribe un ANÁLISIS de dos o tres frases. Después, en una línea aparte, el puntaje."
+
+sesgos_considerados:
+  - id: verbosidad
+    descripcion: >
+      Vuelve con la prosa. Mitigación: la respuesta se recorta a max_chars_respuesta
+      caracteres antes de dársela al juez, y la instrucción pide no premiar la
+      longitud. bias_check_texto.py mide si basta.
+  - id: auto_preferencia
+    descripcion: >
+      Ahora sí aplica: el generador del RAG y el juez son el mismo modelo base
+      (Qwen2.5-1.5B-Instruct). El juez no sabe qué sistema respondió, pero el
+      riesgo existe y se declara.
+  - id: dependencia_de_la_referencia
+    descripcion: >
+      El criterio dice la respuesta correcta. Se mide con el sanity check corriendo
+      también un criterio que no nombra la categoría ni el impacto.

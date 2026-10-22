@@ -46,11 +46,11 @@ Reporte completo en [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md) · notebook eje
 
 | | |
 |---|---|
-| **Corpus** | 748 fragmentos RSS reales (Marca + El Tiempo, agosto y 14 de octubre de 2026) = 748 chunks. Solo titular + entradilla de sindicación, con enlace; el texto es de cada medio |
-| **Generador** | `Qwen/Qwen2.5-1.5B-Instruct`, greedy, **el mismo y con el mismo prompt base en todas las filas** |
-| **Índice** | `multilingual-e5-small` + Chroma, y BM25 en memoria. Un fragmento = un chunk, sin solapamiento, top-k = 4 |
-| **Eval set** | 27 preguntas con `input`, `esperado` y `criterio`; **4 sin respuesta en el corpus**, 3 que exigen calcular fechas, 17 adversariales |
-| **Vara** | `harness(eval_set, sistema)` de M2 **sin tocar**, con su juez (Qwen2.5-1.5B, rúbrica v1), más RAGAS |
+| Corpus | 748 fragmentos RSS reales (Marca y El Tiempo, agosto y 14 de octubre de 2026), uno por chunk. Solo titular y entradilla de sindicación, con enlace; el texto es de cada medio |
+| Generador | `Qwen/Qwen2.5-1.5B-Instruct`, greedy. El mismo modelo y el mismo prompt base en todas las filas |
+| Índice | `multilingual-e5-small` en Chroma, más BM25 en memoria. Sin solapamiento, top-k = 4 |
+| Eval set | 27 preguntas con `input`, `esperado` y `criterio`: 4 sin respuesta en el corpus, 3 que exigen calcular fechas y 17 adversariales |
+| Evaluación | `harness(eval_set, sistema)` de M2 sin cambios, con su juez (rúbrica v1); un juez v2 que sale del feedback de M2; y RAGAS |
 
 ### El pipeline
 
@@ -88,65 +88,65 @@ búsqueda densa, top-4, generar.
 
 ### Por qué cada técnica: el diagnóstico del RAG ingenuo
 
-Empezamos por la lista de fallos del ingenuo, no por el catálogo. Dos hallazgos lo ordenan todo:
-**la recuperación casi nunca falla** (con búsqueda densa el documento correcto llega al top-4 en 22 de
-23 preguntas) y **el generador de 1.5B no sabe callar a tiempo** (con el prompt que contesta bien,
-inventa en las 4 preguntas sin respuesta; con el que calla, calla también en 12 de las 23 que sí la
-tienen).
+Partimos de la lista de fallos del ingenuo. Dos cosas la ordenan: la recuperación casi nunca falla (con
+búsqueda densa el documento correcto llega al top-4 en 22 de 23 preguntas), y el generador de 1.5B no
+sabe cuándo callar (con el prompt que mejor contesta inventa en las 4 preguntas sin respuesta; con el
+que calla, calla también en 12 de las 23 que sí la tienen).
 
 | Falla del ingenuo | Ejemplo | Qué la ataca |
 |---|---|---|
-| El chunk llega, pero un distractor va delante | «¿Cómo está Musiala?»: delante, noticias de agosto que lo daban de baja | **Reranker** (cross-encoder) |
-| Nombres propios y términos exactos | dense pone ruido primero en Celta y Ochoa; BM25 no | **Búsqueda híbrida** BM25 + dense (RRF) |
-| Inventa cuando no está en el corpus | «¿Mbappé se pierde el Clásico?» → le traslada la sanción de Vinicius | **Válvula verificada**: el mismo Qwen, sí/no por logits, chunk a chunk |
-| Hay que calcular una fecha | «¿Puede contar el Oviedo con Chaira el 29 de noviembre?» | **Herramienta** `calcular_fecha` |
-| El chunk no llega | el portero de la Roma: el titular es «El rapero con guantes…» | HyDE y multi-query: **probadas y descartadas**, empeoran la recuperación (MRR 0,90 → 0,74) |
+| El chunk llega, pero un distractor va delante | «¿Cómo está Musiala?»: delante quedan noticias de agosto que lo daban de baja | Reranker (cross-encoder) |
+| Nombres propios y términos exactos | dense pone ruido primero en Celta y Ochoa; BM25 no | Búsqueda híbrida BM25 + dense (RRF) |
+| Inventa cuando no está en el corpus | «¿Mbappé se pierde el Clásico?» → responde con la sanción de Vinicius | Válvula verificada: el mismo Qwen, sí/no por logits, chunk a chunk |
+| Hay que calcular una fecha | «¿Puede contar el Oviedo con Chaira el 29 de noviembre?» | Herramienta `calcular_fecha` |
+| El chunk no llega | el portero de la Roma: el titular es «El rapero con guantes…» | HyDE y multi-query, probadas y descartadas: empeoran la recuperación (MRR 0,90 → 0,74) |
 
-### La herramienta, en acción
+### La herramienta: cuándo se usa y cuándo no
 
-`calcular_fecha(fecha_inicio, cantidad, unidad, fecha_objetivo)` con esquema JSON en el prompt,
+`calcular_fecha(fecha_inicio, cantidad, unidad, fecha_objetivo)` tiene su esquema JSON en el prompt,
 parseo tolerante (`'tres'`, `"entre dos y tres meses"`, `'27 de agosto'`, comillas simples…), errores
-devueltos al modelo y **tope de 3 pasos** ([`herramientas.py`](proyecto1/rag/herramientas.py), pruebas
-en [`test_parseo.py`](proyecto1/rag/test_parseo.py), que corren en el CI). En el corpus real solo hay
-dos bajas con duración numérica, así que el uso se muestra en el eval set y en una prueba aislada con
-noticias ficticias ([`prueba_planificador_m3.csv`](proyecto1/rag/resultados/prueba_planificador_m3.csv)):
+que vuelven al modelo para que corrija y un tope de 3 pasos
+([`herramientas.py`](proyecto1/rag/herramientas.py); las pruebas, en
+[`test_parseo.py`](proyecto1/rag/test_parseo.py), corren en el CI). En el corpus real solo hay dos bajas
+con duración numérica, así que el uso se muestra en el eval set y en una prueba aislada con noticias
+ficticias ([`prueba_planificador_m3.csv`](proyecto1/rag/resultados/prueba_planificador_m3.csv)):
 
 | Consulta | ¿Hace falta? | ¿La llama? | Lo que propone el modelo → resultado |
 |---|---|---|---|
-| «¿Puede contar el Oviedo con Chaira para el 29 de noviembre?» (eval, M3-23) | sí | **sí** | `cantidad: "entre dos y tres meses"` → se parsea como 3 → «el 29-11 es 21 días DESPUÉS del fin del plazo (8-11)» |
-| «¿Cuenta el Atlético Ribera con Ferro para el 1 de septiembre?» (ficticia) | sí | **sí** | 2 meses desde el 15-08 → «44 días ANTES del fin del plazo: todavía de baja» |
-| «¿Puede jugar Medrano el 25 de septiembre?» (ficticia) | sí | **sí** | 10 días desde el 20-09 → «5 días ANTES del fin del plazo» |
-| «¿Estará Quintana disponible el 15 de marzo?» (ficticia) | sí | sí, mal | propone 2026-03-15 (anterior a la noticia); la herramienta lo rechaza, el modelo repite el error y **el tope corta a los 3 pasos** |
-| «¿Volverá Uche a jugar con el Getafe esta temporada?» (eval, M3-09) | no: la noticia ya dice «toda la temporada» | **no** | — |
-| «¿Qué lesión tiene Lunar?» (ficticia) | no | **no** | — |
+| «¿Puede contar el Oviedo con Chaira para el 29 de noviembre?» (eval, M3-23) | sí | sí | `cantidad: "entre dos y tres meses"`, que se parsea como 3 → «el 29-11 es 21 días DESPUÉS del fin del plazo (8-11)» |
+| «¿Cuenta el Atlético Ribera con Ferro para el 1 de septiembre?» (ficticia) | sí | sí | 2 meses desde el 15-08 → «44 días ANTES del fin del plazo: todavía de baja» |
+| «¿Puede jugar Medrano el 25 de septiembre?» (ficticia) | sí | sí | 10 días desde el 20-09 → «5 días ANTES del fin del plazo» |
+| «¿Estará Quintana disponible el 15 de marzo?» (ficticia) | sí | sí, con error | propone 2026-03-15, anterior a la noticia; la herramienta lo rechaza, el modelo repite el error y el tope corta a los 3 pasos |
+| «¿Volverá Uche a jugar con el Getafe esta temporada?» (eval, M3-09) | no: la noticia ya dice «toda la temporada» | no | — |
+| «¿Qué lesión tiene Lunar?» (ficticia) | no | no | — |
 
-En todo el eval set la herramienta se llamó **0 veces sin hacer falta** (24 preguntas). Cuándo se usa
-lo decide una regla (fecha en la pregunta + duración con número en un chunk) y no el LLM, porque el LLM
-decidiendo solo la llamó 0 de 4 veces; el porqué está en
+En todo el eval set la herramienta no se llamó ni una vez sin hacer falta (24 preguntas). Cuándo
+llamarla lo decide una regla (fecha en la pregunta y duración con número en un chunk), no el LLM:
+cuando lo decidía el LLM, la llamó 0 de 4 veces. El detalle está en
 [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md#8--la-capa-agéntica).
 
 ### La tabla evolutiva
 
-Mismo eval set (27 preguntas), mismo harness, mismo generador y mismo prompt base. Latencia mediana
-por consulta, de punta a punta, en una GTX 1650 Ti de 4 GB (en la T4 de Colab es menor; lo que importa
-es la comparación entre filas).
+Mismo eval set (27 preguntas), mismo harness, mismo generador y mismo prompt base. La latencia es la
+mediana por consulta, de punta a punta, en una GTX 1650 Ti de 4 GB; en una T4 es menor, lo que cuenta
+es la comparación entre filas. D2 es el juez de M2 tal cual; D2·v2 es el juez revisado tras el
+feedback (ver más abajo).
 
-| Sistema | D1 · F1 macro | D2 · juez (1-5) | D3 · tasa accionable | Latencia mediana | Válvula (calla sin respuesta) | Calla teniendo respuesta |
-|---|---:|---:|---:|---:|---:|---:|
-| Línea base M2 · LoRA de M1 (sin RAG) | 0,060 | 2,52 | 0,15 | < 0,1 s | — | — |
-| Línea base M2 · léxico (sin RAG) | 0,110 | 2,52 | 0,19 | < 0,1 s | — | — |
-| Mismo LLM, sin recuperación | 0,026 | 2,59 | 0,11 | 9,3 s | 3/4 | 19/23 |
-| **RAG ingenuo** (sesión 7) | 0,139 | 2,59 | 0,37 | 15,1 s | 0/4 | 0/23 |
-| **RAG avanzado** (híbrida + reranker + válvula verificada) | 0,289 | 2,93 | 0,52 | 22,1 s | 3/4 | 4/23 |
-| **Sistema final** (+ herramienta) | 0,289 | 2,93 | 0,52 | 22,2 s | 3/4 | 4/23 |
+| Sistema | D1 · F1 macro | D2 · juez v1 | D2·v2 | D3 · tasa accionable | Latencia mediana | Calla sin respuesta | Calla teniendo respuesta |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Línea base M2 · LoRA de M1 (sin RAG) | 0,060 | 2,52 | 2,59 | 0,15 | < 0,1 s | — | — |
+| Línea base M2 · léxico (sin RAG) | 0,110 | 2,52 | 3,37 | 0,19 | < 0,1 s | — | — |
+| Mismo LLM, sin recuperación | 0,026 | 2,59 | 2,70 | 0,11 | 9,3 s | 3/4 | 19/23 |
+| RAG ingenuo (sesión 7) | 0,139 | 2,59 | 3,96 | 0,37 | 15,1 s | 0/4 | 0/23 |
+| RAG avanzado (híbrida + reranker + válvula verificada) | 0,289 | 2,93 | 3,93 | 0,52 | 22,1 s | 3/4 | 4/23 |
+| Sistema final (+ herramienta) | 0,289 | 2,93 | 3,93 | 0,52 | 22,2 s | 3/4 | 4/23 |
 
 Las líneas base de M2 son clasificadores de fragmentos: aquí reciben la pregunta como si fuera una
-noticia, sin acceso al corpus. Están para mostrar que, sin recuperar, ningún sistema sabe nada de esta
-semana.
+noticia y no tienen acceso al corpus.
 
-**Ablación: una técnica a la vez** ([`scorecard_m3.csv`](proyecto1/rag/resultados/scorecard_m3.csv))
+Ablación, una técnica a la vez ([`scorecard_m3.csv`](proyecto1/rag/resultados/scorecard_m3.csv)):
 
-| Sistema | D1 | D2 | D3 | Latencia | Válvula | Calla teniendo respuesta |
+| Sistema | D1 | D2 · juez v1 | D3 | Latencia | Calla sin respuesta | Calla teniendo respuesta |
 |---|---:|---:|---:|---:|---:|---:|
 | RAG ingenuo | 0,139 | 2,59 | 0,37 | 15,1 s | 0/4 | 0/23 |
 | + solo híbrida | 0,266 | 2,67 | 0,41 | 15,5 s | 0/4 | 0/23 |
@@ -156,148 +156,218 @@ semana.
 | Avanzado sin híbrida | 0,294 | 2,93 | 0,52 | 22,6 s | 3/4 | 4/23 |
 | Avanzado sin reranker | 0,226 | 2,93 | 0,48 | 18,7 s | 3/4 | 3/23 |
 | Avanzado sin válvula verificada | 0,194 | 2,63 | 0,48 | 13,5 s | 0/4 | 0/23 |
-| **Avanzado completo** | 0,289 | 2,93 | 0,52 | 22,1 s | 3/4 | 4/23 |
+| Avanzado completo | 0,289 | 2,93 | 0,52 | 22,1 s | 3/4 | 4/23 |
 
 ### RAGAS
 
-Las cuatro métricas, implementadas en [`ragas_local.py`](proyecto1/rag/ragas_local.py) con las
-definiciones de RAGAS y como juez **`Qwen/Qwen2.5-1.5B-Instruct`** leyendo logits sí/no. No usamos
-la librería `ragas` (no la probamos) porque le pide al juez salidas JSON estructuradas en cada paso, y nuestro propio
-1.5B, como generador, devolvía JSON incompletos con frecuencia; leyendo logits cada veredicto es un
-forward pass determinista sin nada que parsear. Sobre las 23 preguntas con respuesta en el corpus;
-cada caso lleva pregunta, respuesta, los chunks que vio el generador y la referencia escrita a mano.
-Faithfulness se calcula sobre las respuestas que no son la válvula (`n`): «no encuentro esa
-información» no tiene afirmaciones que verificar. `context precision (ids)` es la misma métrica
-calculada con los documentos relevantes anotados a mano: sirve para auditar al juez.
+Las cuatro métricas están implementadas en [`ragas_local.py`](proyecto1/rag/ragas_local.py) con las
+definiciones de RAGAS, y el juez es `Qwen/Qwen2.5-1.5B-Instruct` leyendo logits de sí/no. No usamos la
+librería `ragas` (no la probamos): le pide al juez salidas JSON en cada paso, y nuestro 1.5B, como
+generador, devolvía JSON incompletos con frecuencia. Leyendo logits, cada veredicto es una pasada
+determinista sin texto que parsear.
+
+Se calcula sobre las 23 preguntas con respuesta en el corpus. Cada caso lleva la pregunta, la
+respuesta, los chunks que vio el generador y la referencia escrita a mano. La faithfulness se calcula
+sobre las respuestas que no son la válvula (`n`), porque «no encuentro esa información» no tiene
+afirmaciones que verificar. `context precision (ids)` es la misma métrica calculada con los documentos
+relevantes anotados a mano, y sirve para auditar al juez. Siguiendo la sesión 10, la calculamos también
+para cada técnica sola: el reranker debería mover la precision y la híbrida el recall.
 
 | Sistema | Faithfulness | Answer relevancy | Context precision | Context recall | Context precision (ids) |
 |---|---:|---:|---:|---:|---:|
-| RAG ingenuo | 0,68 (n=23) | 0,85 | 0,82 | 0,88 | 0,87 |
-| RAG avanzado | 0,77 (n=19) | 0,71 | 0,83 | 0,74 | 0,83 |
-| Sistema final | 0,83 (n=19) | 0,71 | 0,83 | 0,75 | 0,83 |
+| RAG ingenuo | 0,80 (n=23) | 0,86 | 0,83 | 0,88 | 0,87 |
+| + solo híbrida | 0,85 (n=23) | 0,86 | 0,86 | 0,89 | 0,91 |
+| + solo reranker | 0,89 (n=23) | 0,86 | 0,84 | 0,88 | 0,95 |
+| + solo válvula verificada | 0,85 (n=20) | 0,74 | 0,82 | 0,74 | 0,79 |
+| RAG avanzado | 0,88 (n=19) | 0,71 | 0,83 | 0,74 | 0,83 |
+| Sistema final | 0,88 (n=19) | 0,71 | 0,83 | 0,75 | 0,83 |
 
 **Sanity check del juez RAGAS** (8 afirmaciones de verdad conocida sobre clubes ficticios): **8/8**.
 
+### El juez, revisado tras el feedback de M2
+
+El feedback de M2 señaló tres cosas: el juez casi no separaba respuestas buenas de malas; el
+`criterio` que recibe casi le dice la etiqueta correcta, así que es un juez con referencia; y
+`render_senal()` solo neutraliza la verbosidad mientras todo son etiquetas, pero el RAG escribe texto.
+Lo atendimos así, sin tocar la columna D2, que sigue siendo el juez de M2 para poder comparar con esa
+entrega:
+
+1. Un juez v2 ([`judge_razonado.py`](proyecto1/eval/judge_razonado.py),
+   [`judge_rubric_v2.yaml`](proyecto1/eval/judge_rubric_v2.yaml)) que puede escribir un análisis antes
+   de que se lean los logits del puntaje, y que ve la respuesta en texto además de la señal.
+2. El sanity check de M2 repetido dos veces: con el criterio completo y con un criterio «ciego» que
+   describe qué mirar pero no nombra la categoría ni el impacto. Si el juez solo acierta con el
+   completo, depende de la etiqueta que le damos.
+3. Una plantilla nueva, `render_senal_y_texto()` en el harness, que añade la prosa recortada a 240
+   caracteres, y una prueba de verbosidad con texto
+   ([`evaluar_juez_v2.py`](proyecto1/rag/evaluar_juez_v2.py)).
+
+Sanity check ([`sanity_juez_v2.json`](proyecto1/eval/sanity_juez_v2.json)), cinco señales de calidad
+conocida sobre el mismo caso. Esperado: 5, 4, 3, 3, 1.
+
+| Juez | Criterio completo | Criterio ciego | Signo invertido (esperado 1) |
+|---|---|---|---|
+| v1 de M2: Qwen2.5-1.5B, sin razonar | 4/5 en esta corrida (3/5 en M2, en CPU) | — | 3: no lo ve |
+| v2 · 1.5B razonando | 1/5 | 1/5 | 2 con el completo; con el ciego pone 1 a todo |
+| v2 · 1.5B sin razonar | 2/5 | 2/5 | 1, pero pone 1 a todo lo que no es perfecto |
+| v2 · 3B razonando | 2/5 | 1/5 | 1 con el completo; 4 con el ciego |
+| v2 · 3B sin razonar | 2/5 | 0/5 | 1 con el completo; 4 con el ciego |
+
+En exactitud el que más acierta sigue siendo el v1. Razonar no mejoró al 1.5B: en sus análisis llega
+a citar un «texto» que la señal no trae. Con el
+criterio completo todas las variantes v2 ven el signo invertido, que la v1 no veía. Con el criterio
+ciego ninguna lo ve. El profesor tenía razón: lo que detecta la inversión es la etiqueta que le damos
+en el criterio, no el juez.
+
+Aplicamos a las seis filas principales el 3B razonando (cuantizado a 4 bits para que quepa en 4 GB),
+que es lo que se sugirió y la única variante que gradúa en vez de dar 5 o 1 (columna D2·v2,
+[`scorecard_m3_juez_v2.csv`](proyecto1/rag/resultados/scorecard_m3_juez_v2.csv)):
+
+- Separa mucho más que la v1: 4,37 cuando la categoría es correcta frente a 3,03 cuando no (delta
+  +1,34; la v1, +0,80), y solo en 1 de 27 preguntas le da la misma nota a una respuesta correcta y a
+  una incorrecta (la v1, en 3).
+- Pero al ver la prosa se deja llevar por lo que suena bien. Al ingenuo le pone un 5 cuando presenta el
+  rumor de Erik Lira como baja confirmada, que es el error más caro de la rúbrica, y otro 5 cuando
+  responde el Balón de Oro de memoria. Y castiga más la válvula (1 o 2) que la v1 (3). Por eso deja al
+  ingenuo (3,96) a la par del avanzado (3,93), cuando todo lo demás dice que el avanzado es mejor.
+- Es inestable con las señales vacías. La rúbrica dice que no emitir señal vale 3 siempre; en las 21
+  preguntas con respuesta en las que el léxico no da señal, el v2 le pone desde 1 hasta 5 (media 3,38).
+  De ahí sale el 3,37 del léxico, por encima del LLM sin recuperación.
+- Verbosidad: con el recorte de 240 caracteres, añadir una frase de relleno no cambia la media (4,10
+  en los dos casos), pero sí la nota de 11 de las 20 respuestas, en las dos direcciones. Sin recorte,
+  la media sube a 4,35. El recorte quita el sesgo en promedio, no el ruido caso a caso
+  ([`sesgo_verbosidad_texto_m3.csv`](proyecto1/rag/resultados/sesgo_verbosidad_texto_m3.csv)).
+
+Conclusión: el juez v2 separa mejor, pero premia la prosa plausible y castiga callar, que es lo
+contrario de lo que pide la rúbrica. No lo adoptamos para tomar decisiones. Lo reportamos como
+columna, y las conclusiones de este módulo se apoyan en la D1, la D3 y RAGAS. La dimensión 3 sigue
+siendo la que cuenta el signo invertido y el rumor presentado como hecho.
+
 ### La lectura: qué movió qué, cuánto costó, qué falla queda
 
-Una advertencia antes de leer decimales: son 27 preguntas, así que **un acierto vale 0,037 de
-accuracy**, y en el F1 macro una sola pregunta puede valer una clase entera (Erik Lira es el único caso
-de rumor). Un generador de 1.5B además cambia de opinión cuando cambia el orden de los distractores.
-Lo que sigue se apoya en los casos, no solo en las medias. Y «categoría correcta» no es «respuesta
-correcta»: lo que mide el harness es la señal; la prosa la mide RAGAS.
+Antes de leer decimales: son 27 preguntas, así que un acierto vale 0,037 de accuracy, y en el F1 macro
+una sola pregunta puede valer una clase entera (Erik Lira es el único caso de rumor). Un generador de
+1.5B además cambia de respuesta cuando cambia el orden de los distractores. Por eso lo que sigue se
+apoya en los casos y no solo en las medias. Y una categoría correcta no garantiza una respuesta
+correcta: el harness mide la señal y RAGAS mide la prosa.
 
-**1 · ¿Qué movió qué?**
+**1. ¿Qué movió qué?**
 
-- **Recuperar es lo que más mueve, y el avanzado mejora al ingenuo en las tres dimensiones**: F1 de
-  0,139 a 0,289, juez de 2,59 a 2,93, tasa accionable de 0,37 a 0,52. Sin noticias, el mismo LLM calla
-  en 19 de las 23 preguntas que tienen respuesta. Las líneas base de M2 reciben la pregunta como si
-  fuera una noticia y no saben nada de esta semana.
-- **El reranker** es la técnica que más sube la tasa accionable sola (0,37 → 0,52) y quitarlo del
-  avanzado baja F1 a 0,226 y D3 a 0,48. Gana la categoría en Musiala (pone delante la noticia de
-  octubre), Ochoa, Svilar y Balón de Oro (aquí, callando). Ojo: dos de esas son aciertos de categoría
-  con la prosa equivocada —en Musiala responde con otra noticia del Bayern y en Svilar no llega el
-  documento—, y en Bentancur acierta la categoría pero nombra a otro expulsado.
-- **La búsqueda híbrida** sola sube F1 de 0,139 a 0,266, pero casi todo es una pregunta: Erik Lira, el
-  único rumor, que vale una clase entera del F1 macro (gana además Mbappé y pierde Bentancur). Dentro
-  del avanzado, quitarla **no cambia nada** (0,294 sin ella frente a 0,289; mismas D2 y D3). Su aporte
-  en este eval set está dentro del ruido, y lo decimos; la dejamos porque es la segunda técnica de la
-  lista y cuesta milisegundos.
-- **La válvula verificada** es la pieza que más pesa en el avanzado: quitarla baja F1 de 0,289 a 0,194
-  y el juez de 2,93 a 2,63, y la válvula pasa de 3/4 a 0/4. A cambio calla en 4 de las 23 preguntas que
-  sí tenían respuesta (ver punto 3).
-- **HyDE empeora todo** (F1 0,185, juez 2,48) y cuesta 11 s más. Descartada.
-- **El agente no mejora el harness.** Las tres dimensiones del avanzado y del final son idénticas. La herramienta funciona —en Chaira calcula bien el regreso y RAGAS lo ve: el context recall
-  de ese caso sube de 0,75 a 1,0— pero el generador ignora el resultado y repite «entre dos y tres
-  meses». Las otras dos preguntas que la necesitaban (Ochoa) no llegan a la herramienta porque la
-  válvula las corta antes. La dejamos porque solo se dispara cuando hace falta (0 llamadas innecesarias
-  en 24 preguntas), el cálculo queda registrado y es lo que mostrará la interfaz del M4. Si se quitara,
-  el harness no cambiaría: lo decimos tal cual.
+- Recuperar es lo que más mueve, y el avanzado mejora al ingenuo en las tres dimensiones del harness:
+  F1 de 0,139 a 0,289, juez v1 de 2,59 a 2,93 y tasa accionable de 0,37 a 0,52. Sin noticias, el
+  mismo LLM calla en 19 de las 23 preguntas que tienen respuesta. Las líneas base de M2 reciben la
+  pregunta como si fuera una noticia y no saben nada de lo que pasó esta semana.
+- El reranker es la técnica que más sube la tasa accionable por sí sola (0,37 → 0,52), y quitarlo del
+  avanzado baja el F1 a 0,226 y la tasa a 0,48. En RAGAS mueve lo que la sesión 10 dice que debe
+  mover: la context precision calculada con los documentos anotados pasa de 0,87 a 0,95, y la
+  faithfulness de 0,80 a 0,89 porque llegan menos distractores. Gana la categoría en Musiala (pone
+  delante la noticia de octubre), Ochoa, Svilar y Balón de Oro. Dos de esos aciertos lo son solo de
+  categoría: en Musiala responde con otra noticia del Bayern y en Svilar el documento no llega.
+- La búsqueda híbrida sola sube el F1 de 0,139 a 0,266, pero casi todo viene de una pregunta, Erik
+  Lira, el único rumor, que vale una clase entera del F1 macro (además gana Mbappé y pierde
+  Bentancur). En RAGAS sube algo la precision (0,83 → 0,86) y apenas el recall (0,88 → 0,89, una
+  afirmación). Dentro del avanzado, quitarla no cambia nada (0,294 sin ella frente a 0,289; D2 y D3
+  iguales). Su efecto en este eval set está dentro del ruido. La mantenemos porque es la segunda
+  técnica de la lista y cuesta milisegundos.
+- La válvula verificada es la pieza que más pesa en el avanzado. Quitarla baja el F1 de 0,289 a 0,194
+  y el juez v1 de 2,93 a 2,63, y deja la válvula en 0 de 4. A cambio calla en 4 de las 23 preguntas
+  que sí tenían respuesta (punto 3), y por eso el context recall del avanzado baja a 0,74.
+- HyDE empeora todo (F1 0,185, juez v1 2,48) y cuesta 11 s más. La descartamos.
+- El agente no mejora el harness: las tres dimensiones del avanzado y del final son iguales. La
+  herramienta calcula bien el regreso de Chaira y RAGAS lo registra (el context recall de esa pregunta
+  pasa de 0,75 a 1,0), pero el generador ignora el resultado y repite «entre dos y tres meses». Las
+  otras dos preguntas que la necesitaban (las de Ochoa) no llegan a la herramienta porque la válvula
+  las corta antes. La mantenemos porque solo se dispara cuando hace falta (0 llamadas innecesarias en
+  24 preguntas), el cálculo queda registrado y es lo que mostrará la interfaz del M4. Si la
+  quitáramos, el harness no cambiaría.
 
-**2 · ¿Cuánto costó?**
+**2. ¿Cuánto costó?**
 
 | Paso | Latencia mediana | Qué cuesta |
 |---|---:|---|
 | RAG ingenuo | 15,1 s | casi todo es generar el JSON con un 1.5B en una GPU de 4 GB |
 | + reranker | +1,2 s | 20 pares por el cross-encoder, en CPU |
-| + híbrida | +0,3 s | BM25 son milisegundos; el resto es ruido de la generación |
+| + híbrida | +0,3 s | BM25 tarda milisegundos; el resto es variación de la generación |
 | + válvula verificada | +6,5 s | 4 pasadas del modelo, una por chunk. Cuando calla, la consulta termina en 9,1 s sin generar |
 | + herramienta | +0,2 s de mediana | solo se dispara en 1 de 27 consultas, pero esa pasa de 22 s a 36 s |
-| HyDE (descartada) | +11,0 s | una generación extra antes de buscar |
+| HyDE (descartada) | +11,0 s | una generación más antes de buscar |
 
-El avanzado tarda un 46 % más que el ingenuo (22,1 s frente a 15,1 s), y casi todo es la válvula.
-**Para nuestro usuario vale la pena**: el apostador consulta antes del partido, no en directo, y lo que
-compra esa latencia es no recibir una baja inventada. Lo que no vale la pena es HyDE. La versión
-eficiente del M5 tiene dónde cortar: las cuatro verificaciones caben en una sola pasada y el JSON de
-salida puede ser más corto.
+El avanzado tarda un 46 % más que el ingenuo (22,1 s frente a 15,1 s), casi todo por la válvula. Para
+nuestro usuario creemos que compensa: el apostador consulta antes del partido, no en directo, y lo que
+se paga con esa latencia es no recibir una baja inventada. HyDE no compensa. Para la versión eficiente
+del M5 hay margen: las cuatro verificaciones caben en una sola pasada y el JSON de salida puede ser más
+corto.
 
-**3 · ¿Qué falla queda y de qué tipo?** Cruzando el harness con RAGAS, pregunta por pregunta, sobre las
-23 con respuesta del sistema final ([`ragas_m3_por_caso.csv`](proyecto1/rag/resultados/ragas_m3_por_caso.csv)):
+**3. ¿Qué falla queda y de qué tipo?** Cruzamos el harness con RAGAS pregunta por pregunta en las 23
+con respuesta del sistema final ([`ragas_m3_por_caso.csv`](proyecto1/rag/resultados/ragas_m3_por_caso.csv)):
 
-| Tipo | Casos | Señal en RAGAS |
+| Tipo | Casos | Qué se ve en RAGAS |
 |---|---:|---|
-| Categoría correcta | 9 | De esas, el **impacto** solo es correcto en 2: el modelo pone «negativo_bajo» a casi todo. La dimensión 3 no castiga quedarse corto; el juez sí (nivel 4) |
-| **Generación: etiqueta equivocada** con el contexto correcto | 8 | context recall alto, la categoría mal: Vinicius en la Roma (alineación → «regreso»), Ángel Pérez (sanción → «baja»), Nico Williams (baja → «duda»), Laporte y Beitia (duda → «baja»), Sadiq y Arrasate («vuelve» leído como regreso) y Chaira (ignora la herramienta) |
-| **La válvula calla de más** | 4 | sin contexto: Erik Lira (el verificador confunde «la respuesta es que no» con «no es la fuente»), los dos de Ochoa (el resumen RSS cruzado Málaga/Girona) y Svilar (el documento ni siquiera llegó) |
-| RAGAS marca falla con la prosa correcta | 2 | Isaac Romero («fue expulsado», faithfulness 0; su categoría también falla: sanción → «baja») y Celta (nombra bien a los lesionados, context recall 0): errores del juez |
+| Categoría correcta | 9 | De esas, el impacto solo es correcto en 2: el modelo pone «negativo_bajo» a casi todo. La dimensión 3 no castiga quedarse corto; el juez v1 sí (nivel 4) |
+| Generación: etiqueta equivocada con el contexto correcto | 8 | context recall y faithfulness altos, la categoría mal: Vinicius en la Roma (alineación → «regreso»), Isaac Romero y Ángel Pérez (sanción → «baja»), Nico Williams (baja → «duda»), Laporte y Beitia (duda → «baja»), Arrasate (su «vuelta» leída como regreso) y Chaira (ignora la herramienta) |
+| La válvula calla de más | 4 | sin contexto: Erik Lira (el verificador confunde «la respuesta es que no» con «no es la fuente»), los dos de Ochoa (el resumen RSS cruzado Málaga/Girona) y Svilar (el documento no llegó) |
+| Generación: inventa en la prosa | 1 | Sadiq: «ha vuelto a estar bien» cuando la noticia dice que espera pruebas (faithfulness 0,33) |
+| Error del juez de RAGAS | 1 | Celta: la respuesta es correcta y el juez no la reconoce (context recall 0) |
 
-Hay además errores de prosa que la etiqueta no ve: en Nico Williams mezcla su baja con la
-indisposición de Laporte, y en Sadiq dice «ya está recuperado» cuando la noticia dice que está
-pendiente de pruebas.
+Hay además un error de prosa que no detectan ni el harness ni RAGAS: en Nico Williams la respuesta
+mezcla su baja con la indisposición de Laporte.
 
-**La falla que queda es de generación, no de recuperación.** El recuperador trae el documento correcto
-al top-4 en 22 de 23 preguntas; después de la válvula, al generador le llega contexto en 19, y la
-faithfulness de lo que responde es 0,83. Aun así etiqueta mal 8. Etiquetar es justo lo que hace el
-clasificador de M1: separar «recuperar y redactar» (el RAG) de «etiquetar el chunk recuperado» (un
-clasificador afinado) es el siguiente paso natural. El context recall baja del ingenuo (0,88) al
-final (0,75): de esos 3 puntos sobre 23, 2 son de la válvula (Erik Lira y los dos de Ochoa se quedan
-sin contexto) y 1 es del juez (Celta) y de un filtrado parcial en Vinicius-Roma.
+La falla que queda es de generación, no de recuperación. El recuperador trae el documento correcto al
+top-4 en 22 de 23 preguntas; después de la válvula le llega contexto al generador en 19, y la
+faithfulness de lo que responde es 0,88. Aun así etiqueta mal 8. Etiquetar es lo que hace el
+clasificador de M1, así que el siguiente paso natural es separar las dos tareas: el RAG recupera y
+redacta, y un clasificador afinado etiqueta el chunk recuperado. El context recall baja del ingenuo
+(0,88) al final (0,75). De esos 3 puntos sobre 23, 2 vienen de la válvula (Erik Lira y los dos de Ochoa
+se quedan sin contexto) y 1 del juez en Celta y de un filtrado parcial en Vinicius-Roma.
 
-**4 · ¿Qué pasó con las preguntas sin respuesta en el corpus?** El RAG ingenuo **inventó en las
-cuatro**: a «¿Mbappé se pierde el Clásico?» respondió con la sanción de Vinicius, dijo que Lamine
-«estuvo hasta hace poco lesionado», respondió el Balón de Oro de memoria («el inglés fue el último…») y
-al Betis-Oporto le inventó «un impacto positivo». El sistema final **activa la válvula en 3 de 4**
-(Mbappé, cuota, Balón de Oro). Falla en Lamine Yamal: el verificador deja pasar «Pues el día que Lamine
-esté fino» (P = 0,999) y el generador inventa «Lamine está cerca de estar disponible». El LLM sin
-recuperación también calla en 3 de 4, pero porque calla en casi todo (19 de 23 con respuesta): una
-válvula que siempre está cerrada no es una válvula.
+**4. ¿Qué pasó con las preguntas sin respuesta en el corpus?** El RAG ingenuo inventó en las cuatro: a
+«¿Mbappé se pierde el Clásico?» respondió con la sanción de Vinicius, dijo que Lamine «estuvo hasta
+hace poco lesionado», respondió el Balón de Oro de memoria («el inglés fue el último…») y al
+Betis-Oporto le atribuyó «un impacto positivo». El sistema final activa la válvula en 3 de 4 (Mbappé,
+cuota y Balón de Oro). Falla en Lamine Yamal: el verificador deja pasar «Pues el día que Lamine esté
+fino» (P = 0,999) y el generador inventa «Lamine está cerca de estar disponible». El LLM sin
+recuperación también calla en 3 de 4, pero porque calla en casi todo (19 de 23 con respuesta).
 
-**Lo que no sabíamos al empezar y ahora sí.** Con un generador de 1.5B, la válvula por prompt es un
-dial y no un interruptor (o calla de más, o nunca calla), y el modelo tampoco sabe decidir cuándo usar
-una herramienta (0 de 4). Las dos decisiones salieron del generador: la primera la toma ahora un
-clasificador sí/no por logits y la segunda una regla verificable. Y el problema de datos del feed
-(resúmenes cruzados entre noticias) que encontramos al construir el corpus terminó costando dos
-preguntas del eval set.
+**Qué aprendimos.** Con un generador de 1.5B no encontramos un prompt que supiera a la vez responder y
+callar, y el modelo tampoco supo decidir cuándo usar la herramienta (0 de 4). Las dos decisiones las
+sacamos del generador: la primera la toma un clasificador sí/no por logits y la segunda una regla. El
+problema del feed (resúmenes cruzados entre noticias) que vimos al construir el corpus terminó
+costando dos preguntas del eval set.
 
-**Un error nuestro, corregido.** La primera corrida completa salió por descuido con la versión v4 del
-prompt base, no con la v3 que había elegido el dev set (la v4 se quedó como vigente después de
-probarla). Lo detectó una auditoría antes de entregar y se repitió todo con v3. Las conclusiones de
-fondo se mantienen, pero las cifras cambiaron: con v4 el avanzado parecía peor que el ingenuo en F1.
-Los números de este README son los de v3.
-
-**Sobre el juez de la dimensión 2.** En M2 dijimos que en M3 lo dejaríamos razonar antes de puntuar.
-No lo hicimos, a propósito: cambiar el juez es cambiar la vara, y el enunciado pide la misma para
-todas las filas. Es el juez de M2 tal cual (Qwen2.5-1.5B, rúbrica v1) y sigue viendo solo la señal
-renderizada con la plantilla de longitud fija, así que la prosa más larga del RAG no le da puntos por
-verbosidad. En este eval set discrimina mejor que en M2 —3,25 cuando la categoría es correcta frente
-a 2,45 cuando no (delta +0,80, antes +0,45), y solo en 3 de 27 preguntas le da la misma nota a una
-respuesta correcta y a una incorrecta (antes 9 de 21)— y conserva su punto ciego: al signo invertido
-le pone un 3. Por eso ese error lo sigue contando la dimensión 3.
+**Un error nuestro.** La primera corrida completa usó por descuido la versión v4 del prompt base en
+lugar de la v3 que habíamos elegido con el dev set. Lo detectamos en una revisión antes de entregar y
+repetimos todo con v3. Las conclusiones de fondo no cambiaron, pero las cifras sí: con v4 el avanzado
+parecía peor que el ingenuo en F1. Los números de este README son los de v3.
 
 ### Uso de IA
 
-Usamos **Claude Code** (Anthropic) como asistente de programación en este módulo, para:
+Usamos **Claude** (Anthropic), a través de Claude Code, como asistente durante el desarrollo de este
+módulo. Para qué:
 
-- **Código:** la mayor parte de [`proyecto1/rag/`](proyecto1/rag/), el constructor del eval set
-  ([`build_eval_set_m3.py`](proyecto1/eval/build_eval_set_m3.py)) a partir de noticias reales del
-  corpus, y el notebook de M3.
-- **Experimentos y depuración:** correr los diagnósticos, el ajuste de prompts sobre el dev set, las
-  ablaciones y la evaluación; depurar el bucle del agente y el parseo tolerante.
-- **Redacción:** la primera versión de esta sección y de [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md).
+- **Código:** buena parte de [`proyecto1/rag/`](proyecto1/rag/), el juez v2, el constructor del eval
+  set y el notebook de M3 se escribieron con su ayuda.
+- **Depuración:** encontrar por qué fallaban el agente (no llamaba a la herramienta), la válvula y el
+  parseo del JSON del modelo, y corregirlo.
+- **Análisis:** correr los diagnósticos, el ajuste del prompt sobre el dev set, las ablaciones y RAGAS,
+  y preparar una primera lectura de los resultados.
+- **Decisiones de diseño y de entrenamiento:** discutir opciones (qué técnicas probar, cómo ajustar el
+  prompt sin tocar el eval set, cómo construir la válvula y la herramienta, qué juez usar).
+- **Redacción:** primeras versiones de este reporte y de [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md).
 
-**Lo que revisamos y cambiamos nosotros:** ⚠️ COMPLETAR ANTES DE ENTREGAR.
+**Lo que hicimos y revisamos nosotros:**
 
-Los modelos que forman parte del sistema (Qwen2.5-1.5B como generador y juez, e5-small, el
-cross-encoder) no cuentan aquí: esto es sobre cómo construimos la entrega.
+- La dirección del trabajo: qué se probaba en cada paso y en qué orden.
+- El criterio para aceptar o descartar cada técnica, y las decisiones finales sobre qué se entrega y
+  cómo se reporta.
+- La revisión de los resultados contra los archivos de `rag/resultados/`. Cuando una corrida salió mal
+  (la del prompt v4), se repitió entera y se dejó constancia en el reporte.
+- Aplicar el feedback del profesor sobre el M2: pedimos rehacer el juez (que razonara antes de puntuar,
+  que viera el texto y que se midiera cuánto depende del criterio), y decidimos conservar el juez v1
+  como columna para comparar con el M2.
+- Pedir y revisar una pasada sobre los textos para quitar redacción genérica.
+
+Los modelos que forman parte del sistema (Qwen2.5 como generador y juez, e5-small, el cross-encoder)
+no cuentan aquí: esto es sobre cómo construimos la entrega.
 
 ---
 
@@ -373,7 +443,7 @@ baseline está **sobreajustado a las trampas conocidas y ciego a los casos corri
 sistemas son 2,52 / 2,57 / 2,52. Medido con rigor: da 2,83 cuando la categoría es correcta y 2,38
 cuando no (delta +0,45), y **en 9 de 21 ejemplos le pone la misma nota a una respuesta correcta y a
 una incorrecta**. Un modelo de 1.5B en un solo forward pass no ejecuta la comparación que pide la
-rúbrica. En M3 lo dejaremos razonar antes de puntuar.
+rúbrica. En M3 probamos dejarlo razonar antes de puntuar (ver «El juez, revisado» en la sección M3).
 
 > **Hoy ningún sistema sirve para el usuario, y ahora sabemos exactamente por qué.** Lo que sí
 > tenemos es la vara fija: el mismo scorecard medirá el RAG de M3 sin cambiar una línea del harness.

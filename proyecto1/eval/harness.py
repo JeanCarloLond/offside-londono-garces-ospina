@@ -98,6 +98,28 @@ def render_senal(respuesta: dict) -> str:
     )
 
 
+MAX_CHARS_RESPUESTA = 240  # judge_rubric_v2.yaml: max_chars_respuesta
+
+
+def render_senal_y_texto(respuesta: dict) -> str:
+    """Para el juez v2 (M3): la señal con la plantilla fija MÁS la respuesta en prosa.
+
+    Feedback del M2: render_senal() mitiga la verbosidad mientras todo son etiquetas,
+    pero el RAG escribe texto, y en ese texto puede inventar aunque la etiqueta sea
+    correcta. Aquí el juez sí lo ve. La prosa se recorta a MAX_CHARS_RESPUESTA para
+    que la longitud tenga un techo; si ese techo basta lo mide
+    rag/bias_check_texto.py. Los sistemas sin prosa (los de M2) quedan igual que con
+    render_senal.
+    """
+    senal = render_senal(respuesta)
+    texto = " ".join((respuesta.get("respuesta") or "").split())
+    if not texto:
+        return senal
+    if len(texto) > MAX_CHARS_RESPUESTA:
+        texto = texto[:MAX_CHARS_RESPUESTA].rsplit(" ", 1)[0] + "…"
+    return f"{senal}\nRESPUESTA: {texto}"
+
+
 # ---------------------------------------------------------------------------
 # Utilidades de impacto
 # ---------------------------------------------------------------------------
@@ -265,18 +287,23 @@ def harness(
     sistema: Sistema,
     nombre: str = "sistema",
     juez=None,
+    render: Callable[[dict], str] = render_senal,
 ) -> Scorecard:
     """Corre las tres dimensiones sobre `eval_set` y devuelve el scorecard.
 
     `juez` es opcional: sin él se calculan las dimensiones 1 y 3, que no
     necesitan descargar ningún LLM. Es lo que permite correr el harness en
     cualquier laptop y dejar el juez para Colab.
+
+    `render` decide qué ve el juez. Por defecto es render_senal, la vara de M2;
+    el juez v2 de M3 usa render_senal_y_texto. Las dimensiones 1 y 3 no dependen
+    de él.
     """
     filas = []
     for ej in eval_set:
         respuesta = sistema(ej["input"])
         gold = ej["esperado"]
-        senal = render_senal(respuesta)
+        senal = render(respuesta)
 
         # --- verificaciones duras de dominio (dimensión 3) ---
         signo_invertido = signo(respuesta["impact"]) != signo(gold["impact"]) and "neutro" not in (

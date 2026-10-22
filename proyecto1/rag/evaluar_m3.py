@@ -51,7 +51,16 @@ ABLACION = [
     "rag_avanzado_sin_rerank",
     "rag_avanzado_sin_verificador",
 ]
-RAGAS_SISTEMAS = ["rag_ingenuo", "rag_avanzado", "sistema_final"]
+# Las tres filas de la tabla y, como pide la S10, cada técnica sola: el reranker
+# debería mover la context precision y la híbrida el context recall.
+RAGAS_SISTEMAS = [
+    "rag_ingenuo",
+    "rag_hibrido",
+    "rag_rerank",
+    "rag_verificado",
+    "rag_avanzado",
+    "sistema_final",
+]
 
 
 def cargar_respuestas(nombre: str) -> dict | None:

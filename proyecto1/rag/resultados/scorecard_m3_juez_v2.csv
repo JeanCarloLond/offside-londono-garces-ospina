@@ -1,0 +1,7 @@
+sistema,d2_juez_v2_media,d2_juez_v2_distribucion,juez
+m2_lexico,3.37,"{""1"": 2, ""2"": 5, ""3"": 5, ""4"": 11, ""5"": 4}",Qwen2.5-3B-Instruct 4bit razona
+m2_lora,2.593,"{""1"": 9, ""2"": 4, ""3"": 5, ""4"": 7, ""5"": 2}",Qwen2.5-3B-Instruct 4bit razona
+llm_sin_rag,2.704,"{""1"": 7, ""2"": 4, ""3"": 8, ""4"": 6, ""5"": 2}",Qwen2.5-3B-Instruct 4bit razona
+rag_ingenuo,3.963,"{""1"": 3, ""2"": 1, ""3"": 1, ""4"": 11, ""5"": 11}",Qwen2.5-3B-Instruct 4bit razona
+rag_avanzado,3.926,"{""1"": 3, ""2"": 2, ""3"": 1, ""4"": 9, ""5"": 12}",Qwen2.5-3B-Instruct 4bit razona
+sistema_final,3.926,"{""1"": 3, ""2"": 2, ""3"": 1, ""4"": 9, ""5"": 12}",Qwen2.5-3B-Instruct 4bit razona
