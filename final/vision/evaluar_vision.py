@@ -11,6 +11,8 @@ Sistemas que responden los casos con imagen (eval_set_vision.json):
   m2_lexico, m2_lora   las líneas base de M2: solo ven la pregunta
   m3_sin_vision        el sistema final del M3: solo ve la pregunta, no la imagen
   final_con_vision     el mismo sistema con el texto que leyó el componente visual
+  final_con_vision_antes  el mismo, ANTES del arreglo de la captura sin respaldo (se guardó
+                       la salida de la primera corrida; ver final/reporte.md, análisis de errores)
 
 Pruebas que no miden exactitud (las que pide el enunciado sobre la versión final):
   invarianza   la misma captura en tres variantes (pequeña y comprimida, tema oscuro,
@@ -77,7 +79,7 @@ def leer(cuantizar: bool) -> None:
     )
 
 
-def responder(cuantizar_generador: bool) -> None:
+def responder(cuantizar_generador: bool | str, solo_final: bool = False) -> None:
     import config
     from correr_sistemas import baseline_m2
     from generador import Generador
@@ -107,7 +109,7 @@ def responder(cuantizar_generador: bool) -> None:
         "m2_lora": baseline_m2("m2_lora"),
         "m3_sin_vision": final,
     }
-    for nombre, fn in sistemas.items():
+    for nombre, fn in sistemas.items() if not solo_final else ():
         _escribir(nombre, {c["eval_id"]: fn(c["input"]["text"]) for c in EVAL})
     # el sistema final con visión: casos originales y variantes
     filas = {}
@@ -116,8 +118,9 @@ def responder(cuantizar_generador: bool) -> None:
         for nombre in c["variantes"]:
             clave = f"{c['eval_id']}_{nombre}"
             filas[clave] = con_vision(clave, c["input"]["text"])
-    _escribir("final_con_vision", filas)
-    print("config:", config.GENERADOR, "int4" if cuantizar_generador else "fp16")
+    sufijo = f"_{cuantizar_generador}" if cuantizar_generador else ""
+    _escribir(f"final_con_vision{sufijo}", filas)
+    print("config:", config.GENERADOR, cuantizar_generador or "fp16")
 
 
 def _escribir(nombre: str, filas: dict) -> None:
@@ -144,7 +147,12 @@ def evaluar(con_juez: bool) -> None:
 
         juez = Judge()
     filas = []
-    for nombre in ("m2_lexico", "m2_lora", "m3_sin_vision", "final_con_vision"):
+    nombres = ["m2_lexico", "m2_lora", "m3_sin_vision", "final_con_vision"]
+    if (RES / "respuestas_final_con_vision_antes.jsonl").exists():
+        nombres.insert(3, "final_con_vision_antes")
+    if (RES / "respuestas_final_con_vision_int8.jsonl").exists():
+        nombres.append("final_con_vision_int8")
+    for nombre in nombres:
         resp = _cargar(nombre)
         t = harness(
             EVAL, reproductor({c["eval_id"]: resp[c["eval_id"]] for c in EVAL}, EVAL), nombre, juez
@@ -170,33 +178,45 @@ def evaluar(con_juez: bool) -> None:
         w.writeheader()
         w.writerows(filas)
 
-    final = _cargar("final_con_vision")
     inv = []
-    for c in EVAL:
-        base = final[c["eval_id"]]
-        for nombre in c["variantes"]:
-            v = final[f"{c['eval_id']}_{nombre}"]
-            inv.append(
-                {
-                    "eval_id": c["eval_id"],
-                    "variante": nombre,
-                    "categoria_original": base["category"],
-                    "categoria_variante": v["category"],
-                    "misma_senal": (base["category"], base["impact"])
-                    == (v["category"], v["impact"]),
-                    "misma_categoria": base["category"] == v["category"],
-                }
-            )
+    for version in [n for n in nombres if n.startswith("final_con_vision")]:
+        final = _cargar(version)
+        filas_v = []
+        for c in EVAL:
+            base = final[c["eval_id"]]
+            for nombre in c["variantes"]:
+                v = final[f"{c['eval_id']}_{nombre}"]
+                filas_v.append(
+                    {
+                        "version": version,
+                        "eval_id": c["eval_id"],
+                        "variante": nombre,
+                        "categoria_original": base["category"],
+                        "categoria_variante": v["category"],
+                        "misma_senal": (base["category"], base["impact"])
+                        == (v["category"], v["impact"]),
+                        "misma_categoria": base["category"] == v["category"],
+                    }
+                )
+        inv += filas_v
+        print(
+            f"invarianza {version}: misma categoría en "
+            f"{sum(i['misma_categoria'] for i in filas_v)}/{len(filas_v)} variantes; misma señal "
+            f"completa en {sum(i['misma_senal'] for i in filas_v)}/{len(filas_v)}"
+        )
+        print(
+            "   V-06 (sin fútbol):", final["V-06"]["category"], "|", final["V-06"]["respuesta"][:90]
+        )
+        print(
+            "   V-07 (captura falsa):",
+            final["V-07"]["category"],
+            "|",
+            final["V-07"]["respuesta"][:150],
+        )
     with (RES / "invarianza.csv").open("w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(inv[0]))
         w.writeheader()
         w.writerows(inv)
-    print(
-        f"invarianza: misma categoría en {sum(i['misma_categoria'] for i in inv)}/{len(inv)} "
-        f"variantes; misma señal completa en {sum(i['misma_senal'] for i in inv)}/{len(inv)}"
-    )
-    print("V-06 (sin fútbol):", final["V-06"]["category"], "|", final["V-06"]["respuesta"][:100])
-    print("V-07 (captura falsa):", final["V-07"]["category"], "|", final["V-07"]["respuesta"][:160])
 
 
 def main() -> int:
@@ -205,13 +225,22 @@ def main() -> int:
     parser.add_argument("--responder", action="store_true")
     parser.add_argument("--evaluar", action="store_true")
     parser.add_argument("--vision-4bit", action="store_true", help="en GPUs de 4 GB")
-    parser.add_argument("--generador-int4", action="store_true")
+    parser.add_argument(
+        "--generador",
+        choices=["fp16", "int4", "int8"],
+        default="fp16",
+        help="int8: la versión eficiente; se escribe aparte (respuestas_final_con_vision_int8)",
+    )
     parser.add_argument("--sin-juez", action="store_true")
+    parser.add_argument(
+        "--solo-final", action="store_true", help="vuelve a responder solo final_con_vision"
+    )
     args = parser.parse_args()
     if args.leer:
         leer(args.vision_4bit)
     if args.responder:
-        responder(args.generador_int4)
+        cuantizar = False if args.generador == "fp16" else args.generador
+        responder(cuantizar, args.solo_final)
     if args.evaluar:
         evaluar(not args.sin_juez)
     return 0

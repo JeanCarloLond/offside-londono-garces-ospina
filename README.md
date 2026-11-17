@@ -2,25 +2,24 @@
 
 [![lint](https://github.com/JeanCarloLond/offside-londono-garces-ospina/actions/workflows/lint.yml/badge.svg)](https://github.com/JeanCarloLond/offside-londono-garces-ospina/actions/workflows/lint.yml)
 [![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
-[![Módulo](https://img.shields.io/badge/SI4006-M1%20·%20M2%20·%20M3-success)](#entregables)
+[![Demo](https://img.shields.io/badge/demo-Hugging%20Face-yellow)](https://huggingface.co/spaces/Jclo/offside)
 
-> **Offside responde las preguntas de un apostador recreativo sobre noticias de fútbol —«¿juega Vinicius el Clásico?»— buscando en la prensa que recolectamos, para que decida con información y no solo con el titular que alcanzó a leer en el celular.**
->
-> Una respuesta es buena cuando **dice lo que dicen las noticias, cita de cuál lo saca, acierta el tipo de hecho y la dirección del impacto, no confunde un rumor con un hecho y, si no lo sabe, lo dice en vez de inventar**. Y para saber si lo consigue, lo medimos con la misma vara desde el Módulo 2.
+> **Offside le responde a quien apuesta por diversión si un jugador va a jugar, con la noticia que
+> lo respalda, y le dice «no lo sé» cuando las noticias no lo dicen.**
 
 Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA · Universidad EAFIT.
 
----
+| | |
+|---|---|
+| **Demo pública** | <https://huggingface.co/spaces/Jclo/offside> (pregunta en texto o captura de una noticia) |
+| **Observabilidad (W&B)** | {WANDB_URL} |
+| **Reporte final** | [`final/reporte.md`](final/reporte.md) |
+| **Presentación** | [`final/presentacion/offside.html`](final/presentacion/offside.html) (ábrela en el navegador; flechas para avanzar, N para las notas) |
+| **Health check** | `Client("Jclo/offside").predict(api_name="/salud")` con `gradio_client`, o el desplegable «Estado del sistema» de la demo ([detalle](final/reporte.md#6-despliegue)) |
 
-## Entregables
+## Correrlo
 
-| Módulo | Qué es | Empiece por aquí | Artefactos |
-|---|---|---|---|
-| **M3** · RAG agéntico | Un RAG sobre 748 noticias reales: ingenuo, avanzado (híbrida + reranker + válvula verificada) y con una herramienta de fechas, medido con el harness de M2 y con RAGAS | **[Ir a M3 ↓](#m3--rag-que-recupera-actúa-y-se-evalúa)** · [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md) | [eval set](proyecto1/eval/eval_set_m3.json) · [código](proyecto1/rag/) · [scorecard](proyecto1/rag/resultados/scorecard_m3.csv) · [RAGAS](proyecto1/rag/resultados/ragas_m3.csv) · [notebook](proyecto1/notebooks/M3_RAG_agentico.ipynb) |
-| **M2** · Evaluación rigurosa | Harness de 3 dimensiones + scorecard del baseline, con la rúbrica del juez y su sesgo medido | **[Ir a M2 ↓](#m2--harness-de-evaluación)** · [`docs/harness-m2.md`](proyecto1/docs/harness-m2.md) | [eval set](proyecto1/eval/eval_set.json) · [rúbrica del juez](proyecto1/eval/judge_rubric.yaml) · [scorecard](proyecto1/eval/scorecard_baseline.csv) · [notebook](proyecto1/notebooks/M2_harness_evaluacion.ipynb) |
-| **M1** · Fine-tuning con LoRA | BETO afinado sobre prensa deportiva, comparado contra tres baselines | **[Ir a M1 ↓](#m1--fine-tuning-con-lora)** · [`docs/results.md`](proyecto1/docs/results.md) | [notebook](proyecto1/notebooks/M1_finetuning_LoRA_offside.ipynb) · [dataset](proyecto1/docs/dataset.md) · [recolección](proyecto1/data_collection/) |
-
-Los notebooks abren en Colab con un clic y clonan el repo solos:
+**En Colab**, sin instalar nada: los notebooks clonan el repo solos.
 
 [![M3 en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JeanCarloLond/offside-londono-garces-ospina/blob/main/proyecto1/notebooks/M3_RAG_agentico.ipynb) M3 · RAG
 &nbsp;&nbsp;
@@ -28,7 +27,29 @@ Los notebooks abren en Colab con un clic y clonan el repo solos:
 &nbsp;&nbsp;
 [![M2 en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JeanCarloLond/offside-londono-garces-ospina/blob/main/proyecto1/notebooks/M2_harness_evaluacion.ipynb) M2 · harness
 
-### Equipo
+**En local** (Python 3.12, una GPU de 4 GB basta; sin GPU funciona, pero lento):
+
+```bash
+git clone https://github.com/JeanCarloLond/offside-londono-garces-ospina.git
+cd offside-londono-garces-ospina
+pip install -r requirements-m3.txt torchvision gradio wandb
+python proyecto1/rag/indice.py      # construye el índice de 748 noticias
+python final/despliegue/app.py      # la demo completa en http://127.0.0.1:7860
+```
+
+Con `OFFSIDE_VISION=0` arranca sin el modelo de visión (menos memoria). Las mediciones del final
+se reproducen con los comandos de la [sección 14 del reporte](final/reporte.md#14-reproducir).
+
+## Índice
+
+| Módulo | Qué es | Empiece por aquí |
+|---|---|---|
+| **Final** · Sistema eficiente y desplegado | Componente visual, cuantización medida contra un criterio previo, demo en Hugging Face con health check, registros JSON y W&B | [`final/reporte.md`](final/reporte.md) · [eficiencia](final/eficiencia/) · [visión](final/vision/) · [despliegue](final/despliegue/) |
+| **M3** · RAG agéntico | Un RAG sobre 748 noticias reales: ingenuo, avanzado (híbrida + reranker + válvula verificada) y con una herramienta de fechas, medido con el harness de M2 y con RAGAS | **[Ir a M3 ↓](#m3--rag-que-recupera-actúa-y-se-evalúa)** · [`docs/rag-m3.md`](proyecto1/docs/rag-m3.md) · [código](proyecto1/rag/) · [scorecard](proyecto1/rag/resultados/scorecard_m3.csv) |
+| **M2** · Evaluación rigurosa | Harness de 3 dimensiones + scorecard del baseline, con la rúbrica del juez y su sesgo medido | **[Ir a M2 ↓](#m2--harness-de-evaluación)** · [`docs/harness-m2.md`](proyecto1/docs/harness-m2.md) · [rúbrica](proyecto1/eval/judge_rubric.yaml) |
+| **M1** · Fine-tuning con LoRA | BETO afinado sobre prensa deportiva, comparado contra tres baselines | **[Ir a M1 ↓](#m1--fine-tuning-con-lora)** · [`docs/results.md`](proyecto1/docs/results.md) · [dataset](proyecto1/docs/dataset.md) |
+
+## Equipo
 
 | Integrante | Correo |
 |---|---|
@@ -501,6 +522,12 @@ en [`docs/dataset.md`](proyecto1/docs/dataset.md).
 
 ```text
 .
+├── final/
+│   ├── reporte.md            # El reporte final
+│   ├── presentacion/         # Las diapositivas de la sustentación (HTML)
+│   ├── eficiencia/           # Criterio previo, medición de la cuantización y resultados/
+│   ├── vision/               # Componente visual, casos con imagen y resultados/
+│   └── despliegue/           # App de Gradio, registros + W&B y empaquetado del Space
 ├── proyecto1/
 │   ├── notebooks/            # Los entregables de M1, M2 y M3, ejecutables en Colab
 │   ├── rag/                  # M3: indexación, sistemas RAG, herramienta, RAGAS y resultados/

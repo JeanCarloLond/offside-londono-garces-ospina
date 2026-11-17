@@ -99,6 +99,7 @@ class Observador:
                             "usa_herramienta": int(usa_herramienta),
                             "usa_vision": int(usa_vision),
                             "error": int(error is not None),
+                            **{f"tiempo_{k}_s": v for k, v in (tiempos or {}).items()},
                             # métricas de uso, acumuladas
                             "peticiones_total": self.total,
                             "tasa_valvula": self.valvulas / self.total,

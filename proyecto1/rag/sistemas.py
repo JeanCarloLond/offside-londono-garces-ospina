@@ -22,6 +22,7 @@ de entrada: el harness de M2 no se toca.
 
 from __future__ import annotations
 
+import re
 import time
 from dataclasses import dataclass
 
@@ -96,6 +97,39 @@ PROMPT_MULTIQUERY = (
 )
 
 
+AVISO_CAPTURA = (
+    "Ninguna de las noticias recolectadas cuenta lo mismo que la captura: tómala como un rumor "
+    "sin confirmar."
+)
+_BAJAR = {"negativo_alto": "negativo_bajo", "positivo_alto": "positivo_bajo"}
+
+
+def transcripcion(captura: str) -> str:
+    """Lo que está escrito en la imagen, sin la paráfrasis ("Hecho: ...") que añade el modelo
+    de visión. La paráfrasis es texto generado, no leído: en la captura falsa de Mbappé le
+    inventaba el club (Paris Saint-Germain) y el generador lo repetía."""
+    texto = re.split(r"\*{0,2}Hecho\*{0,2}:?\*{0,2}", captura)[0]
+    texto = re.sub(
+        r"\*{0,2}(Transcripción del texto relevante|Texto relevante(?: del texto)?)\*{0,2}:?\*{0,2}",
+        " ",
+        texto,
+    )
+    texto = re.sub(r"^\s*(?:[-•]|\d+\.)\s+", " ", texto, flags=re.M)
+    texto = " ".join(re.sub(r"[*\"“”]", " ", texto).split())
+    return texto or " ".join(captura.split())
+
+
+def captura_sin_respaldo(salida: dict) -> dict:
+    """Si ninguna noticia del corpus cuenta lo que dice la captura, lo que dice es un rumor:
+    no se puede dar por hecho y su impacto no puede ser alto."""
+    if salida["respuesta"].startswith(gen.VALVULA[:12]) or salida["category"] == "irrelevante":
+        return salida
+    salida["category"] = "rumor_no_confirmado"
+    salida["impact"] = _BAJAR.get(salida["impact"], salida["impact"])
+    salida["respuesta"] = f"{AVISO_CAPTURA} {salida['respuesta']}"
+    return salida
+
+
 class SistemaRAG:
     def __init__(self, cfg: Config, recuperador: Recuperador | None, generador: gen.Generador):
         self.cfg = cfg
@@ -108,9 +142,27 @@ class SistemaRAG:
         )
 
     # ------------------------------------------------------------------ retrieve
-    def recuperar(self, pregunta: str, k: int = config.TOP_K) -> tuple[list[str], dict]:
-        """Devuelve los ids de los k chunks y un registro de lo que se hizo."""
+    def recuperar(
+        self, pregunta: str, k: int = config.TOP_K, captura: str | None = None
+    ) -> tuple[list[str], dict]:
+        """Devuelve los ids de los k chunks y un registro de lo que se hizo.
+
+        Con captura (proyecto final) se busca con la pregunta más la transcripción, pero el
+        reranker ordena solo con la transcripción. Con la pregunta delante ("¿este jugador
+        juega en el Bernabéu?") hundía la noticia que la captura copia del puesto 1 al 9-13,
+        aunque dense y BM25 la ponían primera. Ese mismo puntaje dice si la captura está
+        respaldada: traza["respaldo_captura"].
+        """
         cfg, rec, traza = self.cfg, self.rec, {}
+        if captura:
+            texto = transcripcion(captura)
+            listas = [rec.dense(f"{pregunta} {texto}", config.CANDIDATOS)]
+            listas.append(rec.lexico(f"{pregunta} {texto}", config.CANDIDATOS))
+            candidatos = Recuperador.rrf(listas)[: config.CANDIDATOS]
+            reordenados = rec.reordenar(texto, candidatos, k)
+            traza["rerank_puntajes"] = [round(p, 3) for _, p in reordenados]
+            traza["respaldo_captura"] = traza["rerank_puntajes"][0] if reordenados else None
+            return [i for i, _ in reordenados], traza
         avanzado = cfg.hibrido or cfg.rerank or cfg.hyde or cfg.multiquery
         n = config.CANDIDATOS if avanzado else config.TOP_K
 
@@ -167,13 +219,13 @@ class SistemaRAG:
         """`captura` es el texto que el componente visual leyó de una imagen del usuario
         (proyecto final). Sin captura, el comportamiento es exactamente el del M3.
 
-        Con captura: se busca en el corpus con la pregunta más el texto de la captura, y
-        la captura entra al generador como una noticia más, marcada como «sin verificar».
-        Si ninguna noticia del corpus pasa la válvula, se responde solo con la captura.
+        Con captura: se busca en el corpus con la pregunta más la transcripción de la
+        captura, y la transcripción entra al generador como una noticia más, marcada como
+        «sin verificar». Si ninguna noticia del corpus cuenta lo mismo que la captura, la
+        respuesta sale como rumor sin confirmar (captura_sin_respaldo).
         """
         t0 = time.perf_counter()
-        consulta = f"{pregunta} {captura}" if captura else pregunta
-        ids, traza = self.recuperar(consulta) if self.cfg.contexto else ([], {})
+        ids, traza = self.recuperar(pregunta, captura=captura) if self.cfg.contexto else ([], {})
         traza["tiempos_s"] = {"recuperar": time.perf_counter() - t0}
         return self.completar(pregunta, ids, traza, captura, t0)
 
@@ -194,6 +246,7 @@ class SistemaRAG:
         corre en la GPU. El resultado es el mismo que llamar a __call__.
         """
         t0 = time.perf_counter() if t0 is None else t0
+        captura = transcripcion(captura) if captura else None
         consulta = f"{pregunta} {captura}" if captura else pregunta
         tiempos = dict(traza.get("tiempos_s", {}))
         if self.cfg.verificar:
@@ -236,6 +289,10 @@ class SistemaRAG:
         pasos += 1
 
         salida = gen.parsear_respuesta(texto)
+        respaldo = traza.get("respaldo_captura")
+        if captura and (respaldo is None or respaldo <= config.UMBRAL_RESPALDO):
+            salida = captura_sin_respaldo(salida)
+            traza["captura_sin_respaldo"] = True
         salida.update(
             {
                 "contextos": contextos,

@@ -41,6 +41,10 @@ CANDIDATOS = 20  # pool que ven la fusión híbrida y el reranker antes de corta
 RRF_K = 60  # constante de Reciprocal Rank Fusion (Cormack et al., 2009)
 RERANKER = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
 UMBRAL_VERIFICADOR = 0.5  # P(sí) mínima para que un chunk pase la válvula verificada
+# Proyecto final: una captura está respaldada si alguna noticia del corpus cuenta lo mismo.
+# Puntaje del reranker (logit) entre la transcripción de la captura y la mejor noticia; 0 es
+# la frontera natural del cross-encoder (P = 0,5), sin ajustar.
+UMBRAL_RESPALDO = 0.0
 DEVICE_RECUPERACION = "cpu"  # modelos pequeños: CPU en local y en Colab, misma latencia relativa
 
 # --- Generación -------------------------------------------------------------------

@@ -28,13 +28,13 @@ jobs:
         run: python scripts/check_secrets.py .
 
       - name: ruff check (Python + notebooks)
-        run: ruff check proyecto1 scripts
+        run: ruff check proyecto1 final scripts
 
       - name: ruff format
-        run: ruff format --check proyecto1 scripts
+        run: ruff format --check proyecto1 final scripts
 
       - name: Pruebas del parseo tolerante y la herramienta (M3, sin LLM)
         run: python proyecto1/rag/test_parseo.py
 
       - name: pymarkdown
-        run: pymarkdown -c .pymarkdown.json scan README.md proyecto1
+        run: pymarkdown -c .pymarkdown.json scan README.md proyecto1 final

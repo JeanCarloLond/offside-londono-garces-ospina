@@ -124,9 +124,8 @@ def _pipeline(pregunta: str, imagen):
         if not lectura.es_futbol:
             return None, lectura, tiempos
     captura = lectura.texto if lectura else None
-    consulta = f"{pregunta} {captura}" if captura else pregunta
     t = time.perf_counter()
-    ids, traza = sistema.recuperar(consulta)
+    ids, traza = sistema.recuperar(pregunta, captura=captura)
     traza["tiempos_s"] = {"recuperar": round(time.perf_counter() - t, 3)}
     _etapa("recuperar", traza["tiempos_s"]["recuperar"])
     t = time.perf_counter()
@@ -155,7 +154,9 @@ def _formatear(salida, lectura, imagen) -> str:
             f"{IMPACTOS.get(salida['impact'], salida['impact'])} · {salida['team']}"
         )
     if lectura is not None:
-        partes.append(f"**Lo que leí en la captura (sin verificar):** {lectura.texto}")
+        partes.append(
+            f"**Lo que leí en la captura (sin verificar):** {sistemas.transcripcion(lectura.texto)}"
+        )
     for h in salida.get("herramientas", []):
         res = h["resultado"]
         partes.append(f"**Cálculo de fechas:** {res.get('lectura', res.get('error'))}")

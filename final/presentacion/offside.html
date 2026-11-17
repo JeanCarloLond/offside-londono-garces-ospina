@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offside · Sustentación final</title>
+<style>
+  :root {
+    --fondo: #08141f;
+    --fondo-2: #0c2230;
+    --cesped: #16a34a;
+    --cesped-claro: #4ade80;
+    --azul: #1d9bf0;
+    --bandera: #facc15;
+    --rojo: #f87171;
+    --texto: #e8eef3;
+    --suave: #9fb3c2;
+    --borde: rgba(255, 255, 255, 0.10);
+    --tarjeta: rgba(255, 255, 255, 0.04);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
+  body { overflow: hidden; }
+
+  /* El lienzo es de 1280x720 y se escala a la ventana. */
+  .escenario { position: fixed; inset: 0; display: grid; place-items: center; }
+  .lienzo { width: 1280px; height: 720px; position: relative; transform-origin: center; }
+  .diapo { position: absolute; inset: 0; padding: 64px 80px 72px; display: none; flex-direction: column;
+    background:
+      radial-gradient(1200px 600px at 110% -10%, rgba(29,155,240,0.16), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(22,163,74,0.18), transparent 60%),
+      linear-gradient(160deg, var(--fondo-2), var(--fondo));
+    border-radius: 18px; overflow: hidden; }
+  .diapo.activa { display: flex; }
+  .diapo::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+    background: linear-gradient(var(--cesped), var(--azul)); }
+
+  .etiqueta { font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cesped-claro);
+    font-weight: 600; margin-bottom: 14px; }
+  h1 { font-size: 64px; line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.02em; }
+  h2 { font-size: 42px; line-height: 1.12; margin: 0 0 26px; letter-spacing: -0.01em; }
+  p, li { font-size: 24px; line-height: 1.45; color: var(--texto); }
+  .suave { color: var(--suave); }
+  .grande { font-size: 30px; }
+  ul { margin: 0; padding-left: 26px; }
+  li { margin: 8px 0; }
+  strong { color: #fff; }
+  .acento { color: var(--cesped-claro); }
+  .azul { color: var(--azul); }
+  .bandera { color: var(--bandera); }
+  .rojo { color: var(--rojo); }
+
+  .columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px; padding: 22px 24px; }
+  .tarjeta h3 { margin: 0 0 8px; font-size: 22px; }
+  .tarjeta p { font-size: 20px; margin: 0; }
+
+  /* Portada */
+  .portada { justify-content: center; }
+  .portada h1 { font-size: 92px; }
+  .balon { font-size: 64px; margin-bottom: 8px; }
+  .equipo { display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap; }
+  .persona { font-size: 21px; color: var(--suave); }
+  .persona b { color: var(--texto); display: block; font-size: 23px; }
+  .pie { position: absolute; bottom: 30px; left: 80px; font-size: 16px; color: var(--suave); }
+
+  /* Flujo del sistema */
+  .flujo { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; align-items: stretch; margin-top: 6px; }
+  .paso { position: relative; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px;
+    padding: 18px 16px 16px; }
+  .paso .num { font-size: 13px; color: var(--suave); letter-spacing: 0.1em; }
+  .paso h3 { font-size: 21px; margin: 6px 0 8px; line-height: 1.2; }
+  .paso p { font-size: 17px; line-height: 1.35; margin: 0; color: var(--suave); }
+  .paso:not(:last-child)::after { content: "→"; position: absolute; right: -14px; top: 42%;
+    font-size: 22px; color: var(--cesped-claro); }
+  .modulo { display: inline-block; margin-top: 10px; font-size: 13px; padding: 3px 9px; border-radius: 999px;
+    background: rgba(29,155,240,0.15); color: #8fd0ff; border: 1px solid rgba(29,155,240,0.35); }
+  .salida { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* Barras de comparación */
+  .barras { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+  .barra { display: grid; grid-template-columns: 300px 1fr 70px; align-items: center; gap: 16px; }
+  .barra .nombre { font-size: 20px; color: var(--suave); }
+  .barra .pista { height: 30px; background: rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; }
+  .barra .relleno { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--cesped), var(--azul)); }
+  .barra .relleno.base { background: #4b5b68; }
+  .barra .valor { font-size: 22px; font-weight: 700; text-align: right; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 20px; }
+  th, td { padding: 11px 14px; border-bottom: 1px solid var(--borde); text-align: left; }
+  th { color: var(--suave); font-weight: 600; font-size: 17px; text-transform: uppercase; letter-spacing: 0.06em; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num { white-space: nowrap; }
+  tr.elegida td { background: rgba(22,163,74,0.10); }
+  .ok { color: var(--cesped-claro); font-weight: 700; }
+  .mal { color: var(--rojo); font-weight: 700; }
+
+  .cita { border-left: 4px solid var(--bandera); padding: 10px 18px; background: rgba(250,204,21,0.07);
+    border-radius: 0 12px 12px 0; font-size: 22px; }
+  .caso { display: flex; flex-direction: column; gap: 8px; }
+  .caso .tipo { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; }
+  .caso .pregunta { font-size: 22px; font-weight: 600; }
+  .caso .espera { font-size: 18px; color: var(--suave); }
+
+  /* Navegación */
+  .progreso { position: fixed; left: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--cesped), var(--azul));
+    transition: width 0.25s ease; }
+  .contador { position: fixed; right: 18px; bottom: 12px; font-size: 13px; color: var(--suave); }
+  .notas { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(900px, 92vw);
+    background: rgba(0,0,0,0.85); border: 1px solid var(--borde); border-radius: 12px; padding: 14px 18px;
+    font-size: 15px; line-height: 1.45; color: #dbe5ec; display: none; }
+  body.ver-notas .notas { display: block; }
+  aside.nota { display: none; }
+
+  @media print {
+    body { overflow: visible; background: #fff; }
+    .escenario { position: static; display: block; }
+    .lienzo { transform: none !important; width: 1280px; height: auto; }
+    .diapo { display: flex !important; position: relative; height: 720px; page-break-after: always;
+      break-after: page; margin: 0; border-radius: 0; }
+    .progreso, .contador, .notas { display: none !important; }
+    @page { size: 1280px 720px; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="escenario"><div class="lienzo" id="lienzo">
+
+<!-- 1 · Portada -->
+<section class="diapo portada activa">
+  <div class="balon">⚽</div>
+  <div class="etiqueta">SI4006 · Proyecto integrador · Universidad EAFIT</div>
+  <h1>Offside</h1>
+  <p class="grande suave" style="max-width: 980px; margin: 0;">
+    Le responde a quien apuesta por diversión si un jugador va a jugar, con la noticia que lo
+    respalda, y le dice <span class="acento">«no lo sé»</span> cuando las noticias no lo dicen.
+  </p>
+  <div class="equipo">
+    <div class="persona"><b>Jean Carlo Londoño Ocampo</b>jclondonoo@eafit.edu.co</div>
+    <div class="persona"><b>Alejandro Garcés Ramírez</b>agarcesr@eafit.edu.co</div>
+    <div class="persona"><b>Nicolás Ospina Torres</b>nospinat@eafit.edu.co</div>
+  </div>
+  <div class="pie">Demo: huggingface.co/spaces/Jclo/offside</div>
+  <aside class="nota">30 s. Presentar el equipo y la frase. No explicar nada técnico todavía.</aside>
+</section>
+
+<!-- 2 · El usuario -->
+<section class="diapo">
+  <div class="etiqueta">El problema y el usuario</div>
+  <h2>Alguien que apuesta por diversión, minutos antes del partido</h2>
+  <div class="columnas">
+    <div>
+      <p><strong>Su pregunta</strong> es concreta: ¿juega Vinicius el Clásico? ¿Ya volvió Musiala de la lesión?</p>
+      <p><strong>Hoy la responde</strong> con el titular que alcanza a leer en el celular, o con una captura que
+      le reenvían por WhatsApp. No sabe si es cierta ni si ya la superó una noticia más reciente.</p>
+      <p><strong>Lo que decide:</strong> si esa noticia cambia lo que espera del partido.</p>
+    </div>
+    <div class="tarjeta" style="align-self: start;">
+      <h3 class="acento">Qué es una buena respuesta para él</h3>
+      <ul>
+        <li style="font-size:21px">Acierta qué pasó (baja, sanción, regreso, rumor…).</li>
+        <li style="font-size:21px">No invierte la dirección: no dice «vuelve» cuando «se pierde».</li>
+        <li style="font-size:21px">No presenta un rumor como un hecho.</li>
+        <li style="font-size:21px"><strong>Si no lo sabe, lo dice.</strong> Una baja inventada es peor que un silencio.</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="nota">1 min. Esta es la métrica de éxito: la «tasa de respuestas útiles» y que diga «no lo sé». La usaremos en todos los números.</aside>
+</section>
+
+<!-- 3 · El sistema en un dibujo -->
+<section class="diapo">
+  <div class="etiqueta">El sistema en un dibujo</div>
+  <h2>De la pregunta a la respuesta, en cinco pasos</h2>
+  <div class="flujo">
+    <div class="paso"><div class="num">1</div><h3>Mira la captura</h3><p>Si el usuario sube una imagen, un modelo lee el texto que hay en ella.</p><span class="modulo">Módulo 4</span></div>
+    <div class="paso"><div class="num">2</div><h3>Busca en 748 noticias</h3><p>Marca y El Tiempo, recolectadas por nosotros, hasta el 14 de octubre.</p><span class="modulo">Módulo 3</span></div>
+    <div class="paso"><div class="num">3</div><h3>Comprueba que responden</h3><p>Descarta las noticias que no hablan de lo que se pregunta. Si no queda ninguna, calla.</p><span class="modulo">Módulo 3</span></div>
+    <div class="paso"><div class="num">4</div><h3>Calcula fechas</h3><p>«Tres meses de baja desde el 27 de agosto»: ¿llega al 1 de noviembre?</p><span class="modulo">Módulo 3</span></div>
+    <div class="paso"><div class="num">5</div><h3>Responde y clasifica</h3><p>Qué pasó, a quién afecta y cuánto, con la noticia de la que lo saca.</p><span class="modulo">Módulos 1 y 3</span></div>
+  </div>
+  <div class="salida">
+    <div class="tarjeta"><h3 class="azul">Lo medimos todo con la misma vara</h3><p>Las mismas 27 preguntas para todas las versiones, desde el Módulo 2.</p></div>
+    <div class="tarjeta"><h3 class="azul">Está en línea, y lo vigilamos</h3><p>Un chequeo de salud, un registro por pregunta y un tablero de seguimiento.</p><span class="modulo">Módulo 5</span></div>
+  </div>
+  <aside class="nota">1 min. Sin siglas. Recorrer los cinco pasos con el ejemplo de Vinicius.</aside>
+</section>
+
+<!-- 4 · Demo -->
+<section class="diapo">
+  <div class="etiqueta">Demo en vivo · huggingface.co/spaces/Jclo/offside</div>
+  <h2>Tres preguntas, tres comportamientos</h2>
+  <div class="tres">
+    <div class="tarjeta caso">
+      <div class="tipo acento">Fácil</div>
+      <div class="pregunta">«¿Volverá Uche a jugar con el Getafe esta temporada?»</div>
+      <div class="espera">Debe decir que no: se pierde toda la temporada, y citar la noticia.</div>
+    </div>
+    <div class="tarjeta caso">
+      <div class="tipo azul">Difícil</div>
+      <div class="pregunta">Captura: «Vinicius se pierde el Clásico» + «¿entonces no juega?»</div>
+      <div class="espera">Lee la imagen, encuentra la noticia que la respalda y responde con la sanción.</div>
+    </div>
+    <div class="tarjeta caso">
+      <div class="tipo bandera">Trampa</div>
+      <div class="pregunta">«¿Kylian Mbappé se pierde el Clásico?»</div>
+      <div class="espera">No hay ninguna noticia sobre eso. Debe decir <strong>«no lo sé»</strong>, no inventar.</div>
+    </div>
+  </div>
+  <p class="suave" style="margin-top: 28px; font-size: 19px;">
+    La demo usa la GPU compartida gratuita de Hugging Face. Si falla la conexión, tenemos el video de respaldo.
+  </p>
+  <aside class="nota">2,5 min. Usar la demo con la sesión de Hugging Face iniciada (la cuota de GPU es por usuario). Tener el video abierto en otra pestaña.</aside>
+</section>
+
+<!-- 5 · Números: contra las líneas base -->
+<section class="diapo">
+  <div class="etiqueta">Los números · las mismas 27 preguntas</div>
+  <h2>¿Cuántas respuestas le sirven de verdad al usuario?</h2>
+  <div class="barras">
+    <div class="barra"><span class="nombre">El mismo modelo, sin noticias</span><div class="pista"><div class="relleno base" style="width:11%"></div></div><span class="valor">11 %</span></div>
+    <div class="barra"><span class="nombre">Clasificador del Módulo 1</span><div class="pista"><div class="relleno base" style="width:15%"></div></div><span class="valor">15 %</span></div>
+    <div class="barra"><span class="nombre">Buscador simple (Módulo 3)</span><div class="pista"><div class="relleno base" style="width:37%"></div></div><span class="valor">37 %</span></div>
+    <div class="barra"><span class="nombre"><strong>Offside final</strong></span><div class="pista"><div class="relleno" style="width:52%"></div></div><span class="valor acento">52 %</span></div>
+  </div>
+  <div class="columnas" style="margin-top: 30px; flex: 0;">
+    <div class="tarjeta"><h3>Cuando la respuesta no está en las noticias</h3><p>El buscador simple inventó en las 4 preguntas trampa. Offside dice «no lo sé» en <strong class="acento">3 de 4</strong>.</p></div>
+    <div class="tarjeta"><h3>A cambio, tarda más</h3><p><strong>22 s</strong> por pregunta frente a 15 s del buscador simple, sobre todo por la comprobación del paso 3.</p></div>
+  </div>
+  <aside class="nota">1,5 min. «Respuesta útil» = acierta qué pasó, no invierte la dirección y no presenta un rumor como hecho. Cada número va contra su comparación.</aside>
+</section>
+
+<!-- 6 · Qué movió qué -->
+<section class="diapo">
+  <div class="etiqueta">Los números · qué pieza movió qué</div>
+  <h2>Quitamos una pieza a la vez</h2>
+  <table>
+    <thead><tr><th>Pieza</th><th class="num">Respuestas útiles sin ella</th><th class="num">Con ella</th><th>Lectura</th></tr></thead>
+    <tbody>
+      <tr><td>Ordenar las noticias por relevancia</td><td class="num">48 %</td><td class="num">52 %</td><td>La que más suma sola</td></tr>
+      <tr><td>Comprobar que la noticia responde</td><td class="num">48 %</td><td class="num">52 %</td><td>Y hace que diga «no lo sé»: de 0 a 3 de 4</td></tr>
+      <tr><td>Búsqueda por palabras exactas</td><td class="num">52 %</td><td class="num">52 %</td><td class="suave">No movió nada medible</td></tr>
+      <tr><td>Calculadora de fechas</td><td class="num">52 %</td><td class="num">52 %</td><td class="suave">Calcula bien; el modelo ignora el resultado</td></tr>
+    </tbody>
+  </table>
+  <p class="cita" style="margin-top: 26px;">Lo que más falla no es encontrar la noticia: el documento correcto aparece en 22 de 23 preguntas.
+  Falla al <strong>etiquetarla</strong>: con la noticia correcta delante, se equivoca de tipo en 8 de 23
+  (una sanción leída como baja, una alineación como regreso).</p>
+  <aside class="nota">1 min. Las piezas que no movieron nada también se cuentan.</aside>
+</section>
+
+<!-- 7 · Componente visual -->
+<section class="diapo">
+  <div class="etiqueta">Los números · las capturas</div>
+  <h2>Leer la imagen no bastaba: había que desconfiar de ella</h2>
+  <div class="columnas" style="grid-template-columns: 1.55fr 1fr; gap: 26px;">
+    <div>
+      <table style="font-size: 18px;">
+        <thead><tr><th>7 preguntas con imagen</th><th class="num">Sin mirar</th><th class="num">Mirando, 1.ª versión</th><th class="num">Final</th></tr></thead>
+        <tbody>
+          <tr><td>Acierta qué pasó</td><td class="num">3 de 7</td><td class="num">4 de 7</td><td class="num ok">6 de 7</td></tr>
+          <tr><td>Respuestas útiles</td><td class="num">57 %</td><td class="num mal">43 %</td><td class="num ok">71 %</td></tr>
+          <tr><td>Misma respuesta con la imagen pequeña, oscura o girada</td><td class="num">—</td><td class="num">11 de 15</td><td class="num ok">15 de 15</td></tr>
+          <tr><td>Tiempo por pregunta</td><td class="num">21 s</td><td class="num">51 s</td><td class="num">48 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tarjeta" style="align-self: start;">
+      <h3 class="rojo">El caso que más nos importa</h3>
+      <p style="margin-bottom: 12px;">Una captura falsa: «Mbappé, tres meses de baja». Ninguna noticia lo respalda.</p>
+      <p style="margin-bottom: 12px;">La primera versión la dio por <strong class="rojo">baja confirmada</strong>, y le inventó el club.</p>
+      <p>Ahora, si ninguna noticia cuenta lo mismo que la captura, sale como <strong class="acento">rumor sin confirmar</strong>.</p>
+    </div>
+  </div>
+  <aside class="nota">1 min. El modelo de visión leyó bien todas las capturas; el error estaba en cuánto les creía el sistema. Decir que el arreglo se hizo después de ver la primera evaluación.</aside>
+</section>
+
+<!-- 8 · Eficiencia -->
+<section class="diapo">
+  <div class="etiqueta">Hacerlo más liviano · Módulo 5</div>
+  <h2>Comprimimos el modelo que redacta las respuestas</h2>
+  <p class="cita" style="margin: 0 0 22px;">Antes de medir escribimos: aceptamos perder como mucho <strong>una pregunta</strong> y <strong>ningún «no lo sé»</strong>,
+  si la memoria baja a la mitad o el tiempo un 30 %.</p>
+  <table>
+    <thead><tr><th>Versión</th><th class="num">Memoria</th><th class="num">Tiempo (p50)</th><th class="num">Respuestas útiles</th><th class="num">«No lo sé» bien dichos</th></tr></thead>
+    <tbody>
+      <tr class="elegida"><td>Original <span class="suave" style="font-size: 16px;">· la que está en línea</span></td><td class="num">2,9 GB</td><td class="num">19,4 s</td><td class="num">52 %</td><td class="num">3 de 4</td></tr>
+      <tr><td>Comprimido fuerte (4 bits)</td><td class="num ok">1,1 GB</td><td class="num">20,1 s</td><td class="num">48 %</td><td class="num mal">1 de 4</td></tr>
+      <tr><td>Comprimido suave (8 bits)</td><td class="num">1,7 GB</td><td class="num ok">17,4 s</td><td class="num">52 %</td><td class="num">3 de 4</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top: 22px; font-size: 21px;">El de 4 bits ahorra más, pero <strong class="rojo">pierde la capacidad de decir «no lo sé»</strong>: empieza a inventar.
+  El de 8 bits no pierde nada, pero ahorra menos de lo que nos pusimos como meta. <strong>Ninguno cumple el criterio, así que en línea dejamos el original.</strong></p>
+  <aside class="nota">1 min. Mismo computador para las tres versiones. El criterio se escribió antes de medir (está en el repositorio con fecha).</aside>
+</section>
+
+<!-- 9 · Lo que falla -->
+<section class="diapo">
+  <div class="etiqueta">Lo que falla</div>
+  <h2>Dónde no hay que creerle</h2>
+  <div class="tres">
+    <div class="tarjeta"><h3 class="rojo">El peor caso</h3><p>Tomar como cierta una captura falsa que circula por redes. Para evitarlo, una captura sin noticia que la respalde se trata como rumor.</p></div>
+    <div class="tarjeta"><h3 class="bandera">Sus límites</h3><p>Solo sabe lo publicado hasta el 14 de octubre. En 8 de 23 preguntas confunde el tipo de noticia, y casi siempre subestima el impacto.</p></div>
+    <div class="tarjeta"><h3 class="azul">A quién le falla más</h3><p>A quien sigue la liga colombiana: hay 36 noticias de El Tiempo frente a 712 de Marca.</p></div>
+  </div>
+  <div class="columnas" style="margin-top: 26px; flex: 0;">
+    <div class="tarjeta"><h3>Sus datos</h3><p>No guardamos la pregunta ni la imagen: solo la hora, el tiempo de respuesta y qué piezas se usaron.</p></div>
+    <div class="tarjeta"><h3>La decisión es suya</h3><p>Offside informa y cita la fuente; no recomienda apostar.</p></div>
+  </div>
+  <aside class="nota">1 min. El riesgo ético principal es propagar un rumor como hecho sobre una persona identificable.</aside>
+</section>
+
+<!-- 10 · Cierre -->
+<section class="diapo portada">
+  <div class="etiqueta">Para llevarse</div>
+  <h2 style="font-size: 50px; max-width: 1050px;">Un sistema pequeño que dice «no lo sé» le sirve más a un apostador que uno que siempre responde.</h2>
+  <ul style="margin-top: 8px;">
+    <li>De 15 % a <strong class="acento">52 %</strong> de respuestas útiles, con la fuente a la vista.</li>
+    <li>Calla en 3 de 4 preguntas sin respuesta, frente a 0 de 4 del buscador simple.</li>
+    <li>Todo medido con la misma vara, incluidos los fallos.</li>
+  </ul>
+  <div class="pie">Demo: huggingface.co/spaces/Jclo/offside · Código y reporte: github.com/JeanCarloLond/offside-londono-garces-ospina · ¿Preguntas?</div>
+  <aside class="nota">30 s. Cerrar y abrir preguntas. Cualquiera de los tres puede responder sobre cualquier parte.</aside>
+</section>
+
+</div></div>
+
+<div class="progreso" id="progreso"></div>
+<div class="contador" id="contador"></div>
+<div class="notas" id="notas"></div>
+
+<script>
+  const diapos = [...document.querySelectorAll(".diapo")];
+  const lienzo = document.getElementById("lienzo");
+  let actual = 0;
+
+  function escalar() {
+    const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720) * 0.96;
+    lienzo.style.transform = `scale(${s})`;
+  }
+
+  function mostrar(i) {
+    actual = Math.max(0, Math.min(diapos.length - 1, i));
+    diapos.forEach((d, k) => d.classList.toggle("activa", k === actual));
+    document.getElementById("progreso").style.width = `${((actual + 1) / diapos.length) * 100}%`;
+    document.getElementById("contador").textContent = `${actual + 1} / ${diapos.length} · N: notas`;
+    const nota = diapos[actual].querySelector("aside.nota");
+    document.getElementById("notas").textContent = nota ? nota.textContent : "";
+    try { history.replaceState(null, "", `#${actual + 1}`); } catch (e) {}
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); mostrar(actual + 1); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); mostrar(actual - 1); }
+    else if (e.key === "Home") mostrar(0);
+    else if (e.key === "End") mostrar(diapos.length - 1);
+    else if (e.key.toLowerCase() === "n") document.body.classList.toggle("ver-notas");
+    else if (e.key.toLowerCase() === "f") document.documentElement.requestFullscreen?.();
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("a")) return;
+    mostrar(e.clientX > window.innerWidth / 3 ? actual + 1 : actual - 1);
+  });
+
+  window.addEventListener("resize", escalar);
+  escalar();
+  mostrar(parseInt(location.hash.slice(1) || "1", 10) - 1);
+</script>
+</body>
+</html>

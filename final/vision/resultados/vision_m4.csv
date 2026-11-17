@@ -1,0 +1,7 @@
+sistema,n_casos,d1_f1_macro,d2_juez_v1,d3_tasa_accionable,aciertos_categoria,rumor_como_hecho,latencia_mediana_s
+m2_lexico,7,0.0357,2.429,0.1429,1,1,0.0
+m2_lora,7,0.0312,2.286,0.1429,1,0,0.05
+m3_sin_vision,7,0.175,2.286,0.5714,3,1,20.49
+final_con_vision_antes,7,0.2708,2.714,0.4286,4,1,50.85
+final_con_vision,7,0.4583,2.571,0.7143,6,0,48.35
+final_con_vision_int8,7,0.4583,2.571,0.7143,6,0,46.6

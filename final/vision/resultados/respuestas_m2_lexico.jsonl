@@ -1,0 +1,7 @@
+{"clave": "V-01", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 0.00010620011016726494}
+{"clave": "V-02", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 5.339994095265865e-05}
+{"clave": "V-03", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 4.760012961924076e-05}
+{"clave": "V-04", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 4.320009611546993e-05}
+{"clave": "V-05", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 4.3800100684165955e-05}
+{"clave": "V-06", "category": "irrelevante", "impact": "neutro", "team": "ninguno", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 6.280001252889633e-05}
+{"clave": "V-07", "category": "baja_confirmada", "impact": "negativo_alto", "team": "desconocido", "respuesta": "", "contextos": [], "ids": [], "herramientas": [], "latencia_s": 1.6300007700920105e-05}

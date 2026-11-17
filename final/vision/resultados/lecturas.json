@@ -1,0 +1,116 @@
+{
+  "modelo": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "cuantizado": true,
+  "lecturas": {
+    "V-01": {
+      "texto": "Transcripción del texto relevante:\n\nVinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal.\n\nHecho: Vinicius Jr. se sanciona por cuatro partidos por una roja en el Clásico contra el Villarreal.",
+      "es_futbol": true,
+      "latencia_s": 26.61
+    },
+    "V-01_pequena_jpeg": {
+      "texto": "Transcripción del texto relevante:\n\nVinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal.\n\nHecho: Vinicius Jr. fue sancionado por el Comité de Disciplina del Real Madrid por una expulsión en el partido contra el Villarreal, lo que le implica cuatro partidos de sanción.",
+      "es_futbol": true,
+      "latencia_s": 16.49
+    },
+    "V-01_oscura": {
+      "texto": "Transcripción del texto relevante:\n\nVinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal.\n\nHecho: Vinicius Jr. fue sancionado por el Real Madrid por una roja en un partido contra el Villarreal, lo que le implica cuatro partidos de sanción.",
+      "es_futbol": true,
+      "latencia_s": 25.27
+    },
+    "V-01_rotada": {
+      "texto": "Transcripción del texto relevante:\n\nVinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal.\n\nHecho: Vinicius Jr. se perderá cuatro partidos de sanción por una roja en el Clásico contra el Villarreal.",
+      "es_futbol": true,
+      "latencia_s": 30.55
+    },
+    "V-02": {
+      "texto": "Transcripción del texto relevante:\n\nEl Sevilla prepara la visita al Bernabéu sin Guridi. El centrocampista sufre una lesión en el aductor largo del muslo izquierdo.\n\nHecho: El centrocampista del Sevilla, Guridi, sufre una lesión en el aductor largo del muslo izquierdo y no estará disponible para la visita al Bernabéu.",
+      "es_futbol": true,
+      "latencia_s": 25.01
+    },
+    "V-02_pequena_jpeg": {
+      "texto": "Texto relevante:\n- El Sevilla prepara la visita al Bernabéu sin Guridi.\n- El centrocampista sufre una lesión en el aductor largo del muslo izquierdo.\n\nHecho: El centrocampista del Sevilla, Guridi, sufre una lesión en el aductor largo del muslo izquierdo y no podrá jugar en la visita al Bernabéu.",
+      "es_futbol": true,
+      "latencia_s": 14.93
+    },
+    "V-02_oscura": {
+      "texto": "Transcripción del texto relevante:\n\n- El Sevilla prepara la visita al Bernabéu sin Guridi.\n- El centrocampista sufre una lesión en el aductor largo del muslo izquierdo.\n\nHecho: El centrocampista del Sevilla, Guridi, sufre una lesión en el aductor largo del muslo izquierdo y no podrá jugar en la visita al Bernabéu.",
+      "es_futbol": true,
+      "latencia_s": 26.71
+    },
+    "V-02_rotada": {
+      "texto": "Transcripción del texto relevante:\n\n- El Sevilla prepara la visita al Bernabéu sin Guridi.\n- El centrocampista sufre una lesión en el aductor largo del muslo izquierdo.\n\nHecho: El centrocampista del Sevilla, Guridi, sufre una lesión en el aductor largo del muslo izquierdo y no estará disponible para la visita al Bernabéu.",
+      "es_futbol": true,
+      "latencia_s": 28.1
+    },
+    "V-03": {
+      "texto": "Transcripción del texto relevante:\n\nEl Bayern no correrá riesgos con Musiala. El alemán vuelve a ejercitarse tras el desgarro que sufrió en la Nations frente a Países Bajos.\n\nHecho: El jugador alemán Musiala regresa a entrenar después de su lesión en la Nations League contra los Países Bajos.",
+      "es_futbol": true,
+      "latencia_s": 24.83
+    },
+    "V-03_pequena_jpeg": {
+      "texto": "Transcripción del texto relevante:\n\n- El Bayern no correrá riesgos con Musiala.\n- El alemán vuelve a ejercitarse tras el desgarro que sufrió en la Nations frente a Países Bajos.\n\nHecho: El jugador del Bayern, Musiala, ha regresado a la práctica después de sufrir un desgarro durante un partido contra los Países Bajos en la Nations League.",
+      "es_futbol": true,
+      "latencia_s": 15.82
+    },
+    "V-03_oscura": {
+      "texto": "Transcripción del texto relevante:\n\nEl Bayern no correrá riesgos con Musiala. El alemán vuelve a ejercitarse tras el desgarro que sufrió en la Nations frente a Países Bajos.\n\nHecho: El jugador Musiala regresa a entrenar después de su lesión en la Nations League contra Países Bajos.",
+      "es_futbol": true,
+      "latencia_s": 24.7
+    },
+    "V-03_rotada": {
+      "texto": "Transcripción del texto relevante:\n\n- El Bayern no correrá riesgos con Musiala.\n- El alemán vuelve a ejercitarse tras el desgarro que sufrió en la Nations frente a Países Bajos.\n\nHecho: El jugador Musiala regresa a entrenar después de su lesión en la Nations League contra los Países Bajos.",
+      "es_futbol": true,
+      "latencia_s": 27.94
+    },
+    "V-04": {
+      "texto": "Texto relevante: \"El agente de Erik Lira se reúne con Braulio Vázquez en Paterna y alimenta los rumores sobre su futuro.\"\n\nHecho: El agente de Erik Lira se reunió con Braulio Vázquez en Paterna, lo que ha alimentado rumores sobre el futuro del jugador.",
+      "es_futbol": true,
+      "latencia_s": 22.84
+    },
+    "V-04_pequena_jpeg": {
+      "texto": "Texto relevante: \"El agente de Erik Lira se reúne con Braulio Vázquez en Paterna y alimenta los rumores sobre su futuro.\"\n\nHecho: El agente de Erik Lira se reúne con Braulio Vázquez en Paterna, lo que alimenta rumores sobre el futuro del jugador.",
+      "es_futbol": true,
+      "latencia_s": 13.9
+    },
+    "V-04_oscura": {
+      "texto": "Texto relevante: \"El agente de Erik Lira se reúne con Braulio Vázquez en Paterna y alimenta los rumores sobre su futuro.\"\n\nHecho: El agente de Erik Lira se reunió con Braulio Vázquez en Paterna, lo que ha alimentado rumores sobre el futuro del jugador.",
+      "es_futbol": true,
+      "latencia_s": 22.84
+    },
+    "V-04_rotada": {
+      "texto": "Transcripción del texto relevante:\n\nEl agente de Erik Lira se reúne con Braulio Vázquez en Paterna y alimenta los rumores sobre su futuro.\n\nHecho: El agente de Erik Lira se reúne con Braulio Vázquez en Paterna, lo que alimenta rumores sobre el futuro del jugador.",
+      "es_futbol": true,
+      "latencia_s": 25.9
+    },
+    "V-05": {
+      "texto": "Texto relevante: \"Funes ya tiene a su último fichaje listo. Jens Cajuste vuelve al grupo y podrá jugar tras un mes de lesión.\"\n\nHecho: Funes ha completado su plantilla con el fichaje de Jens Cajuste, quien volverá al equipo después de haber estado ausente por un mes debido a una lesión.",
+      "es_futbol": true,
+      "latencia_s": 22.72
+    },
+    "V-05_pequena_jpeg": {
+      "texto": "Texto relevante:\n- Funes ya tiene su último fichaje listo.\n- Jens Cajuste vuelve al grupo.\n- Puede jugar tras un mes de lesión.\n\nHecho: Funes ha completado su último fichaje, mientras que Jens Cajuste regresa al equipo después de una lesión de un mes.",
+      "es_futbol": true,
+      "latencia_s": 12.11
+    },
+    "V-05_oscura": {
+      "texto": "Texto relevante: \"Funes ya tiene a su último fichaje listo. Jens Cajuste vuelve al grupo y podrá jugar tras un mes de lesión.\"\n\nHecho: Jens Cajuste regresa al equipo de Funes después de haber estado fuera por un mes debido a una lesión.",
+      "es_futbol": true,
+      "latencia_s": 21.22
+    },
+    "V-05_rotada": {
+      "texto": "Texto relevante: \"Funes ya tiene a su último fichaje listo. Jens Cajuste vuelve al grupo y podrá jugar tras un mes de lesión.\"\n\nHecho: Funes ha completado su plantilla y Jens Cajuste regresa al equipo después de una lesión de un mes.",
+      "es_futbol": true,
+      "latencia_s": 24.6
+    },
+    "V-06": {
+      "texto": "**Texto relevante del texto:**\n1. Sofreír cebolla, ajo y pimentón.\n2. Dorar el pollo en presas.\n3. Agregar el arroz y el caldo caliente.\n4. Cocinar 20 minutos a fuego bajo.\n\n**Hecho que cuenta:**\nEl texto proporciona una receta para preparar arroz con pollo para cuatro personas.",
+      "es_futbol": true,
+      "latencia_s": 28.56
+    },
+    "V-07": {
+      "texto": "**Texto relevante:**\nÚLTIMA HORA: Mbappé, tres meses de baja por una rotura del ligamento cruzado. Se perderá el Clásico.\n\n**Hecho:**\nEl jugador Kylian Mbappé, del club Paris Saint-Germain, ha sido baja por tres meses debido a una rotura del ligamento cruzado. Como resultado, se perderá el Clásico entre Real Madrid y Barcelona.",
+      "es_futbol": true,
+      "latencia_s": 28.63
+    }
+  }
+}

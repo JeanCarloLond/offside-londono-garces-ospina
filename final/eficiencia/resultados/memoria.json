@@ -1,0 +1,17 @@
+{
+  "antes_fp16": {
+    "pesos_generador_mb": 2944.4,
+    "pico_gpu_mb": 3033.4,
+    "gpu": "NVIDIA GeForce GTX 1650 Ti"
+  },
+  "despues_int4": {
+    "pesos_generador_mb": 1070.2,
+    "pico_gpu_mb": 1252.7,
+    "gpu": "NVIDIA GeForce GTX 1650 Ti"
+  },
+  "despues_int8": {
+    "pesos_generador_mb": 1694.9,
+    "pico_gpu_mb": 1890.1,
+    "gpu": "NVIDIA GeForce GTX 1650 Ti"
+  }
+}
