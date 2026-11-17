@@ -174,7 +174,28 @@ class SistemaRAG:
         t0 = time.perf_counter()
         consulta = f"{pregunta} {captura}" if captura else pregunta
         ids, traza = self.recuperar(consulta) if self.cfg.contexto else ([], {})
-        tiempos = {"recuperar": time.perf_counter() - t0}
+        traza["tiempos_s"] = {"recuperar": time.perf_counter() - t0}
+        return self.completar(pregunta, ids, traza, captura, t0)
+
+    def completar(
+        self,
+        pregunta: str,
+        ids: list[str],
+        traza: dict,
+        captura: str | None = None,
+        t0: float | None = None,
+    ) -> dict:
+        """Todo lo que va después de recuperar: válvula verificada, herramienta y
+        generación. Es la parte que necesita GPU.
+
+        Está separada de __call__ para el despliegue en ZeroGPU: allí la función que usa
+        la GPU corre en un proceso hijo, y Chroma y el reranker se quedaban bloqueados
+        dentro de él. En el Space se recupera en el proceso principal (CPU) y solo esto
+        corre en la GPU. El resultado es el mismo que llamar a __call__.
+        """
+        t0 = time.perf_counter() if t0 is None else t0
+        consulta = f"{pregunta} {captura}" if captura else pregunta
+        tiempos = dict(traza.get("tiempos_s", {}))
         if self.cfg.verificar:
             t = time.perf_counter()
             ids = self.verificar(consulta, ids, traza)

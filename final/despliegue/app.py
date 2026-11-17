@@ -21,6 +21,10 @@ import json
 import os
 import sys
 import time
+
+# Los tokenizadores de Hugging Face con paralelismo pueden bloquearse tras un fork, y
+# ZeroGPU hace fork para correr las funciones @GPU.
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 from pathlib import Path
 
 try:  # en el Space, ZeroGPU
@@ -87,37 +91,48 @@ AVISO = (
 )
 
 
-# ZeroGPU cobra a la cuota del visitante (2 min/día anónimo, 5 min con sesión) y rechaza la
-# petición si la reserva no cabe. La primera llamada tras arrancar carga los pesos en la GPU
-# y necesita más margen; las siguientes caben en 45 s.
-ESTADO = {"calentado": False}
+# ZeroGPU cobra a la cuota del visitante (2 min/día anónimo, 5 min con sesión) y descuenta
+# 1,5 veces la reserva pedida; si no cabe, rechaza la petición. Reservas cortas a propósito.
+#
+# Lo que usa GPU (visión y válvula + generación) corre en funciones @GPU, que ZeroGPU ejecuta
+# en un proceso hijo. La recuperación (Chroma, BM25, reranker) se hace FUERA, en el proceso
+# principal: dentro del proceso hijo Chroma se quedaba bloqueado y ZeroGPU abortaba la tarea.
 
 
-def _duracion(pregunta, imagen) -> int:
-    return 45 if ESTADO["calentado"] else 110
+def _etapa(nombre: str, segundos: float) -> None:
+    print(json.dumps({"evento": "etapa", "etapa": nombre, "s": round(segundos, 2)}), flush=True)
 
 
-def _etapa(nombre: str, t0: float) -> None:
-    print(
-        json.dumps({"evento": "etapa", "etapa": nombre, "s": round(time.perf_counter() - t0, 2)}),
-        flush=True,
-    )
+@GPU(duration=30)
+def _leer_gpu(imagen):
+    return vision.leer(imagen)
 
 
-@GPU(duration=_duracion)
+@GPU(duration=40)
+def _completar_gpu(pregunta: str, ids: list, traza: dict, captura):
+    return sistema.completar(pregunta, ids, traza, captura)
+
+
 def _pipeline(pregunta: str, imagen):
-    """Corre en la GPU. Devuelve también los tiempos por etapa: entrar a esta función es
-    lo que tarda ZeroGPU en asignar la GPU y cargar los pesos."""
-    tiempos = {"entrada_gpu": time.time()}
+    tiempos = {}
+    lectura = None
+    if vision is not None and imagen is not None:
+        t = time.perf_counter()
+        lectura = _leer_gpu(imagen)
+        tiempos["vision"] = round(time.perf_counter() - t, 3)
+        _etapa("vision", tiempos["vision"])
+        if not lectura.es_futbol:
+            return None, lectura, tiempos
+    captura = lectura.texto if lectura else None
+    consulta = f"{pregunta} {captura}" if captura else pregunta
     t = time.perf_counter()
-    _etapa("entrada_gpu", t)
-    lectura = vision.leer(imagen) if (vision is not None and imagen is not None) else None
-    tiempos["vision"] = round(time.perf_counter() - t, 3)
-    _etapa("vision", t)
-    if lectura is not None and not lectura.es_futbol:
-        return None, lectura, tiempos
-    salida = sistema(pregunta, captura=lectura.texto if lectura else None)
-    _etapa("rag", t)
+    ids, traza = sistema.recuperar(consulta)
+    traza["tiempos_s"] = {"recuperar": round(time.perf_counter() - t, 3)}
+    _etapa("recuperar", traza["tiempos_s"]["recuperar"])
+    t = time.perf_counter()
+    salida = _completar_gpu(pregunta, ids, traza, captura)
+    tiempos["gpu_rag"] = round(time.perf_counter() - t, 3)
+    _etapa("gpu_rag", tiempos["gpu_rag"])
     tiempos.update(salida["traza"].get("tiempos_s", {}))
     return salida, lectura, tiempos
 
@@ -162,10 +177,7 @@ def responder(pregunta: str, imagen=None) -> str:
         pregunta = "¿Qué significa esta captura para el próximo partido?"
     t0 = time.perf_counter()
     try:
-        t_llamada = time.time()
         salida, lectura, tiempos = _pipeline(pregunta, imagen)
-        tiempos["espera_gpu"] = round(tiempos.pop("entrada_gpu") - t_llamada, 3)
-        ESTADO["calentado"] = True
     except Exception as e:  # el error queda registrado, el usuario recibe un mensaje claro
         observador.registrar(
             time.perf_counter() - t0,

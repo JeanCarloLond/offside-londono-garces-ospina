@@ -33,7 +33,8 @@ sys.path.insert(0, str(RAIZ / "proyecto1" / "eval"))
 import config  # noqa: E402
 
 RES = AQUI / "resultados"
-VERSIONES = {"antes_fp16": False, "despues_int4": True}
+# int8 se añadió DESPUÉS de ver que int4 no cumplía el criterio (perdía la válvula).
+VERSIONES = {"antes_fp16": False, "despues_int4": "int4", "despues_int8": "int8"}
 
 
 def percentil(valores: list[float], p: float) -> float:

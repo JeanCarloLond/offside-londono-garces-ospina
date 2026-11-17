@@ -270,12 +270,16 @@ def parsear_respuesta(texto: str) -> dict:
 class Generador:
     """Qwen2.5-1.5B-Instruct con decodificación greedy (determinista).
 
-    cuantizar=True carga los pesos en int4 (bitsandbytes NF4, cómputo en fp16): es la
-    técnica de eficiencia del proyecto final (final/eficiencia/). Necesita GPU.
+    cuantizar=True (o "int4") carga los pesos en int4 (bitsandbytes NF4, cómputo en fp16);
+    cuantizar="int8", en int8 (LLM.int8). Es la técnica de eficiencia del proyecto final
+    (final/eficiencia/). Necesita GPU.
     """
 
     def __init__(
-        self, modelo: str = config.GENERADOR, device: str | None = None, cuantizar: bool = False
+        self,
+        modelo: str = config.GENERADOR,
+        device: str | None = None,
+        cuantizar: bool | str = False,
     ):
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -290,9 +294,14 @@ class Generador:
         if cuantizar:
             from transformers import BitsAndBytesConfig
 
-            q = BitsAndBytesConfig(
-                load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.float16
-            )
+            if cuantizar == "int8":
+                q = BitsAndBytesConfig(load_in_8bit=True)
+            else:
+                q = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_compute_dtype=torch.float16,
+                )
             self.model = AutoModelForCausalLM.from_pretrained(
                 modelo, quantization_config=q, revision=rev, device_map=self.device
             )
