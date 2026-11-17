@@ -11,6 +11,7 @@
 /STAI_M1_Asignacion_Fine-tuning_baseline.pdf
 /STAI_M2_Asignacion_Harness_evaluacion.pdf
 /STAI_M3_Asignacion_RAG_agentico.pdf
+/STAI_Final_Asignacion_Proyecto_integrador.pdf
 /SI4006_S10_Semana10_Sesion10.pptx
 /16dad2b38786027882ecaffe809d70f4.pdf
 /b3a5400ebf0ed7ffef65c3315cc42482.pdf
@@ -69,3 +70,8 @@ proyecto1/m1_lora_adapter*/
 # --- M3 (RAG): el índice Chroma se reconstruye con rag/indice.py; logs de corridas ---
 proyecto1/rag/_chroma/
 proyecto1/rag/resultados/*.log
+
+# --- Proyecto final: carpeta armada del Space, logs de corridas y registros locales ---
+final/despliegue/_space/
+final/**/*.log
+registros.jsonl

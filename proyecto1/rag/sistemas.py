@@ -163,12 +163,24 @@ class SistemaRAG:
         return [i for i, p in zip(ids, probs) if p >= config.UMBRAL_VERIFICADOR]
 
     # ------------------------------------------------------------------ answer
-    def __call__(self, pregunta: str) -> dict:
+    def __call__(self, pregunta: str, captura: str | None = None) -> dict:
+        """`captura` es el texto que el componente visual leyó de una imagen del usuario
+        (proyecto final). Sin captura, el comportamiento es exactamente el del M3.
+
+        Con captura: se busca en el corpus con la pregunta más el texto de la captura, y
+        la captura entra al generador como una noticia más, marcada como «sin verificar».
+        Si ninguna noticia del corpus pasa la válvula, se responde solo con la captura.
+        """
         t0 = time.perf_counter()
-        ids, traza = self.recuperar(pregunta) if self.cfg.contexto else ([], {})
+        consulta = f"{pregunta} {captura}" if captura else pregunta
+        ids, traza = self.recuperar(consulta) if self.cfg.contexto else ([], {})
+        tiempos = {"recuperar": time.perf_counter() - t0}
         if self.cfg.verificar:
-            ids = self.verificar(pregunta, ids, traza)
-            if not ids:
+            t = time.perf_counter()
+            ids = self.verificar(consulta, ids, traza)
+            tiempos["verificar"] = time.perf_counter() - t
+            traza["tiempos_s"] = tiempos
+            if not ids and not captura:
                 return {
                     **gen.SIN_SENAL,
                     "respuesta": gen.VALVULA,
@@ -185,11 +197,21 @@ class SistemaRAG:
 
         llamadas, pasos = [], 0
         contextos_gen = contextos
+        if captura:
+            contextos_gen = [
+                f"(captura enviada por el usuario, sin verificar) {captura}",
+                *contextos,
+            ]
         if self.cfg.herramienta:
-            llamadas, pasos = herr.planificar(self.gen, pregunta, contextos)
-            contextos_gen = contextos + herr.contexto_herramientas(llamadas)
+            t = time.perf_counter()
+            llamadas, pasos = herr.planificar(self.gen, pregunta, contextos_gen)
+            contextos_gen = contextos_gen + herr.contexto_herramientas(llamadas)
+            tiempos["herramienta"] = time.perf_counter() - t
         mensajes = gen.mensajes_base(pregunta, contextos_gen, version=self.cfg.prompt)
+        t = time.perf_counter()
         texto = self.gen.generar(mensajes)
+        tiempos["generar"] = time.perf_counter() - t
+        traza["tiempos_s"] = {k: round(v, 3) for k, v in tiempos.items()}
         pasos += 1
 
         salida = gen.parsear_respuesta(texto)
@@ -201,6 +223,7 @@ class SistemaRAG:
                 "pasos": pasos,
                 "texto_modelo": texto,
                 "traza": traza,
+                "captura": captura,
                 "latencia_s": time.perf_counter() - t0,
             }
         )

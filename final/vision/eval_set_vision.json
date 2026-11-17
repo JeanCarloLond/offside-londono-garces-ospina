@@ -1,0 +1,160 @@
+[
+  {
+    "eval_id": "V-01",
+    "input": {
+      "text": "Me llegó esta captura. ¿Entonces Vinicius no juega el Clásico?",
+      "imagen": "casos/V-01.png"
+    },
+    "esperado": {
+      "category": "sancion_suspension",
+      "impact": "negativo_alto",
+      "team": "Real Madrid"
+    },
+    "criterio": "La captura y el corpus coinciden: Vinicius tiene cuatro partidos de sanción y se pierde el Clásico. Sanción, impacto negativo alto para el Real Madrid.",
+    "docs_relevantes": [
+      "cba83938135d711f",
+      "121aa9cb87ef0452",
+      "a223284dd29ea88b"
+    ],
+    "en_corpus": true,
+    "adversarial": false,
+    "tipo_dificultad": "captura respaldada",
+    "variantes": {
+      "pequena_jpeg": "casos/V-01_pequena_jpeg.png",
+      "oscura": "casos/V-01_oscura.png",
+      "rotada": "casos/V-01_rotada.png"
+    }
+  },
+  {
+    "eval_id": "V-02",
+    "input": {
+      "text": "¿Este jugador juega en el Bernabéu?",
+      "imagen": "casos/V-02.png"
+    },
+    "esperado": {
+      "category": "baja_confirmada",
+      "impact": "negativo_alto",
+      "team": "Sevilla"
+    },
+    "criterio": "Guridi tiene una lesión en el aductor y el Sevilla viaja sin él: baja confirmada, impacto negativo alto para el Sevilla.",
+    "docs_relevantes": [
+      "3b31d5310b9bd6e4"
+    ],
+    "en_corpus": true,
+    "adversarial": true,
+    "tipo_dificultad": "la pregunta solo dice «este jugador»: el nombre está en la imagen",
+    "variantes": {
+      "pequena_jpeg": "casos/V-02_pequena_jpeg.png",
+      "oscura": "casos/V-02_oscura.png",
+      "rotada": "casos/V-02_rotada.png"
+    }
+  },
+  {
+    "eval_id": "V-03",
+    "input": {
+      "text": "¿Ya puede volver a jugar?",
+      "imagen": "casos/V-03.png"
+    },
+    "esperado": {
+      "category": "regreso_alta",
+      "impact": "positivo_bajo",
+      "team": "Bayern Munich"
+    },
+    "criterio": "Musiala vuelve a ejercitarse tras el desgarro, aunque el Bayern no correrá riesgos: regreso de impacto positivo bajo.",
+    "docs_relevantes": [
+      "8969f60685def770"
+    ],
+    "en_corpus": true,
+    "adversarial": true,
+    "tipo_dificultad": "la pregunta no nombra a nadie; noticias de agosto que lo daban de baja",
+    "variantes": {
+      "pequena_jpeg": "casos/V-03_pequena_jpeg.png",
+      "oscura": "casos/V-03_oscura.png",
+      "rotada": "casos/V-03_rotada.png"
+    }
+  },
+  {
+    "eval_id": "V-04",
+    "input": {
+      "text": "¿Ya es oficial el fichaje?",
+      "imagen": "casos/V-04.png"
+    },
+    "esperado": {
+      "category": "rumor_no_confirmado",
+      "impact": "neutro",
+      "team": "Valencia"
+    },
+    "criterio": "No hay fichaje: es una reunión que alimenta rumores. Rumor no confirmado; darlo por hecho es el error más caro.",
+    "docs_relevantes": [
+      "8615c6577f427a94"
+    ],
+    "en_corpus": true,
+    "adversarial": true,
+    "tipo_dificultad": "la pregunta presupone el hecho",
+    "variantes": {
+      "pequena_jpeg": "casos/V-04_pequena_jpeg.png",
+      "oscura": "casos/V-04_oscura.png",
+      "rotada": "casos/V-04_rotada.png"
+    }
+  },
+  {
+    "eval_id": "V-05",
+    "input": {
+      "text": "¿Ya puede jugar este jugador?",
+      "imagen": "casos/V-05.png"
+    },
+    "esperado": {
+      "category": "regreso_alta",
+      "impact": "positivo_bajo",
+      "team": "Malaga"
+    },
+    "criterio": "Cajuste vuelve al grupo y podrá jugar tras un mes de lesión: regreso, impacto positivo bajo para el Málaga.",
+    "docs_relevantes": [
+      "25a07578dc93f4c8"
+    ],
+    "en_corpus": true,
+    "adversarial": false,
+    "tipo_dificultad": "captura respaldada",
+    "variantes": {
+      "pequena_jpeg": "casos/V-05_pequena_jpeg.png",
+      "oscura": "casos/V-05_oscura.png",
+      "rotada": "casos/V-05_rotada.png"
+    }
+  },
+  {
+    "eval_id": "V-06",
+    "input": {
+      "text": "¿Qué jugador está lesionado según la imagen?",
+      "imagen": "casos/V-06.png"
+    },
+    "esperado": {
+      "category": "irrelevante",
+      "impact": "neutro",
+      "team": "ninguno"
+    },
+    "criterio": "La imagen es una receta de cocina, no tiene nada de fútbol: lo correcto es decir que no encuentra la información y no emitir señal.",
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "adversarial": true,
+    "tipo_dificultad": "imagen que no es de fútbol",
+    "variantes": {}
+  },
+  {
+    "eval_id": "V-07",
+    "input": {
+      "text": "¿Mbappé se pierde el Clásico?",
+      "imagen": "casos/V-07.png"
+    },
+    "esperado": {
+      "category": "rumor_no_confirmado",
+      "impact": "negativo_bajo",
+      "team": "Real Madrid"
+    },
+    "criterio": "La captura no tiene fuente y ninguna noticia del corpus habla de una lesión de Mbappé. Lo correcto es tratarla como no confirmada (rumor). Presentarla como baja confirmada es el peor error.",
+    "docs_relevantes": [],
+    "en_corpus": false,
+    "adversarial": true,
+    "tipo_dificultad": "captura falsa sin respaldo en el corpus",
+    "variantes": {}
+  }
+]

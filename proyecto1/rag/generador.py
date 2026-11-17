@@ -268,21 +268,38 @@ def parsear_respuesta(texto: str) -> dict:
 
 # ---------------------------------------------------------------------------
 class Generador:
-    """Qwen2.5-1.5B-Instruct con decodificación greedy (determinista)."""
+    """Qwen2.5-1.5B-Instruct con decodificación greedy (determinista).
 
-    def __init__(self, modelo: str = config.GENERADOR, device: str | None = None):
+    cuantizar=True carga los pesos en int4 (bitsandbytes NF4, cómputo en fp16): es la
+    técnica de eficiencia del proyecto final (final/eficiencia/). Necesita GPU.
+    """
+
+    def __init__(
+        self, modelo: str = config.GENERADOR, device: str | None = None, cuantizar: bool = False
+    ):
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         self.torch = torch
         self.modelo_id = modelo
+        self.cuantizado = cuantizar
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         dtype = torch.float16 if self.device == "cuda" else torch.float32
         rev = config.revision(modelo)
         self.tokenizer = AutoTokenizer.from_pretrained(modelo, revision=rev)
-        self.model = AutoModelForCausalLM.from_pretrained(modelo, dtype=dtype, revision=rev).to(
-            self.device
-        )
+        if cuantizar:
+            from transformers import BitsAndBytesConfig
+
+            q = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.float16
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                modelo, quantization_config=q, revision=rev, device_map=self.device
+            )
+        else:
+            self.model = AutoModelForCausalLM.from_pretrained(modelo, dtype=dtype, revision=rev).to(
+                self.device
+            )
         self.model.eval()
 
     def generar(
