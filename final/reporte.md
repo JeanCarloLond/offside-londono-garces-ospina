@@ -212,6 +212,26 @@ visión o la herramienta, si se activó la válvula y si hubo error. Como métri
 el total de peticiones, la tasa de válvula y la tasa de uso de la visión. Si la clave no está, la
 app funciona igual y solo escribe el registro JSON.
 
+**Pruebas sobre el Space desplegado** (17 de noviembre de 2026, con la sesión de Hugging Face
+iniciada; [`despliegue/pruebas_space.json`](despliegue/pruebas_space.json) y las capturas de
+pantalla en [`despliegue/capturas/`](despliegue/capturas/)). Las hizo un script de Playwright que
+escribe en la interfaz y espera la respuesta real; es la misma grabación del video demo.
+
+| Prueba | Pregunta | Lo que respondió | Latencia |
+|---|---|---|---:|
+| Fácil | ¿Volverá Uche a jugar con el Getafe esta temporada? | No: se pierde la temporada. Baja confirmada, negativo alto, con la noticia de Marca | 5,1 s |
+| Trampa (sin respuesta en el corpus) | ¿Kylian Mbappé se pierde el Clásico? | «No lo sé» | 15,8 s |
+| Con captura real | Captura de la sanción de Vinicius + «¿entonces no juega el Clásico?» | Cuatro partidos de sanción, con las tres noticias. La etiqueta como baja y no como sanción (error del grupo 4, sección 9) | 9,8 s |
+| Con captura falsa | Captura de «Mbappé, tres meses de baja» + «¿se pierde el Clásico?» | Rumor sin confirmar; las noticias aparecen como «las más cercanas que revisé», no como fuente | 10,7 s |
+| Health check | `/salud` | `"estado": "ok"`, 748 chunks, modelos cargados, W&B activo | 0,03 s |
+
+La latencia mediana de las cuatro preguntas en el Space es **10,3 s**, frente a 22 s (texto) y 48 s
+(con imagen) en la GTX 1650 Ti local: la GPU de ZeroGPU es mucho más rápida, y parte de cada
+espera es la cola para conseguirla (la trampa, que no llega a generar, tardó 15,8 s). En la captura
+falsa, la interfaz mostraba al principio las noticias recuperadas como «Noticias usadas» y un
+equipo que no sale de ninguna; lo corregimos en la presentación (solo cambia cómo se muestra, no la
+señal que mide el harness).
+
 **Lo que aprendimos desplegando:**
 
 - En ZeroGPU la GPU se cobra a la cuota diaria de quien usa la demo: 2 minutos para un visitante
@@ -238,7 +258,7 @@ sección 5.
 | **Sistema M3** · RAG avanzado + herramienta | 0,289 | 2,93 | 0,519 | 3/4 | 4/23 | 22,2 s | 0,57 · 3/7 (no mira la imagen) |
 | **Sistema M4** · M3 + componente visual | 0,289 | 2,93 | 0,519 | 3/4 | 4/23 | 22,2 s · 48,4 s con imagen | **0,71 · 6/7** |
 | **Sistema final eficiente** · generador int8 | 0,258 | 2,93 | 0,519 | 3/4 | 4/23 | 17,4 s · 46,6 s con imagen | 0,71 · 6/7 |
-| **Desplegado** en el Space (generador fp16, sección 4) | igual que el Sistema M4 | | | | | ver W&B | |
+| **Desplegado** en el Space (generador fp16, sección 4) | igual que el Sistema M4 | | | | | 10,3 s (4 pruebas, sección 6) | captura real y falsa bien resueltas |
 
 Cómo leerla:
 

@@ -1,0 +1,73 @@
+{
+  "facil": {
+    "escena": "facil",
+    "pregunta": "¿Volverá Uche a jugar con el Getafe esta temporada?",
+    "imagen": null,
+    "se_espera": "que no: se pierde la temporada, con la noticia",
+    "latencia_s": 5.1,
+    "respuesta": "Respuesta\n\nUche no volverá a jugar con el Getafe esta temporada debido a una grave lesión en la rodilla derecha.\n\nSeñal: Baja confirmada · impacto negativo alto · Getafe\n\nNoticias usadas:\n\nMarca, 2026-08-08: El Getafe comunica “una grave lesión” en la rodilla derecha de Uche. El club confirma que el nigeriano se perderá toda la temporada …\n\nOffside informa, no recomienda apostar. Responde solo con noticias recolectadas hasta el 14 de octubre de 2026; comprueba la fuente antes de decidir.",
+    "hora_utc": "2026-11-18T01:43:31Z",
+    "captura_pantalla": "capturas/facil.png"
+  },
+  "trampa": {
+    "escena": "trampa",
+    "pregunta": "¿Kylian Mbappé se pierde el Clásico?",
+    "imagen": null,
+    "se_espera": "«no lo sé»: no hay ninguna noticia sobre eso",
+    "latencia_s": 15.8,
+    "respuesta": "No lo sé\n\nNo encuentro esa información en las noticias recolectadas.\n\nOffside informa, no recomienda apostar. Responde solo con noticias recolectadas hasta el 14 de octubre de 2026; comprueba la fuente antes de decidir.",
+    "hora_utc": "2026-11-18T01:44:06Z",
+    "captura_pantalla": "capturas/trampa.png"
+  },
+  "captura": {
+    "escena": "captura",
+    "pregunta": "Me llegó esta captura. ¿Entonces Vinicius no juega el Clásico?",
+    "imagen": "V-01.png",
+    "se_espera": "lee la captura, encuentra la noticia y responde con la sanción",
+    "latencia_s": 9.8,
+    "respuesta": "Respuesta\n\nVinicius se pierde el Clásico: cuatro partidos de sanción.\n\nSeñal: Baja confirmada · impacto negativo bajo · Real Madrid\n\nLo que leí en la captura (sin verificar): Vinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal.\n\nNoticias usadas:\n\nMarca, 2026-10-14: Vinicius se pierde el Clásico: cuatro partidos de sanción. El Comité de Disciplina le impone una dura sanción por su roja ante el Villarreal…\nMarca, 2026-10-14: Mourinho, sobre la sanción a Vinicius: \"¿Por qué dos horas antes de un partido importante?\". El técnico del Real Madrid cuestionó en Movista…\nMarca, 2026-10-14: La reacción de RMTV a la sanción a Vinicius: \"Pues nada, es la guerra...\". El canal oficial del club estalla tras confirmarse los cuatro par…\n\nOffside informa, no recomienda apostar. Responde solo con noticias recolectadas hasta el 14 de octubre de 2026; comprueba la fuente antes de decidir.",
+    "hora_utc": "2026-11-18T01:44:41Z",
+    "captura_pantalla": "capturas/captura.png"
+  },
+  "captura_falsa": {
+    "escena": "captura_falsa",
+    "pregunta": "¿Mbappé se pierde el Clásico?",
+    "imagen": "V-07.png",
+    "se_espera": "ninguna noticia cuenta lo mismo: rumor sin confirmar",
+    "latencia_s": 10.7,
+    "respuesta": "Rumor sin confirmar\n\nNinguna de las noticias recolectadas cuenta lo mismo que la captura: tómala como un rumor sin confirmar. [1] Mbappé, tres meses de baja por una rotura del ligamento cruzado. Se perderá el Clásico.\n\nSeñal: Rumor sin confirmar · impacto negativo bajo\n\nLo que leí en la captura (sin verificar): ÚLTIMA HORA: Mbappé, tres meses de baja por una rotura del ligamento cruzado. Se perderá el Clásico.\n\nLas noticias más cercanas que revisé (ninguna cuenta lo mismo que la captura):\n\nMarca, 2026-08-29: Lo hizo todo mal: expulsado a los 3 minutos... y su gesto con el escudo puede acabar en sanción…\nMarca, 2026-08-27: \"Los rivales son duros... ha faltado suerte en los dos últimos bombos\"…\nMarca, 2026-08-27: Aaron Ochoa estará de baja alrededor de tres meses. El técnico del Girona analizó la derrota de su equipo contra el Alavés en Montilivi…\nMarca, 2026-08-08: Chaira, baja sensible para el Oviedo. El marroquí se perderá entre dos y tres meses de competición. El conjunto asturiano podría acudir al m…\n\nOffside informa, no recomienda apostar. Responde solo con noticias recolectadas hasta el 14 de octubre de 2026; comprueba la fuente antes de decidir.",
+    "hora_utc": "2026-11-18T01:53:26Z",
+    "captura_pantalla": "capturas/captura_falsa.png"
+  },
+  "salud": {
+    "escena": "salud",
+    "pregunta": null,
+    "imagen": null,
+    "se_espera": "health check: estado ok, sin usar GPU",
+    "respuesta": {
+      "version": "generador fp16 · visión sí",
+      "device": "cuda",
+      "en_zerogpu": true,
+      "indice": {
+        "chunks": 748,
+        "documentos": 748,
+        "responde": true
+      },
+      "generador_cargado": true,
+      "vision_cargada": true,
+      "observabilidad": {
+        "peticiones_total": 1,
+        "valvulas": 0,
+        "con_herramienta": 0,
+        "con_vision": 1,
+        "errores": 0,
+        "wandb_activo": true
+      },
+      "uptime_s": 897,
+      "estado": "ok",
+      "latencia_s": 0.031
+    },
+    "hora_utc": "2026-11-18T02:01:24Z",
+    "captura_pantalla": "capturas/salud.png"
+  }
+}

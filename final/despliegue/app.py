@@ -147,11 +147,16 @@ def _formatear(salida, lectura, imagen) -> str:
             "nada que responder con ella.\n\n" + AVISO
         )
     valvula = salida["respuesta"].startswith("No encuentro")
-    partes.append(f"### {'No lo sé' if valvula else 'Respuesta'}\n\n{salida['respuesta']}")
+    # Captura que ninguna noticia respalda: las noticias recuperadas no son su fuente y el
+    # equipo que propone el modelo no sale de ninguna; se dice así en vez de listarlas como usadas.
+    sin_respaldo = bool(salida.get("traza", {}).get("captura_sin_respaldo"))
+    titulo = "No lo sé" if valvula else ("Rumor sin confirmar" if sin_respaldo else "Respuesta")
+    partes.append(f"### {titulo}\n\n{salida['respuesta']}")
     if not valvula:
+        equipo = "" if sin_respaldo else f" · {salida['team']}"
         partes.append(
             f"**Señal:** {NOMBRES.get(salida['category'], salida['category'])} · impacto "
-            f"{IMPACTOS.get(salida['impact'], salida['impact'])} · {salida['team']}"
+            f"{IMPACTOS.get(salida['impact'], salida['impact'])}{equipo}"
         )
     if lectura is not None:
         partes.append(
@@ -165,7 +170,12 @@ def _formatear(salida, lectura, imagen) -> str:
         for i, doc_id in enumerate(salida["ids"], start=1):
             c = recuperador.por_id[doc_id]
             fuentes.append(f"{i}. [{c.medio}, {c.fecha}]({c.link}): {c.texto[:140]}…")
-        partes.append("**Noticias usadas:**\n\n" + "\n".join(fuentes))
+        encabezado = (
+            "**Las noticias más cercanas que revisé (ninguna cuenta lo mismo que la captura):**"
+            if sin_respaldo
+            else "**Noticias usadas:**"
+        )
+        partes.append(encabezado + "\n\n" + "\n".join(fuentes))
     partes.append(AVISO)
     return "\n\n".join(partes)
 
@@ -250,7 +260,10 @@ for nombre, pregunta in (
             EJEMPLOS.append([pregunta, str(carpeta / nombre)])
             break
 
-with gr.Blocks(title="Offside") as demo:
+# Los colores del proyecto: césped y azul, los mismos de las diapositivas.
+TEMA = gr.themes.Soft(primary_hue="green", secondary_hue="blue", neutral_hue="slate")
+
+with gr.Blocks(title="Offside", theme=TEMA) as demo:
     gr.Markdown(
         "# Offside\n"
         "Pregúntale por la disponibilidad de un jugador o sube la captura de una noticia. "
