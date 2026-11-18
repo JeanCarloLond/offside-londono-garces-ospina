@@ -12,7 +12,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 | | |
 |---|---|
 | **Demo pública** | <https://huggingface.co/spaces/Jclo/offside> (pregunta en texto o captura de una noticia) |
-| **Observabilidad (W&B)** | {WANDB_URL} |
+| **Observabilidad (W&B)** | <https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside> |
 | **Reporte final** | [`final/reporte.md`](final/reporte.md) |
 | **Presentación** | [`final/presentacion/offside.html`](final/presentacion/offside.html) (ábrela en el navegador; flechas para avanzar, N para las notas) |
 | **Health check** | `Client("Jclo/offside").predict(api_name="/salud")` con `gradio_client`, o el desplegable «Estado del sistema» de la demo ([detalle](final/reporte.md#6-despliegue)) |

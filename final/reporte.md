@@ -3,7 +3,7 @@
 Proyecto integrador de SI4006 (Universidad EAFIT), equipo Offside: Jean Carlo Londoño Ocampo,
 Alejandro Garcés Ramírez y Nicolás Ospina Torres.
 
-**Demo:** <https://huggingface.co/spaces/Jclo/offside> · **W&B:** {WANDB_URL} ·
+**Demo:** <https://huggingface.co/spaces/Jclo/offside> · **W&B:** <https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside> ·
 **Presentación:** [`presentacion/offside.html`](presentacion/offside.html)
 
 ## 1. El problema y el usuario
@@ -207,10 +207,12 @@ No se guarda el texto de la pregunta ni la imagen, solo la longitud de la pregun
 ```
 
 **Observabilidad en W&B.** Con el secreto `WANDB_API_KEY` en el Space, cada petición se registra en el proyecto
-`offside` de W&B ({WANDB_URL}). Por petición: la latencia, los tiempos por etapa, si se usó la
+`offside` de W&B (<https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside>). Por petición: la latencia, los tiempos por etapa, si se usó la
 visión o la herramienta, si se activó la válvula y si hubo error. Como métricas de uso acumuladas:
 el total de peticiones, la tasa de válvula y la tasa de uso de la visión. Si la clave no está, la
-app funciona igual y solo escribe el registro JSON.
+app funciona igual y solo escribe el registro JSON. Cada arranque del Space abre un *run* nuevo
+(`space-AAAAMMDD-HHMM`) dentro del mismo proyecto; W&B ahora se sirve desde el dominio de CoreWeave
+(`forge.coreweave.com`), por eso el enlace no es `wandb.ai`.
 
 **Pruebas sobre el Space desplegado** (17 de noviembre de 2026, con la sesión de Hugging Face
 iniciada; [`despliegue/pruebas_space.json`](despliegue/pruebas_space.json) y las capturas de
