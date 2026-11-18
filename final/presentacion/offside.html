@@ -97,6 +97,8 @@
   .ok { color: var(--cesped-claro); font-weight: 700; }
   .mal { color: var(--rojo); font-weight: 700; }
 
+  pre.json { margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: rgba(0,0,0,0.35);
+    border: 1px solid var(--borde); font: 15px/1.45 Consolas, "Cascadia Mono", monospace; color: #b9f6ca; white-space: pre; }
   .cita { border-left: 4px solid var(--bandera); padding: 10px 18px; background: rgba(250,204,21,0.07);
     border-radius: 0 12px 12px 0; font-size: 22px; }
   .caso { display: flex; flex-direction: column; gap: 8px; }
@@ -143,7 +145,7 @@
     <div class="persona"><b>Nicolás Ospina Torres</b>nospinat@eafit.edu.co</div>
   </div>
   <div class="pie">Demo: huggingface.co/spaces/Jclo/offside</div>
-  <aside class="nota">30 s. Presentar el equipo y la frase. No explicar nada técnico todavía.</aside>
+  <aside class="nota">30 s (total ≈ 9 min 15 s; el máximo son 10). Presentar el equipo y la frase. No explicar nada técnico todavía.</aside>
 </section>
 
 <!-- 2 · El usuario -->
@@ -167,7 +169,7 @@
       </ul>
     </div>
   </div>
-  <aside class="nota">1 min. Esta es la métrica de éxito: la «tasa de respuestas útiles» y que diga «no lo sé». La usaremos en todos los números.</aside>
+  <aside class="nota">45 s. Esta es la métrica de éxito: la «tasa de respuestas útiles» y que diga «no lo sé». La usaremos en todos los números.</aside>
 </section>
 
 <!-- 3 · El sistema en un dibujo -->
@@ -185,7 +187,7 @@
     <div class="tarjeta"><h3 class="azul">Lo medimos todo con la misma vara</h3><p>Las mismas 27 preguntas para todas las versiones, desde el Módulo 2.</p></div>
     <div class="tarjeta"><h3 class="azul">Está en línea, y lo vigilamos</h3><p>Un chequeo de salud, un registro por pregunta y un tablero de seguimiento.</p><span class="modulo">Módulo 5</span></div>
   </div>
-  <aside class="nota">1 min. Sin siglas. Recorrer los cinco pasos con el ejemplo de Vinicius.</aside>
+  <aside class="nota">45 s. Sin siglas. Recorrer los cinco pasos con el ejemplo de Vinicius.</aside>
 </section>
 
 <!-- 4 · Demo -->
@@ -201,7 +203,7 @@
     <div class="tarjeta caso">
       <div class="tipo azul">Difícil</div>
       <div class="pregunta">Captura: «Vinicius se pierde el Clásico» + «¿entonces no juega?»</div>
-      <div class="espera">Lee la imagen, encuentra la noticia que la respalda y responde con la sanción.</div>
+      <div class="espera">Lee la imagen, encuentra la noticia que la respalda y responde con la sanción (aunque la etiqueta como «baja»).</div>
     </div>
     <div class="tarjeta caso">
       <div class="tipo bandera">Trampa</div>
@@ -210,9 +212,10 @@
     </div>
   </div>
   <p class="suave" style="margin-top: 28px; font-size: 19px;">
-    La demo usa la GPU compartida gratuita de Hugging Face. Si falla la conexión, tenemos el video de respaldo.
+    Probadas en el Space el 17 de noviembre: respondió en <strong>5,1 s</strong>, <strong>9,8 s</strong> y <strong>15,8 s</strong>.
+    Usa la GPU compartida gratuita de Hugging Face; si falla la conexión, tenemos un video de respaldo de 3 minutos con estas mismas preguntas.
   </p>
-  <aside class="nota">2,5 min. Usar la demo con la sesión de Hugging Face iniciada (la cuota de GPU es por usuario). Tener el video abierto en otra pestaña.</aside>
+  <aside class="nota">2,5 min. Usar la demo con la sesión de Hugging Face iniciada (la cuota de GPU es por usuario: 5 min al día). Si sobra tiempo, la captura falsa de Mbappé (ejemplo de abajo en la demo). Tener el video abierto en otra pestaña.</aside>
 </section>
 
 <!-- 5 · Números: contra las líneas base -->
@@ -229,7 +232,7 @@
     <div class="tarjeta"><h3>Cuando la respuesta no está en las noticias</h3><p>El buscador simple inventó en las 4 preguntas trampa. Offside dice «no lo sé» en <strong class="acento">3 de 4</strong>.</p></div>
     <div class="tarjeta"><h3>A cambio, tarda más</h3><p><strong>22 s</strong> por pregunta frente a 15 s del buscador simple, sobre todo por la comprobación del paso 3.</p></div>
   </div>
-  <aside class="nota">1,5 min. «Respuesta útil» = acierta qué pasó, no invierte la dirección y no presenta un rumor como hecho. Cada número va contra su comparación.</aside>
+  <aside class="nota">1 min. «Respuesta útil» = acierta qué pasó, no invierte la dirección y no presenta un rumor como hecho. Cada número va contra su comparación.</aside>
 </section>
 
 <!-- 6 · Qué movió qué -->
@@ -248,7 +251,7 @@
   <p class="cita" style="margin-top: 26px;">Lo que más falla no es encontrar la noticia: el documento correcto aparece en 22 de 23 preguntas.
   Falla al <strong>etiquetarla</strong>: con la noticia correcta delante, se equivoca de tipo en 8 de 23
   (una sanción leída como baja, una alineación como regreso).</p>
-  <aside class="nota">1 min. Las piezas que no movieron nada también se cuentan.</aside>
+  <aside class="nota">45 s. Las piezas que no movieron nada también se cuentan.</aside>
 </section>
 
 <!-- 7 · Componente visual -->
@@ -274,7 +277,7 @@
       <p>Ahora, si ninguna noticia cuenta lo mismo que la captura, sale como <strong class="acento">rumor sin confirmar</strong>.</p>
     </div>
   </div>
-  <aside class="nota">1 min. El modelo de visión leyó bien todas las capturas; el error estaba en cuánto les creía el sistema. Decir que el arreglo se hizo después de ver la primera evaluación.</aside>
+  <aside class="nota">45 s. El modelo de visión leyó bien todas las capturas; el error estaba en cuánto les creía el sistema. Decir que el arreglo se hizo después de ver la primera evaluación.</aside>
 </section>
 
 <!-- 8 · Eficiencia -->
@@ -293,15 +296,48 @@
   </table>
   <p style="margin-top: 22px; font-size: 21px;">El de 4 bits ahorra más, pero <strong class="rojo">pierde la capacidad de decir «no lo sé»</strong>: empieza a inventar.
   El de 8 bits no pierde nada, pero ahorra menos de lo que nos pusimos como meta. <strong>Ninguno cumple el criterio, así que en línea dejamos el original.</strong></p>
-  <aside class="nota">1 min. Mismo computador para las tres versiones. El criterio se escribió antes de medir (está en el repositorio con fecha).</aside>
+  <p class="suave" style="margin-top: 6px; font-size: 18px;">Con 8 bits repetimos las pruebas que no miden exactitud: «no lo sé» en 3 de 4, las mismas trampas bien resueltas (6 de 17)
+  y la misma respuesta con la imagen pequeña, oscura o girada (15 de 15).</p>
+  <aside class="nota">45 s. Mismo computador para las tres versiones. El criterio se escribió antes de medir (está en el repositorio con fecha). Por qué falla el de 4 bits: al comprimir, el filtro que decide si una noticia responde se vuelve más crédulo.</aside>
 </section>
 
-<!-- 9 · Lo que falla -->
+<!-- 9 · En línea y vigilado -->
+<section class="diapo">
+  <div class="etiqueta">En línea · Módulo 5</div>
+  <h2>Sabemos si está vivo y qué pasa adentro</h2>
+  <div class="tres">
+    <div class="tarjeta">
+      <h3 class="acento">¿Está vivo?</h3>
+      <p>Un chequeo que no hace preguntas ni gasta GPU: los modelos cargaron y el buscador responde.</p>
+      <pre class="json">"estado": "ok",
+"chunks": 748,
+"vision_cargada": true,
+"wandb_activo": true</pre>
+    </div>
+    <div class="tarjeta">
+      <h3 class="azul">¿Qué hizo en cada pregunta?</h3>
+      <p>Una línea por pregunta: hora, cuánto tardó, qué piezas usó y si dijo «no lo sé». <strong>Sin el texto de la pregunta ni la imagen.</strong></p>
+      <pre class="json">"latencia_s": 10.7,
+"componentes": {"rag": true,
+  "vision": true},
+"valvula": false</pre>
+    </div>
+    <div class="tarjeta">
+      <h3 class="bandera">¿Cómo le va?</h3>
+      <p>Un tablero en W&amp;B con el tiempo de cada respuesta, las preguntas atendidas, cuántas veces dice «no lo sé» y cuántas llegan con imagen.</p>
+    </div>
+  </div>
+  <p class="cita" style="margin-top: 24px;">En el Space respondió en <strong>10 s</strong> de mediana (4 pruebas), frente a 22 s en nuestro portátil:
+  la GPU compartida es más rápida, y parte de la espera es la fila para conseguirla.</p>
+  <aside class="nota">30 s. Abrir el tablero de W&amp;B en otra pestaña (enlace en el README). El chequeo de salud está en la demo, en «Estado del sistema».</aside>
+</section>
+
+<!-- 10 · Lo que falla -->
 <section class="diapo">
   <div class="etiqueta">Lo que falla</div>
   <h2>Dónde no hay que creerle</h2>
   <div class="tres">
-    <div class="tarjeta"><h3 class="rojo">El peor caso</h3><p>Tomar como cierta una captura falsa que circula por redes. Para evitarlo, una captura sin noticia que la respalde se trata como rumor.</p></div>
+    <div class="tarjeta"><h3 class="rojo">El peor caso</h3><p>Tomar como cierta una captura falsa. La primera versión lo hizo; ahora sale como rumor. Sigue pasando que una noticia que no responde se cuele y el sistema invente (Lamine Yamal).</p></div>
     <div class="tarjeta"><h3 class="bandera">Sus límites</h3><p>Solo sabe lo publicado hasta el 14 de octubre. En 8 de 23 preguntas confunde el tipo de noticia, y casi siempre subestima el impacto.</p></div>
     <div class="tarjeta"><h3 class="azul">A quién le falla más</h3><p>A quien sigue la liga colombiana: hay 36 noticias de El Tiempo frente a 712 de Marca.</p></div>
   </div>
@@ -309,7 +345,7 @@
     <div class="tarjeta"><h3>Sus datos</h3><p>No guardamos la pregunta ni la imagen: solo la hora, el tiempo de respuesta y qué piezas se usaron.</p></div>
     <div class="tarjeta"><h3>La decisión es suya</h3><p>Offside informa y cita la fuente; no recomienda apostar.</p></div>
   </div>
-  <aside class="nota">1 min. El riesgo ético principal es propagar un rumor como hecho sobre una persona identificable.</aside>
+  <aside class="nota">45 s. El riesgo ético principal es propagar un rumor como hecho sobre una persona identificable.</aside>
 </section>
 
 <!-- 10 · Cierre -->
@@ -319,9 +355,10 @@
   <ul style="margin-top: 8px;">
     <li>De 15 % a <strong class="acento">52 %</strong> de respuestas útiles, con la fuente a la vista.</li>
     <li>Calla en 3 de 4 preguntas sin respuesta, frente a 0 de 4 del buscador simple.</li>
+    <li>Con imágenes, de 43 % a <strong class="acento">71 %</strong>, y no se cree una captura falsa.</li>
     <li>Todo medido con la misma vara, incluidos los fallos.</li>
   </ul>
-  <div class="pie">Demo: huggingface.co/spaces/Jclo/offside · Código y reporte: github.com/JeanCarloLond/offside-londono-garces-ospina · ¿Preguntas?</div>
+  <div class="pie">Demo: huggingface.co/spaces/Jclo/offside · Tablero de W&amp;B y video: enlazados en el README · Código y reporte: github.com/JeanCarloLond/offside-londono-garces-ospina · ¿Preguntas?</div>
   <aside class="nota">30 s. Cerrar y abrir preguntas. Cualquiera de los tres puede responder sobre cualquier parte.</aside>
 </section>
 

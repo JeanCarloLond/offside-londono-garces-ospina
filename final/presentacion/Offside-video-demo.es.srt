@@ -1,0 +1,119 @@
+1
+00:00:00,500 --> 00:00:04,850
+Faltan diez minutos para el Clásico y te llega esto por WhatsApp.
+
+2
+00:00:05,000 --> 00:00:09,850
+Mbappé, tres meses de baja. ¿Le crees? ¿Cambias tu apuesta?
+
+3
+00:00:12,000 --> 00:00:17,350
+Soy Jean Londoño y, con Alejandro Garcés y Nicolás Ospina, te presentamos Offside.
+
+4
+00:00:17,500 --> 00:00:23,850
+Te dice si un jugador va a jugar, con la noticia que lo respalda. Y si no lo sabe, te lo dice.
+
+5
+00:00:24,000 --> 00:00:30,350
+Empecemos por una fácil: ¿volverá Uche a jugar con el Getafe esta temporada?
+
+6
+00:00:30,500 --> 00:00:35,350
+Offside busca en 748 noticias de Marca y El Tiempo que recolectamos nosotros.
+
+7
+00:00:35,500 --> 00:00:41,350
+No: se pierde toda la temporada. Y debajo, la noticia de la que lo saca, con su enlace.
+
+8
+00:00:41,500 --> 00:00:44,350
+Baja confirmada, impacto negativo alto, Getafe.
+
+9
+00:00:46,000 --> 00:00:51,350
+Ahora, una trampa: ¿Kylian Mbappé se pierde el Clásico?
+
+10
+00:00:51,500 --> 00:00:58,350
+En las noticias no hay nada sobre eso. Un buscador simple respondería con lo primero que encontrara.
+
+11
+00:00:58,500 --> 00:01:06,850
+Offside comprueba, noticia por noticia, si de verdad responde la pregunta.
+
+12
+00:01:07,000 --> 00:01:11,850
+Y como ninguna lo hace, dice lo que un apostador necesita oír: no lo sé.
+
+13
+00:01:14,000 --> 00:01:18,350
+Muchas veces la pregunta llega como una captura de pantalla.
+
+14
+00:01:18,500 --> 00:01:23,850
+«Me llegó esta captura: ¿entonces Vinicius no juega el Clásico?»
+
+15
+00:01:24,000 --> 00:01:33,350
+Un modelo de visión lee el texto de la imagen, y Offside busca la noticia que cuenta lo mismo.
+
+16
+00:01:33,500 --> 00:01:38,350
+La encuentra: cuatro partidos de sanción, publicada en Marca el 14 de octubre.
+
+17
+00:01:38,500 --> 00:01:42,850
+La etiqueta como baja y no como sanción: es el error que más comete, y lo medimos.
+
+18
+00:01:44,000 --> 00:01:46,850
+¿Y si la captura es falsa?
+
+19
+00:01:47,000 --> 00:01:52,850
+Esta circula por redes: Mbappé, tres meses de baja. Sin fuente.
+
+20
+00:01:53,000 --> 00:01:59,350
+Offside la lee igual de bien. Pero ninguna de las noticias cuenta lo mismo.
+
+21
+00:02:02,300 --> 00:02:06,850
+Así que no la da por hecha: rumor sin confirmar.
+
+22
+00:02:07,000 --> 00:02:12,850
+La primera versión sí se la creyó. Lo arreglamos, y el reporte cuenta el antes y el después.
+
+23
+00:02:14,000 --> 00:02:19,850
+Lo medimos todo con la misma vara: las mismas 27 preguntas desde el segundo módulo.
+
+24
+00:02:20,000 --> 00:02:27,850
+De 15 % de respuestas útiles a 52 %, y dice «no lo sé» en 3 de 4 preguntas sin respuesta.
+
+25
+00:02:28,000 --> 00:02:36,850
+Con imágenes, de 43 % a 71 %, y la misma respuesta aunque la imagen llegue pequeña, oscura o girada.
+
+26
+00:02:40,000 --> 00:02:45,850
+También intentamos hacerlo más liviano, y antes de medir escribimos qué aceptábamos perder.
+
+27
+00:02:46,000 --> 00:02:51,350
+A 4 bits ahorra 64 % de memoria, pero deja de decir «no lo sé». En línea está el original.
+
+28
+00:02:51,500 --> 00:02:57,850
+Y está en línea, con chequeo de salud, un registro por pregunta y un tablero en W&B.
+
+29
+00:03:00,000 --> 00:03:05,350
+Offside informa y cita la fuente. La decisión final es tuya.
+
+30
+00:03:05,500 --> 00:03:09,850
+Somos Offside. Muchas gracias.

@@ -4,7 +4,7 @@ Proyecto integrador de SI4006 (Universidad EAFIT), equipo Offside: Jean Carlo Lo
 Alejandro Garcés Ramírez y Nicolás Ospina Torres.
 
 **Demo:** <https://huggingface.co/spaces/Jclo/offside> · **W&B:** <https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside> ·
-**Presentación:** [`presentacion/offside.html`](presentacion/offside.html)
+**Presentación:** [`presentacion/offside.html`](presentacion/offside.html) · **Video de la demo:** [`presentacion/Offside-video-demo.mp4`](presentacion/Offside-video-demo.mp4)
 
 ## 1. El problema y el usuario
 
@@ -75,8 +75,16 @@ commit `0986609`):
 > dimensión 3 del harness) y **ningún** caso de la válvula, si la cuantización a int4 reduce a la
 > mitad la memoria del generador o baja la latencia p50 al menos un 30 %.
 
-**Cómo se midió:** las 27 preguntas del eval set del M3, el harness de M2 con su juez v1, el mismo
-prompt y la misma máquina (GTX 1650 Ti de 4 GB), una versión por proceso.
+**Por qué el generador y no el modelo de visión.** El enunciado pide el componente que más tarda o
+más memoria ocupa. El generador (Qwen2.5-1.5B) es también el verificador y el planificador de la
+herramienta: corre en todas las preguntas, varias veces por pregunta, y es casi toda la latencia de
+una consulta de texto. El modelo de visión (Qwen2.5-VL-3B) pesa más, pero solo se usa cuando hay
+imagen, y en local ya tenía que ir en 4 bits para caber en la GPU de 4 GB; en el Space va en bf16.
+
+**Cómo se midió:** "antes" es el sistema del Módulo 4 tal como está desplegado (el RAG del M3 con el
+componente visual; sin imagen sigue exactamente el camino del M3). Las 27 preguntas del eval set del
+M3, el harness de M2 con su juez v1, el mismo prompt y la misma máquina (GTX 1650 Ti de 4 GB), una
+versión por proceso. Los 7 casos con imagen se repitieron también con int8 (sección 5).
 Script: [`eficiencia/medir_cuantizacion.py`](eficiencia/medir_cuantizacion.py); resultados:
 [`eficiencia/resultados/tabla_eficiencia.csv`](eficiencia/resultados/tabla_eficiencia.csv).
 
@@ -112,7 +120,12 @@ Script: [`eficiencia/medir_cuantizacion.py`](eficiencia/medir_cuantizacion.py); 
 cumple, así que el Space corre el generador en **fp16**. En la GPU de ZeroGPU la memoria no es el
 cuello de botella, y la latencia que pesa es la reserva de GPU, no la generación. La fila "Sistema
 final eficiente" de la tabla evolutiva es la versión int8, la mejor de las dos que medimos; la
-dejamos como opción (`OFFSIDE_INT4` en [`despliegue/app.py`](despliegue/app.py)).
+dejamos como opción (`OFFSIDE_CUANTIZAR=int8` en [`despliegue/app.py`](despliegue/app.py)).
+
+**Las pruebas que no miden exactitud, repetidas sobre int8:** la válvula (3 de 4, igual que fp16),
+los adversariales (6 de 17 con señal accionable, igual) y, con los 7 casos con imagen, la invarianza
+(15 de 15 variantes con la misma señal, igual) y la captura falsa (sale como rumor, igual). Con int4
+la válvula cae a 1 de 4 y por eso no siguió a las pruebas con imagen.
 
 **Arreglo propuesto para int4, sin aplicar:** volver a calibrar el umbral del verificador sobre el
 dev set con el modelo cuantizado, o mantener solo el verificador en fp16. No lo aplicamos porque
@@ -131,8 +144,9 @@ la respuesta sale como **rumor sin confirmar**. La captura nunca cuenta como fue
 
 **Eval set con imagen** ([`vision/eval_set_vision.json`](vision/eval_set_vision.json), generado por
 [`vision/crear_casos.py`](vision/crear_casos.py)): 7 casos con el mismo formato del eval set de M2.
-Cinco son capturas de noticias reales del corpus (Vinicius, Guridi, Musiala, Erik Lira, Cajuste), con
-la atribución del medio y cuentas ficticias; V-06 es una receta (no es fútbol) y V-07 es una captura
+Las 7 imágenes las generamos nosotros con ese script (imitan un post de una red social; no son
+capturas reales de nadie). Cinco reproducen noticias reales del corpus (Vinicius, Guridi, Musiala,
+Erik Lira, Cajuste), con la atribución del medio y cuentas ficticias; V-06 es una receta (no es fútbol) y V-07 es una captura
 **falsa** ("Mbappé, tres meses de baja"), sin noticia en el corpus que la respalde. Los cinco reales
 tienen además tres variantes (pequeña y comprimida, tema oscuro, rotada) para la prueba de
 invarianza.
@@ -393,6 +407,8 @@ que en el M3. Para qué:
   construir los casos con imagen.
 - **Redacción y diapositivas:** primeras versiones de este reporte, de la portada del repositorio y
   de la presentación en HTML ([`presentacion/offside.html`](presentacion/offside.html)).
+- **Video de la demo:** el guion, el teleprompter, la grabación automática de la demo en el Space
+  (Playwright) y el montaje con ffmpeg. La voz es de Jean Carlo, grabada por fragmentos.
 
 **Lo que hicimos y revisamos nosotros:**
 

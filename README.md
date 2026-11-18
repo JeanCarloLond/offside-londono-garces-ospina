@@ -15,6 +15,7 @@ Proyecto integrador del curso SI4006 · Tópicos Especiales y Aplicaciones en IA
 | **Observabilidad (W&B)** | <https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside> |
 | **Reporte final** | [`final/reporte.md`](final/reporte.md) |
 | **Presentación** | [`final/presentacion/offside.html`](final/presentacion/offside.html) (ábrela en el navegador; flechas para avanzar, N para las notas) |
+| **Video de la demo** | [`final/presentacion/Offside-video-demo.mp4`](final/presentacion/Offside-video-demo.mp4) (3:12, grabado sobre el Space real; subtítulos en el `.srt`) |
 | **Health check** | `Client("Jclo/offside").predict(api_name="/salud")` con `gradio_client`, o el desplegable «Estado del sistema» de la demo ([detalle](final/reporte.md#6-despliegue)) |
 
 ## Correrlo

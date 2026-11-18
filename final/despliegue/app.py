@@ -11,7 +11,8 @@ Rutas de la API (además de la interfaz):
 
 Variables de entorno (en el Space, como secretos o variables):
   WANDB_API_KEY   si está, cada petición se registra en W&B (proyecto "offside")
-  OFFSIDE_INT4    "1" para cargar el generador cuantizado a int4
+  OFFSIDE_CUANTIZAR  "int8" o "int4" para cargar el generador cuantizado (por defecto, fp16;
+                     ver final/eficiencia: ninguna de las dos cumplió el criterio)
   OFFSIDE_VISION  "0" para desactivar el componente visual
 """
 
@@ -53,9 +54,13 @@ from observabilidad import Observador  # noqa: E402
 
 EN_ZEROGPU = os.getenv("SPACES_ZERO_GPU", "").lower() in ("1", "true")
 DEVICE = "cuda" if (EN_ZEROGPU or torch.cuda.is_available()) else "cpu"
-CUANTIZAR = os.getenv("OFFSIDE_INT4", "0") == "1"
+CUANTIZAR = (
+    os.getenv("OFFSIDE_CUANTIZAR", "").lower()
+    if os.getenv("OFFSIDE_CUANTIZAR", "").lower() in ("int4", "int8")
+    else False
+)
 USAR_VISION = os.getenv("OFFSIDE_VISION", "1") == "1"
-VERSION = f"generador {'int4' if CUANTIZAR else 'fp16'} · visión {'sí' if USAR_VISION else 'no'}"
+VERSION = f"generador {CUANTIZAR or 'fp16'} · visión {'sí' if USAR_VISION else 'no'}"
 
 INICIO = time.time()
 recuperador = Recuperador()
