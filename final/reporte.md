@@ -4,7 +4,7 @@ Proyecto integrador de SI4006 (Universidad EAFIT), equipo Offside: Jean Carlo Lo
 Alejandro Garcés Ramírez y Nicolás Ospina Torres.
 
 **Demo:** <https://huggingface.co/spaces/Jclo/offside> · **W&B:** <https://forge.coreweave.com/wandb/jeanlondo12-universidad-eafit/offside> ·
-**Presentación:** [`presentacion/offside.html`](presentacion/offside.html) · **Video de la demo:** [`presentacion/Offside-video-demo.mp4`](presentacion/Offside-video-demo.mp4)
+**Presentación:** [PDF](presentacion/Offside-presentacion.pdf) · [HTML](presentacion/offside.html) · **Video de la demo:** [`presentacion/Offside-video-demo.mp4`](presentacion/Offside-video-demo.mp4)
 
 ## 1. El problema y el usuario
 
